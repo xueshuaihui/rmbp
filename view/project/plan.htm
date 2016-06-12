@@ -1,0 +1,34 @@
+
+<div class="tab-pane active">
+<!--{if ($isauth == -1 || $isauth == 0)}-->
+    <div class="row description">
+        <div class="lable">
+            <p>{$project['title']}计划</p>
+        </div>
+        <div class="content">您还未认证投资人，请先
+            <a href="{DIR}?c=user-certificate"> 认证 </a>
+            后，才能查看完整内容。</div>
+    </div>
+<!--{/if}-->
+
+<!--{if $isauth == 1}-->
+    <div class="row description">
+        <div class="lable">
+            <p>{$project['title']}计划</p>
+        </div>
+        <div class="content">
+            您的认证投资人申请正在审核中，审核通过后，才能查看完整内容。
+        </div>
+    </div>
+<!--{/if}-->
+
+<!--{if $isauth == 2}-->
+    <div class="row description">
+        <div class="lable">
+            <p>融资计划</p>
+        </div>
+        <div class="content">{replace_content($project['financingplan'])}
+        </div>
+    </div>
+<!--{/if}-->
+</div>

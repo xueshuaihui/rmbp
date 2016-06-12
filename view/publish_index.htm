@@ -1,0 +1,119 @@
+<!--{eval
+switch($step){
+	case 1:
+		$pages['title'] = '第一步 - 基本信息';
+	break;
+	case 2:
+		$pages['title'] = '第二步 - 融资信息';
+	break;
+	case 3:
+		$pages['title'] = '第三步 - 回报信息';
+	break;
+	case 4:
+		$pages['title'] = '第四步 - 团队信息';
+	break;
+	case 5:
+		$pages['title'] = '第五步 - 联系方式';
+	break;
+	case 6:
+		$pages['title'] = '最后一步 - 编辑完成';
+	break;
+}
+    $project_id = url_id($project_id);
+
+    if($project['valuation']>0){
+        $path2 = DIR.'publish/step2/?project_id='.$project_id ;
+    }else{
+        $path2 = 'javascript:void(0);';
+    }
+    if($invest['price']>0){
+        $path3 = DIR.'publish/step3/?project_id='.$project_id ;
+    }else{
+        $path3 = 'javascript:void(0);';
+    }
+    if($guy['truename']!=''){
+        $path4 = DIR.'publish/step4/?project_id='.$project_id ;
+    }else{
+        $path4 = 'javascript:void(0);';
+    }
+    
+    if($project['creator']!=''){
+        $path5 = DIR.'publish/step5/?project_id='.$project_id ;
+    }else{
+        $path5 = 'javascript:void(0);';
+    }
+
+}-->
+<!--{template header}-->
+<!--{static ../static/js/plugin/ueditor/ueditor.config.js js/plugin/ueditor/_ueditor.js}-->
+<!--这里对压缩过的文件处理不是很好，所以最后加了一个参数，是否打包的时候压缩文件-->
+<!--{static ../static/js/plugin/ueditor/ueditor.all.min.js js/plugin/ueditor/_ueditor.js 0}-->
+<!--{static ../static/js/jquery.imgareaselect.pack.js _project_release.js}-->
+<!--{static ../static/js/date.js _project_release.js}-->
+
+<!--{static ../static/css/imgareaselect-default.css css/_imgareaselect.css}-->
+<!--{template inc/nav}-->
+
+<div class="container">
+
+    <ul id="steps" data-currentstep="$step">
+        <a href="{DIR}publish/index/?project_id={$project_id}">
+            <li id="stepDesc1"><i> 1 </i> <span>基本信息</span></li>
+        </a>
+        <a href="{$path2}">
+            <li id="stepDesc2"><i> 2 </i> <span>融资信息</span></li>
+        </a>
+        <a href="{$path3}">
+            <li id="stepDesc3"><i> 3 </i> <span>投资信息</span></li>
+        </a>
+        <a href="{$path4}">
+            <li id="stepDesc4"><i> 4 </i> <span>团队信息</span></li>
+        </a>
+        <a href="{$path5}">
+            <li id="stepDesc5" class="no-bg"><i> 5 </i> <span>联系方式</span></li>
+        </a>
+    </ul>
+    <form action="{DIR}publish/step{print_r($step+1, 1)}/" method="post" class="CreateProjectForm J-CreateProjectForm">
+        <!--{if $project_id}-->
+        <input type="hidden" name="project_id" value="{$project_id}"/>
+        <!--{/if}-->
+
+        <!--{if $step == 1}-->
+        <!--{template publish/step1}-->
+        <!--{elseif $step == 2}-->
+        <!--{template publish/step2}-->
+        <!--{elseif $step == 3}-->
+        <!--{template publish/step3}-->
+        <!--{elseif $step == 4}-->
+        <!--{template publish/step4}-->
+        <!--{elseif $step == 5}-->
+        <!--{template publish/step5}-->
+        <!--{elseif $step == 6}-->
+        <!--{template publish/step6}-->
+        <!--{/if}-->
+
+        <div id="submitform">
+            <!--{if $step == 5}-->
+            <!--
+                isverify 0 : 草稿
+                isverify 1 : 审核
+            -->
+            <input class="btn submit-draft J-submit-draft" type="submit" name="darft" value="保存草稿"/>
+            <input class="btn C-hide submit J-submit" type="submit" name="submit" value="提交审核"/>
+            <input class="btn submit" type="button" value="提交审核" onclick="checkConfirm()"/>
+
+            <!--{elseif $step < 6 }-->
+            <input class="btn submit J-submit" type="submit" name="submit" value="保存，下一步"/>
+            <!--{/if}-->
+
+            <!--{if $step < 6 && $step != 1}-->
+            <a href="{DIR}publish/step{print_r($step-1,1)}/?project_id={urlencode($project_id)}"
+               class="btn step-btn-prev">上一步</a>
+            <!--{/if}-->
+        </div>
+
+    </form>
+</div>
+<!--{static ../static/js/project-release.js _project_release.js}-->
+<!--{template inc/modal_alert_info}-->
+<!--{template footer}-->

@@ -1,0 +1,30 @@
+<!--{eval
+$pages['title'] = '用户登录';
+}-->
+<!--{template vc/header}-->
+<div class="box">
+    <div class="am-g title-box">
+        <p>Welcome</p>
+    </div>
+    <div class="am-form form-box" id="login">
+        <p>
+            <input type="text" class="am-form-field J-account"  placeholder="手机号/邮箱" />
+        </p>
+        <p>
+            <input type="password" class="am-form-field J-password" onchange="judgeLoginPassword(this)" placeholder="输入密码"/>
+        </p>
+        <p>
+            <input type="checkbox" class="checkbox">
+            <span>一周内自动登录</span>
+        </p>
+        <div class="error-box"></div>
+        <p>
+            <input type="button" class="am-form-field blue-btn J-login-submit" value="登录"/>
+        </p>
+        <p>
+            <a href="{DIR}?c=user-register" class="am-form-field white-btn">注册新账号</a>
+        </p>
+    </div>
+</div>
+
+<!--{template vc/footer}-->

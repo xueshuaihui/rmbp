@@ -1,0 +1,38 @@
+<div class="modal-content personal-content">
+    <div class="modal-body">
+        <div class="focus-lists">
+            <div class="row">
+                <!--{loop $user_attent $key $list}-->
+                <div class="col-xs-6">
+                    <div class="icon">
+                        <a href="{DIR}home/index/user_id/{url_id($list['target_id'])}/" target="_blank">
+                            {avatar($list['target_id'], 'class="J-head-icon" alt=""')}
+                        </a>
+                    </div>
+                    <div class="desc">
+                        <p class="name">{$list['truename']}</p>
+
+                        <p class="position">{$list['company']}{$list['job']}</p>
+                        <!--{if $user_data['user_id'] == $user_id}-->
+                        <div class="btn-box">
+                            <a href="javascript:void(0);" class="btn J-personal-modal-focus-btn" data-unfeed="1" data-target="{$list['target_id']}">取消关注</a>
+                        </div>
+                        <!--{/if}-->
+                    </div>
+                </div>
+                <!--{eval
+                    if(($key+1) % 2 == 0){
+                        echo '</div><div class="row">';
+                    }
+                }-->
+                <!--{/loop}-->
+            </div>
+        </div>
+        <!--{if $page_html}-->
+        <div class="pages-box">
+            {$page_html}
+        </div>
+        <!--{/if}-->
+        <div class="alert-box J-alert"></div>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+<style>
+    .user_name a{border:1px solid #DDD;
+        -webkit-border-radius: 5px;;
+        -moz-border-radius: 5px;;
+        border-radius: 5px;
+        padding:2px 10px;
+        margin-left:20px;
+    }
+    .title {font-size:14px;!important}
+</style>
+<div class="title user_name">
+    {$user_data['truename']}
+    <a href="{DIR}{ADMIN_DIR}/user/field_project/user_id/{$user_id}/">投资人信息</a>
+    <a href="{DIR}{ADMIN_DIR}/user/list_project/user_id/{$user_id}/">项目列表</a>
+    <a href="{DIR}{ADMIN_DIR}/user/feed_project/user_id/{$user_id}/">关注列表</a>
+    <a href="{DIR}{ADMIN_DIR}/user/invest_project/user_id/{$user_id}/">投资列表</a>
+    <a href="{DIR}{ADMIN_DIR}/user/meet_project/user_id/{$user_id}/">约见列表</a>
+    <!--<a href="javascript:void(0);">交易列表</a>-->
+</div>

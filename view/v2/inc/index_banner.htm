@@ -1,0 +1,26 @@
+<div class="banner-box">
+    <ul class="bxslider J-index-bxslider">
+        <!--{loop $banner_list $index $val}-->
+        <a href="{$val['description']}" target="_blank">
+            <li>
+                <div class="banner-img" data-src="{$conf[static_url]}{$val['path']}"></div>
+            </li>
+        </a>
+        <!--{/loop}-->
+    </ul>
+    <div class="banner-bottom"></div>
+    <a href="javascript:void(0);" class="banner-bottom-btn J-banner-bottom-btn"></a>
+</div>
+
+<script>
+    globalEvents.push(function(){
+        $('.J-index-bxslider').bxSlider({
+            mode: 'fade',
+            auto: true,
+            speed: 900,
+            parse: 5000,
+            autoControls: true,
+            useCSS: false
+        });
+    });
+</script>

@@ -1,0 +1,58 @@
+<div class="tab-pane active" id="investList">
+<!--{if ($isauth == -1 || $isauth == 0)}-->
+    <div class="row description">
+        <div class="lable">
+            <p>{$project['title']}计划</p>
+        </div>
+        <div class="content">您还未认证投资人，请先
+            <a href="{DIR}?c=user-certificate"> 认证 </a>
+            后，才能查看完整内容。</div>
+    </div>
+<!--{/if}-->
+
+<!--{if $isauth == 1}-->
+    <div class="row description">
+        <div class="lable">
+            <p>{$project['title']}计划</p>
+        </div>
+        <div class="content">
+            您的认证投资人申请正在审核中，审核通过后，才能查看完整内容。
+        </div>
+    </div>
+<!--{/if}-->
+
+<!--{if $isauth == 2}-->
+    <!--{if !$project['invests']}-->
+    <div class="no-content">
+        <p>
+            投资人的位置正虚位以待中
+        </p>
+    </div>
+    <!--{/if}-->
+
+    <ul class="no-padding-margin">
+        <!--{loop $project['invests'] $invest_info}-->
+        <li>
+            {avatar($invest_info['user_id'], ' alt="" class="head-icon"')}
+
+            <div class="desc-box">
+                <p class="head">
+                    <span class="name">{$invest_info['user']['username']}</span>
+                    <span class="time">{date('Y-m-d H:i' , $invest_info['dateline'])}</span>
+                </p>
+
+                <p class="desc">
+                    <span class="lable">投资金额：</span>
+                         <span class="money">
+                             ￥
+                             <span class="num">
+                                 {$invest_info['price']}元
+                             </span>
+                    </span>
+                </p>
+            </div>
+        </li>
+        <!--{/loop}-->
+    </ul>
+<!--{/if}-->
+</div>

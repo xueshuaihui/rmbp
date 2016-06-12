@@ -1,0 +1,67 @@
+<!--{if !core::R('ajax')}-->
+    <!--{template header}-->
+    <!--{template inc/nav}-->
+    <div class="full-container">
+<!--{/if}-->
+
+<div class="modal-body ">
+    <div class="forgot-password-box J-forgotPasswordModal">
+        <div class="tab-content">
+            <div class="tab-pane active">
+                <div class="row">
+                    <input type="text" class="form-control J-account-input" id="resetPwdInput"
+                           placeholder="手机号或者邮箱" onchange="judgePhoneOrEmail(this)">
+                </div>
+                <div class="row">
+                    <div class="col-xs-7 check-box">
+                        <input type="text" class="form-control J-reset-code" placeholder="输入验证码">
+                    </div>
+                    <div class="col-xs-3 check-btn">
+                        <input type="button" class="btn C-J-fetch-check-btn J-forgot-check" data-type="phone"
+                               data-target="resetPwdInput" value="获取验证码">
+                    </div>
+                </div>
+                <div class="error-box"></div>
+                <input type="button" class="btn J-reset-pwd-btn" value="重置密码">
+            </div>
+        </div>
+    </div>
+
+    <div class="reset-password-box C-hide J-resetPasswordModal">
+        <div class="row">
+            <input type="password" class="form-control J-pwd" maxlength="16" placeholder="设置新密码"
+                   onchange="judgePassword(this)">
+        </div>
+        <div class="row">
+            <input type="password" class="form-control J-pwd-confirm" maxlength="16" placeholder="确认新密码"
+                   onchange="judgePasswordConfirm(this)">
+        </div>
+        <div class="error-box"></div>
+        <input type="button" class="btn J-reset-pwd-submit" value="确定">
+    </div>
+
+    <div class="reset-password-success-box C-hide J-resetPasswordSuccessModal">
+        <div class="img-box">
+            <img src="{$conf[static_url]}images/logo.png" alt="">
+        </div>
+        <p>让价值更有价值的平台</p>
+
+        <div class="row success-tip">
+            密码重置成功！
+        </div>
+        <div class="row">
+            <span class="J-time-box"></span>
+            秒后请重新登录
+        </div>
+    </div>
+
+    <div class="alert-box J-alert"></div>
+</div>
+<script>
+    initForgotPassword();
+</script>
+
+<!--{if !core::R('ajax')}-->
+</div>
+<!--{template footer}-->
+<!--{/if}-->

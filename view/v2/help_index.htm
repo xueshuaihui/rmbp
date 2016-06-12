@@ -1,0 +1,29 @@
+<!--{eval
+$pages['header_class'] = 'header-white';
+if($article['title']){
+    $pages['title'] = $article['title'].' - 新手问答';
+}
+}-->
+<!--{template inc/header}-->
+<!--{static ../static/v2/css/help.scss ../static/v2/_help.css}-->
+<div class="help-box">
+    <div class="container">
+        <div class="nav-box">
+            <ul class="nav nav-tabs">
+                <!--{loop $article_list $art}-->
+                <li
+                <!--{if $article['id'] == $art['id']}--> class="active"<!--{/if}-->>
+                <a href="{DIR}?c=help-{$art['id']}">$art['title']</a>
+                </li>
+                <!--{/loop}-->
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane active help-content">
+                {$article['content']}
+            </div>
+        </div>
+    </div>
+</div>
+<!--{template inc/footer}-->
+<!--{static ../static/v2/js/help.js ../static/v2/_help.js}-->

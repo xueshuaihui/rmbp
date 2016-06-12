@@ -1,0 +1,79 @@
+<!--{eval
+$pages['header_class'] = 'header-white';
+$pages['title'] = '股权交易中心';
+$pages['keys'] = '股权交易,众筹股权交易,众筹,众筹平台';
+$pages['desc'] = $conf['app_name']. '提供股权交易众筹股权交易,众筹,众筹平台。';
+$bonusexpect = (365*$trade['project_invest']['bonuscircle'])-floor((time()-$trade['user_invest']['paytime'])/86400);
+}-->
+<!--{template inc/header}-->
+<div class="trading-modal-content" id="trade-message">
+    <form method="post" onsubmit="return(window.API.postForm(this))" data-target="#trade-message" action="{DIR}trade/buy/" id="trade-form">
+        <input type="hidden" name="id" value="{$trade['id']}">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-6 meta-box">
+                    <div class="col-xs-5 meta-label">
+                        购买份数
+                    </div>
+                    <div class="col-xs-7">
+                        <input type="text" disabled class="form-control has-unit" value="{$trade['sellnum']}">
+                        <div class="unit">份</div>
+                    </div>
+                </div>
+
+                <div class="col-xs-6 meta-box">
+                    <div class="col-xs-5 meta-label">
+                        购买价格
+                    </div>
+                    <div class="col-xs-7">
+                        <input type="text" disabled class="form-control has-unit" value="{$trade['sellprice']}">
+                        <div class="unit">万</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 meta-box">
+                    <div class="col-xs-5 meta-label">预期收益构成</div>
+                    <div class="col-xs-7">
+                        <input type="text" disabled class="form-control" value="{spider::no_html($trade['project_invest']['bonustip'])}">
+                    </div>
+                </div>
+                <div class="col-xs-6 meta-box">
+                    <div class="col-xs-5 meta-label">预期收益期限</div>
+                    <div class="col-xs-7">
+                        <input type="text" disabled class="form-control has-unit" value="{$bonusexpect}">
+                        <div class="unit">天</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 meta-box">
+                    <div class="col-xs-5 meta-label">预期收益期数</div>
+                    <div class="col-xs-7">
+                        <input type="text" disabled class="form-control has-unit" value="{$trade['project_invest']['bonuscircle']}">
+                        <div class="unit">期</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="check-box">
+                <a href="javascript:void(0);" class="status-flag"></a>
+                我已阅读并同意 <a href="{DIR}?c=help-128" target="_blank">《用户服务协议》</a>
+            </p>
+            <p class="alert-warning">
+                <span>权益购买是一件很严肃的事，请您谨慎确认本次权益购买意向</span>
+            </p>
+            <div class="btn-box">
+                <a href="javascript:void(0);" disabled class="btn J-trade-btn">确认购买</a>
+            </div>
+            <a href="javascript:void(0);" class="bottom-link J-process-link">阅读股权转让流程图</a>
+            <div class="process-img-box J-process-img">
+                <img src="{$conf[static_url]}v2/images/trade/trade-process-img.png" alt="">
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--{template inc/footer}-->
+<!--{static ../static/v2/js/trade.js ../static/v2/_trade.js}-->

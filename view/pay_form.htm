@@ -1,0 +1,22 @@
+<!--{eval
+ $charset = strtolower($payment['_']['charset']);
+ }-->
+<html>
+<head>
+    <meta charset="{$charset}">
+    <title>PayBridge</title>
+</head>
+<body onLoad="document.getElementById('payForm').submit();">
+loading ...
+<form id='payForm' action='{$payment['_']['submit_url']}' method='post'>
+    <!--{eval unset($payment['_']);}-->
+    <!--{loop $payment $key $val}-->
+    <!--{if $charset != 'utf-8'}-->
+        <input type='hidden' name='{$key}'	 value='{htmlspecialchars($val)}'>
+    <!--{else}-->
+        <input type='hidden' name='{$key}'	 value='{htmlspecialchars($val)}'>
+    <!--{/if}-->
+    <!--{/loop}-->
+</form>
+</body>
+</html>

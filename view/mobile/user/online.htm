@@ -1,0 +1,9 @@
+<!--{if $user_id}-->
+<a href="{DIR}?c=user-invested" >
+    {avatar($user_id, ' class="user-logo J-user-img"')}
+</a>
+<!--{else}-->
+<a href="{DIR}?c=user-login" >
+    <img src="{$conf['static_url']}/mobile/images/user-head-default.png" alt="" class="user-logo">
+</a>
+<!--{/if}-->

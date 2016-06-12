@@ -1,0 +1,31 @@
+<div class="right-box">
+    <div class="row info-box focus-article-lists">
+        <div class="lable">
+            <span>今日热门关注</span>
+        </div>
+        <div class="row info-detail">
+            <ul>
+                <!--{eval $_index = 0}-->
+                <!--{loop $click_list $click}-->
+                <li>
+                    <!--{eval $_index = $_index + 1}-->
+                    <a href="{article_url($click)}"><span class="index-num">{$_index}</span>{$click['title']}</a>
+                </li>
+                <!--{/loop}-->
+            </ul>
+        </div>
+    </div>
+    <div class="row project-box">
+        <!--{eval
+            $_tmp_project_lists = array_slice($project_list,0,2);
+        }-->
+        <!--{loop $_tmp_project_lists $project}-->
+        <div class="project-img">
+            <a href="{DIR}project/detail/{url_id($project['id'])}/">
+                <img src="{$conf[static_url]}/{$project['banner']['path']}" alt="">
+            </a>
+        </div>
+        <!--{/loop}-->
+
+    </div>
+</div>

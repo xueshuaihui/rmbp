@@ -1,0 +1,57 @@
+﻿<!--{template mobile/header}-->
+
+<div class="pay-box">
+    <div class="am-g">
+        <div class="am-u-sm-3 label">
+            应付金额
+        </div>
+        <div class="am-u-sm-9 desc money">
+            9000.00元
+        </div>
+    </div>
+    <div class="am-g">
+        <div class="am-u-sm-3 label">
+            户名
+        </div>
+        <div class="am-u-sm-9 desc">
+            北京无花果科技咨询有限公司
+        </div>
+    </div>
+    <div class="am-g">
+        <div class="am-u-sm-3 label">
+            账号
+        </div>
+        <div class="am-u-sm-9 desc">
+            1109147496101020001170003
+        </div>
+    </div>
+    <div class="am-g">
+        <div class="am-u-sm-3 label">
+            开户行
+        </div>
+        <div class="am-u-sm-9 desc">
+            招商银行北京建国门支行
+        </div>
+    </div>
+    <div class="am-g">
+        <div class="am-u-sm-6 label">
+            付款单附言请注明
+        </div>
+        <div class="am-u-sm-6 desc code-desc">
+            <p>MD3884719821797</p>
+            <p>(附言仅填写此码)</p>
+        </div>
+    </div>
+    <div class="more-box">
+        <p class="more-desc">汇款信息已发送至您的邮箱</p>
+        <p class="more-desc">{print_r($user->field('email'),1)}</p>
+        <p class="more-desc">收到您的汇款后，我们会及时变更您的订单状态</p>
+    </div>
+    <div class="bottom-btn-box">
+        <a href="{DIR}?c=user-invested" class="btn">查看我投资的项目</a>
+    </div>
+
+</div>
+
+<!--{template mobile/footer}-->
+<!--{static ../static/mobile/js/order.js _mobile_order.js}-->

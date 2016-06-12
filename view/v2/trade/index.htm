@@ -1,0 +1,107 @@
+<!--{eval
+$pages['title'] = '股权交易中心';
+$pages['keys'] = '股权交易,众筹股权交易,众筹,众筹平台';
+$pages['desc'] = $conf['app_name']. '提供股权交易众筹股权交易,众筹,众筹平台。';
+$pages['header_class'] = 'header-white';
+}-->
+<!--{template inc/header}-->
+<!--{static ../static/v2/css/trade.scss ../static/v2/_trade.css}-->
+
+<div class="trading-top-box">
+    <div class="btn-box">
+        <a href="{DIR}user/invested/" class="btn J-trading-btn">我要转让</a>
+    </div>
+</div>
+<div class="trading-box-1"></div>
+<div class="trading-lists">
+    <!--{loop $trade $list}-->
+    <!--{eval
+        $name = mb_substr($list['user_field']['truename'],0,1);
+        $bonusexpect = (365*$list['project_invest']['bonuscircle'])-floor((time()-$list['user_invest']['paytime'])/86400);
+        $deadline =time()-$list['deadline'];
+        $D=floor($deadline/(60*60*24))%24;
+        $H=floor($deadline/(60*60))%24;
+        $M=floor($deadline/(60)) % 60;
+        $S=floor($deadline) % 60;
+        $project_id = url_id($list['project']['id']);
+    }-->
+    <div class="row trading-list">
+        <div class="row title-box">
+            <p class="title"><a href="{DIR}project/detail/{$project_id}/" target="_blank">{$list['project']['title']}</a></p>
+            <a class="num" title="此数字串是该交易的唯一标识">{trade_id($list)}</a>
+        </div>
+        <div class="row metas-box">
+            <div class="col-xs-10">
+                <ul>
+                    <li>
+                        <p class="meta-label">转让价格 / 份</p>
+                        <p class="blue">
+                            <span class="num">
+                                {human_money($list['sellprice'], '%.2f</span>%s')}/份
+                        </p>
+                    </li>
+                    <li>
+                        <p class="meta-label">转让份数</p>
+                        <p>
+                            <span class="num">{$list['sellnum']}</span>
+                            份
+                        </p>
+                    </li>
+                    <li>
+                        <p class="meta-label">原始投资金额</p>
+                        <p>
+                            <span class="num">
+                            {human_money($list['user_invest']['price'], '%.2f</span>%s')}/份
+                        </p>
+                    </li>
+                    <li>
+                        <p class="meta-label">预期收益构成</p>
+                        <p class="blue">
+                            {$list['project_invest']['bonustip']}
+                        </p>
+                    </li>
+                    <li>
+                        <p class="meta-label">剩余收益期限</p>
+                        <p>
+                            <span class="num ">{$bonusexpect}</span>天
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-2">
+                <a href="{DIR}trade/buy/id/{$list['id']}/" data-ajax-pop="1" class="btn">发起购买意向</a>
+            </div>
+        </div>
+        <div class="row assignor-box">
+            <div class="col-xs-8">
+                {avatar($list['user_id'], ' alt="" class="icon"')}
+                <span class="meta-label">转让人：</span>
+                <span><!--{if $name}-->{$name}**<!--{/if}--></span>
+                <span class="meta-label">转让原因：</span>
+                <span>{$list['sellmessge']}</span>
+            </div>
+            <div class="col-xs-4 warning">
+                <span>距本期分红结束</span>
+                <span class="time J-time" data-dateline="{$list['deadline']}"></span>
+            </div>
+        </div>
+    </div>
+    <!--{/loop}-->
+</div>
+<div class="modal trading-modal J-trading-modal"  role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+<!--{template inc/footer}-->
+<!--{static ../static/v2/js/trade.js ../static/v2/_trade.js}-->
+
+<script>
+    globalEvents.push(function(){
+       API.ajaxPop($('.J-trading-modal .modal-content'),function(){
+           $('.J-trading-modal').modal('show');
+       })
+    });
+</script>

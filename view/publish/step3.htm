@@ -1,0 +1,145 @@
+<fieldset>
+    <div id="invest-wrap" data-maxfinancing="{$project[maxfinancing]}" data-minfinancing="{$project[minfinancing]}"></div>
+    <div class="invest-num-show J-invest-num-show"></div>
+    <div class="row investment add-delete-btns">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-3 box"><input type="button" class="add-btn" data-action="add-invest">
+            <a href="javascript:void 0"
+               data-action="add-invest">增加回报档位</a></div>
+        <div class="col-xs-3 box"><input type="button" class="delete-btn" onclick="click_delete_investment()"> <a
+                onclick="click_delete_investment()" href="javascript:void(0);">删除已有档位</a></div>
+    </div>
+    <div class="modal fade C-J-crop-modal" id="giftImgCropModal" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="image-box">
+                        <p><img></p>
+                    </div>
+                    <div class="preview-box" style="width:150px;height:150px">
+                        <img>
+                    </div>
+                    <canvas width="200" height="200" class="J-canvas"
+                            style="overflow:hidden; display:none"></canvas>
+                </div>
+                <div class="C-crop-btns">
+                    <a href="javascript:void(0);" class="btn C-J-confirm">确定</a>
+                    <a href="javascript:void(0);" data-dismiss="modal" class="btn C-J-cancel">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="error-box"></div>
+
+    <script id="modelImgInput" type="model/img">
+        <a class="img-a J-img">
+            <input type="hidden" name="invests[<%=index%>][pic][]" value="<%=src%>" />
+            <img src="<%=src%>"/>
+            <div class="close">×</div>
+        </a>
+    </script>
+
+</fieldset>
+
+<script type="tpl" id="investTpl">
+    <div class="investment-box">
+            <h1 class="title invest-title">第<span class="J-invest-num"><%=num_to_capital(index)%></span>档投资</h1>
+            <div class="row action-btns">
+    <div class="col-xs-3"><a href="javascrip:void(0)" class="btn action-delete" data-index="<%=index-1%>" data-action="remove-invest">删除</a></div>
+    <div class="col-xs-3"><a href="javascrip:void(0)" class="btn action-cancel" onclick="cancel_delete_investment()">取消</a></div>
+    </div>
+            <div class="clear"></div>
+            <input type="hidden" name="invests[<%=index%>][id]" value="<%=id%>">
+
+            <div class="row">
+            <div class="col-xs-2 lable">投资金额</div>
+            <div class="col-xs-3 w-150"><input placeholder="请输入大于0的值" type="text" onchange="judgeMoney(this)" onkeyup="setReturnNum()"
+    class="form-control J-return-money" name="invests[<%=index%>][price]" value="<%=price%>"></div>
+            <div class="col-xs-1 unit"><p>元</p></div>
+    </div>
+    <div class="row returns-num">
+            <div class="col-xs-2 lable">投资份数</div>
+            <div class="col-xs-3 w-150"><input placeholder="请输入正整数值" type="text"
+    disabled  value=""
+    class="form-control J-return-min-num" name="invests[<%=index%>][returnnum]">
+    </div>
+            <div class="col-xs-1 unit"><p>份</p></div>
+            <div class="col-xs-1 "> <div class="arrow"></div> </div>
+            <div class="col-xs-3 w-150"><input placeholder="请输入正整数值" type="text"
+    disabled  value=""
+    class="form-control J-return-max-num" name="invests[<%=index%>][returnnum]">
+    </div>
+    <div class="col-xs-1 unit"><p>份</p></div>
+    </div>
+    <div class="row returns-num">
+            <div class="col-xs-2 lable">单人投资上限</div>
+            <div class="col-xs-3 w-150"><input placeholder="请输入正整数值" type="text" value="<%=maxnum%>"
+                                         class="form-control J-max-num" name="invests[<%=index%>][maxnum]"></div>
+            <div class="col-xs-1 unit"><p>份</p></div>
+    </div>
+    <div class="row">
+            <div class="col-xs-2 lable">产品回报<a class="return-question-mark J-return-question-mark">?</a>
+            <div class="question-mark-content J-question-mark-content">
+                    <p>产品回报是指在股份之外给予投资者的回报，您可以根据自身情况选择是否提供。</p>
+                    <p>如果提供的话建议是与您的产品相关的回报。</p>
+            </div>
+            </div>
+            <div class="col-xs-2"><a href="javascript:void(0);" class="status-flag J-yes<%if(returntime>0){%> select<%}%>"></a><span>有</span>
+            </div>
+            <div class="col-xs-2 ">
+            <a href="javascript:void(0);" class="status-flag J-no<%if(!returntime||returntime==0){%> select<%}%>"></a><span>无</span>
+    </div>
+    </div>
+    <div class="return-box"<%if(returntime>0){%> style="display:block"<%}%>>
+            <div class="row">
+            <div class="col-xs-2 lable">回报内容</div>
+            <div class="col-xs-5">
+            <textarea type="text" placeholder="请输入180个字符之内的内容" class="form-control J-return-content"
+    onKeyUp="checkWordNum(this)" data-max="180" name="invests[<%=index%>][message]"><%=message%></textarea>
+
+            <div class="C-word-num-show">
+            <span class="J-had-input">0</span>
+            <span>/</span>
+    <span class="J-max-input">180</span>
+            </div>
+            </div>
+            <div class="col-xs-5 sample J-short-return-sample">
+            <img src="{$conf[static_url]}images/project-return-sample.png" alt="">
+            </div>
+            </div>
+            <div class="row provide-date">
+            <div class="col-xs-2 lable">发放时间</div>
+            <div class="col-xs-3 day-input">
+            <input class="form-control J-provideDate" onchange="judgePositiveInt(this)" type="text"
+    name="invests[<%=index%>][returntime]" value="<%=returntime%>"
+    placeholder="众筹结束后的天数">
+            </div>
+            <div class="col-xs-1 unit">
+            <p>天</p>
+            </div>
+            </div>
+            <div class="row gift-imgs">
+            <div class="col-xs-2 lable">图片展示</div>
+            <div class="col-xs-8">
+            <%for(var i in pics){%>
+                <a class="img-a J-img" id="img<%=pics[i].id%>">
+                <img src="{$conf[static_url]}<%=pics[i].url%>"/>
+                <div class="close" data-action="remove-img" data-id="<%=pics[i].id%>">×</div>
+                </a>
+            <%}%>
+
+            <input type="file" class="img-input-file" onchange="cropGiftImg(this)" id="gift_imgs_input_<%=index%>">
+            <a href="javascript:void(0);" class="display-img-input J-gift-img-input"></a>
+            <p>支持小于2M，格式为jpg、png的图片，像素为400*400</p>
+    </div>
+    </div>
+    </div>
+    </div>
+</script>
+<!--{static ../static/js/project-release-step3.js _project_release_3.js}-->
+<script>
+    $(function(){
+        window.investComponent.init({json_encode($invest_list)});
+        setReturnNum();
+    });
+</script>

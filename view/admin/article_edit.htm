@@ -1,0 +1,151 @@
+<!--{template admin/header}-->
+<!--{static ../static/admin/js/plugin/ueditor/ueditor.config.js admin/js/plugin/ueditor/_ueditor.js}-->
+<!--{static ../static/admin/js/plugin/ueditor/ueditor.all.min.js admin/js/plugin/ueditor/_ueditor.js 0}-->
+<!--{static ../static/admin/js/article.js admin/js/_article.js}-->
+<!--{eval
+    $operation_title = array(
+        news => '文章列表',
+        help => '帮助列表',
+        label => '文章发布',
+    );
+    $title = $operation_title[$type];
+
+    $disabled_status2 = array( $article['disabled'] => ' checked');
+    $status_selected = array($article['b_id'] => ' selected');
+    $source_check = array( $article['source'] => ' checked');
+    preg_match_all('/src="(.*)"/iUs', $article['content'], $out);
+}-->
+<div class="title">
+    {$title}
+</div>
+<div class="content">
+    <!--{if $type ==news}-->
+    <div class="article-list-edit-box">
+        <form action="{DIR}{ADMIN_DIR}/article/acticle_action/" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="{$id}">
+            <input type="hidden" name="type" value="{$type}">
+
+            <div class="form-group">
+                <label>文章标题：</label>
+                <input type="text" class="form-control" name="title" value="{$article['title']}">
+            </div>
+            <div class="form-group">
+                <label>banner：</label>
+                <!--{if $article['path']}-->
+                    <img src="{$conf[static_url]}{$article['path']}" class="img" name="img">
+                <!--{else}-->
+                    <img src="{$out[1][0]}" class="img" name="img">
+                <!--{/if}-->
+                <input type="file" name="pic" onchange="Img_show(this)">
+                <input type="hidden" name="path" value="" id="path">
+                <input type="hidden" name="paths" value="{$article['path']}">
+            </div>
+            <div class="form-group">
+                <p><label>文章来源：</label></p>
+
+                <div class="status-box">
+                    <label class="checkbox-inline">
+                        <input type="radio" name="source" value="1" {$source_check[1]} checked> 原创
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="radio" name="source" value="2" {$source_check[2]}> 转载
+                    </label>
+                    <input type="text" name="sourcename" value="{$article['sourcename']}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>发布人：</label>
+                <input type="text" class="form-control" name="user_name" value="{print_r($user->username,1)}">
+            </div>
+            <div class="form-group">
+                <label>排序：</label>
+                <input type="text" class="form-control" name="sortid" value="{$article['sortid']}">
+            </div>
+            <div class="form-group">
+                <label>分类：</label>
+                <select class="form-control" name="category_id">
+                    <!--{loop $article_select $select}-->
+                    <option value="{$select['id']}" {print_r($status_selected[$select[id]],1)}>{$select['category']}
+                    </option>
+                    <!--{/loop}-->
+                </select>
+            </div>
+            <div class="form-group">
+                <label>关键词：</label>
+                <input type="text" class="form-control" name="keys" value="{$article['keys']}">
+            </div>
+            <div class="form-group">
+                <label>标签：（标签直接用,隔开）</label>
+                <input type="text" class="form-control" name="label" value="{implode(',',$label)}">
+            </div>
+            <div class="form-group">
+                <p><label>状态：</label></p>
+
+                <div class="status-box">
+                    <label class="checkbox-inline">
+                        <input type="radio" name="disabled" value="0" {$disabled_status2[0]} checked> 启用
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="radio" name="disabled" value="1" {$disabled_status2[1]}> 禁用
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>内容：（内容分页请使用：[[page]]）</label>
+
+                <div>
+                    <textarea name="content" id="articleList" class="hide">{$article['content']}</textarea>
+                    <script id="articleListContentEditor" type="text/plain" style="width:100%; height:300px"></script>
+                </div>
+            </div>
+            <div class="btn-box">
+                <input type="submit" class="form-control confirm-btn" value="确定">
+                <a href="{DIR}{ADMIN_DIR}/article/list/type/news/" class="form-control cancel-btn">取消</a>
+            </div>
+        </form>
+    </div>
+    <!--{/if}-->
+
+    <!--{if $type ==help}-->
+    <div class="help-edit-box">
+        <form action="{DIR}{ADMIN_DIR}/article/acticle_action/" method="post">
+            <input type="hidden" name="id" value="{$id}">
+            <input type="hidden" name="type" value="{$type}">
+
+            <div class="form-group">
+                <label>问题：</label>
+                <input type="text" class="form-control" name="title" value="{$article['title']}">
+            </div>
+            <div class="form-group">
+                <label>排序：</label>
+                <input type="text" class="form-control" name="sortid" value="{$article['sortid']}">
+            </div>
+            <div>
+                <label>分类：</label>
+                <select class="form-control" name="category_id">
+                    <!--{loop $article_select $select}-->
+                    <option value="{$select['id']}" {print_r($status_selected[$select[id]],1)}>{$select['category']}
+                    </option>
+                    <!--{/loop}-->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="answerContent">解答：</label>
+
+                <div id="answerContent">
+                    <textarea name="content" id="answer" class="hide">{$article['content']}</textarea>
+                    <script id="answerContentEditor" type="text/plain" style="width:100%; height:300px"></script>
+                </div>
+            </div>
+            <div class="btn-box">
+                <input type="submit" class="form-control confirm-btn" value="确定">
+                <a href="{DIR}{ADMIN_DIR}/article/list/type/help/" class="form-control cancel-btn">取消</a>
+            </div>
+        </form>
+
+    </div>
+    <!--{/if}-->
+
+</div>
+
+<!--{template admin/footer}-->

@@ -1,0 +1,150 @@
+<!--{template header}-->
+<!--{static ../static/js/address-input.js _return_confirm.js}-->
+<!--{static ../static/js/return-confirm.js _return_confirm.js}-->
+<!--{template inc/nav}-->
+
+<div class="container pay-container">
+    <div class="row title">
+        确认订单信息
+    </div>
+    <div class="confirm-return-box">
+        <div class="row info-box">
+            <h1 class="title">
+                海尔小帅造
+                <span class="pay-money">应付金额 <span class="money">9000.00</span>元</span>
+            </h1>
+            <div class="info-detail">
+                <div class="row share J-detail-control up">
+                    <div class="col-xs-2 return-label">股权占比</div>
+                    <div class="col-xs-8">0.001%</div>
+                    <div class="col-xs-2 see-detail J-see-detail">展开详情</div>
+                </div>
+                <div class="detail-box J-detail-box">
+                    <div class="row">
+                        <div class="col-xs-2 return-label">投资档位</div>
+                        <div class="col-xs-8">第一档</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2 return-label">实物回报</div>
+                        <div class="col-xs-8">阿里小号玩哦，小号玩哦，小号玩哦，小号玩哦，小号玩哦</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2 return-label">收货人</div>
+                        <div class="col-xs-8">范仲淹</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2 return-label">电话</div>
+                        <div class="col-xs-8">134123456789</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2 return-label">收货地址</div>
+                        <div class="col-xs-8">北京市朝阳区融科望京中心A座706</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2 return-label">订单编号</div>
+                        <div class="col-xs-8">201508131142000</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row title">
+        选择支付方式
+    </div>
+    <div class="row pay-way-box J-pay-way">
+
+        <div class="online-pay">
+            <h1 class="title">
+                线上支付
+            </h1>
+            <div class="bank-box">
+                <a href="javascript:void(0);" class="bank-icon"> <img src="{$conf[static_url]}/images/bank1.jpg" alt=""></a>
+                <a href="javascript:void(0);" class="bank-icon"><img src="{$conf[static_url]}/images/bank2.jpg" alt=""></a>
+                <a href="javascript:void(0);" class="bank-icon"><img src="{$conf[static_url]}/images/bank3.jpg" alt=""></a>
+                <a href="javascript:void(0);" class="bank-icon"><img src="{$conf[static_url]}/images/bank4.jpg" alt=""></a>
+                <a href="javascript:void(0);" class="bank-icon"><img src="{$conf[static_url]}/images/bank1.jpg" alt=""></a>
+                <a href="javascript:void(0);" class="bank-icon"><img src="{$conf[static_url]}/images/bank2.jpg" alt=""></a>
+                <a href="javascript:void(0);" class="bank-icon"><img src="{$conf[static_url]}/images/bank3.jpg" alt=""></a>
+                <a href="javascript:void(0);" class="bank-icon"><img src="{$conf[static_url]}/images/bank4.jpg" alt=""></a>
+            </div>
+            <div class="add-bank-btn">
+                <a href="javascript:void(0);" class="bank-btn">+ 添加银行卡并支付</a>
+            </div>
+        </div>
+        <div class="offline-pay">
+            <h1 class="title">
+                线下支付
+            </h1>
+            <a href="javascript:void(0);" class="bank-btn J-bank-btn" data-href="{DIR}?c=offlinepay-index" >银行汇款</a>
+        </div>
+        <a href="javascript:void(0);" class="btn pay-btn J-pay-btn">去支付</a>
+
+    </div>
+    <div class="row title">
+        注意事项
+    </div>
+
+    <div class="notice-box">
+        <p class="title">
+            请仔细阅读汇款风险提示
+        </p>
+        <p>
+            1. 投资人资格排序由到账时间决定，因此推荐使用到账最快的方式，如在线支付等。
+        </p>
+        <p>
+            2. 请确保到款金额准确等于订单总额，多于或少于订单总额的情况都会导致无法完成交易。
+        </p>
+        <p>
+            3. 如选择银行汇款，手续费请自行支付，订单总额不包括汇款手续费。
+        </p>
+        <p>
+            4. 如果由于汇款信息输入错误导致无法完成情况，产生的费用由汇款方承担。
+        </p>
+
+    </div>
+</div>
+<script>
+    $('.J-detail-control').click(function(){
+        var is_show = $(this).hasClass('down');
+
+        if(is_show){
+            $('.J-detail-box').slideUp('fast');
+            $(this).addClass('up').removeClass('down');
+            $('.J-see-detail').text('展开详情');
+        }
+        if(!is_show){
+            $('.J-detail-box').slideDown('fast');
+            $(this).addClass('down').removeClass('up');
+            $('.J-see-detail').text('收起详情');
+        }
+
+    });
+
+    $('.J-bank-btn').click(function(){
+        var is_selected = $(this).hasClass('select');
+        var href = $(this).data('href');
+        if(is_selected){
+            $(this).removeClass('select');
+        }
+        if(!is_selected){
+            $(this).addClass('select');
+            $('.J-pay-btn').attr('data-href',href);
+        }
+    });
+
+    $('.J-pay-btn').click(function(){
+        var is_has_select = $('.J-pay-way').find('.select')[0];
+        if(is_has_select){
+            location.href = $(this).data('href');
+        }
+        if(!is_has_select){
+            alertImg('请选择支付方式');
+        }
+    })
+
+</script>
+
+<!--{template footer}-->

@@ -1,0 +1,32 @@
+<div class="home-content-news">
+    <div class="container row">
+        <div class="col-xs-6">
+            <div class="title-box"><p>最新资讯</p></div>
+            <ul class="news-list">
+                <!--{loop $article_message $list}-->
+                <li <!--{if (time()-$list['dateline']) < 86400}-->class="new"<!--{/if}-->>
+                    <a href="{article_url($list)}" target="_blank">
+                        <p>{$list['title']}</p>
+                    </a>
+                </li>
+                <!--{/loop}-->
+            </ul>
+            <a href="{DIR}article/list/" class="more" target="_blank">MORE</a>
+
+        </div>
+        <div class="col-xs-6">
+            <div class="title-box"><p>政策动态</p></div>
+            <ul class="news-list">
+                <!--{loop $article_policy $list}-->
+                <li <!--{if (time()-$list['dateline']) < 86400}-->class="new"<!--{/if}-->>
+                <a href="{article_url($list)}" target="_blank">
+                    <p>{$list['title']}</p>
+                </a>
+                </li>
+                <!--{/loop}-->
+            </ul>
+            <a href="{DIR}article/list/" class="more" target="_blank">MORE</a>
+        </div>
+
+    </div>
+</div>

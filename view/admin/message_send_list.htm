@@ -1,0 +1,127 @@
+<!--{template admin/header}-->
+<!--{eval
+    $select_rank = array($search['rank'] => ' selected');
+    $select_sort_order = array($search['sort_order'] => ' selected');
+    $select_search = array($search['search'] => ' selected');
+    $select_screen = array($search['screen'] => ' selected');
+
+    $title = array('email' => '邮件列表','phone' => '短信列表','message' => '发送消息');
+    $issend = array('0' => '未发送', '1' => '已发送');
+}-->
+<div class="title">
+    {$title[$sendtype]}
+</div>
+
+<div>
+    <form action="{DIR}{ADMIN_DIR}/message/send_list/sendtype/{$sendtype}/" method="post">
+        <label>排序：</label>
+        <select name="search[rank]">
+            <option selected="" value="">选择排序方式</option>
+            <option value="dateline" {print_r($select_rank[dateline],1)}>时间</option>
+        </select>
+        <select name="search[sort_order]">
+            <option selected="" value="">排序方式</option>
+            <option value="ASC" {print_r($select_sort_order[ASC],1)}>升序</option>
+            <option value="DESC" {print_r($select_sort_order[DESC],1)}>降序</option>
+        </select>
+
+        <label>搜索：</label>
+        <select name="search[search]">
+            <option selected="" value="">选择搜索项</option>
+            <option value="user_id" {print_r($select_search[user_id],1)}>UID</option>
+            <option value="content" {print_r($select_search[content],1)}>内容</option>
+        </select>
+        <input type="text" name="search[search_value]" value="{$search['search_value']}">
+
+        <label>筛选：</label>
+        <select name="search[screen]">
+            <option selected="" value="">选择消息状态</option>
+            <option value="0" {print_r($select_screen[0],1)}>未发送</option>
+            <option value="1" {print_r($select_screen[1],1)}>已发送</option>
+        </select>
+        <label>日期筛选：</label>
+        <input type="text" name="search[start]" value="{$search['start']}" maxlength="10" placeholder="{date('Y-m-d')}" style="width: 100px;">
+        <input type="text" name="search[end]" value="{$search['end']}" maxlength="10" placeholder="{date('Y-m-d')}" style="width: 100px;">
+        <input type="submit" value="确定">
+    </form>
+</div>
+
+<div class="content login-overview">
+    <a class="form-control new-btn" href="{DIR}{ADMIN_DIR}/message/send_edit/sendtype/{$sendtype}/">新建</a>
+    <!--{if $sendtype=='email'}-->
+    <table class="table table-bordered">
+        <tr>
+            <td>邮件ID</td>
+            <td>邮件标题</td>
+            <td>内容</td>
+            <td>发送时间</td>
+            <td>发送状态</td>
+            <td>操作</td>
+        </tr>
+    <!--{loop $send_list $list}-->
+            <tr>
+                <td>$list['id']</td>
+                <td>$list['title']</td>
+                <td>{$list['content']}</td>
+                <td>{date('Y-m-d H:i:s', $list['sendtime'])}</td>
+                <td>{print_r($issend[$list['issend']],1)}</td>
+                <td>
+                    <a href="javascript:void(0)" >发送</a>
+                    <a href="{DIR}{ADMIN_DIR}/message/send_edit/sendtype/{$sendtype}/id/$list['id']" >编辑</a>
+                    <a href="{DIR}{ADMIN_DIR}/message/list_delete/" data-post="sendtype/{$sendtype}/id/$list['id']/" data-reload="1">删除</a>
+                </td>
+            </tr>
+    <!--{/loop}-->
+    </table>
+    <!--{elseif $sendtype=='phone'}-->
+    <table class="table table-bordered">
+        <tr>
+            <td>短信ID</td>
+            <td>内容</td>
+            <td>发送时间</td>
+            <td>发送状态</td>
+            <td>操作</td>
+        </tr>
+        <!--{loop $send_list $list}-->
+        <tr>
+            <td>$list['id']</td>
+            <td>{$list['content']}</td>
+            <td>{date('Y-m-d H:i:s', $list['sendtime'])}</td>
+            <td>{print_r($issend[$list['issend']],1)}</td>
+            <td>
+                <a href="javascript:void(0)" >发送</a>
+                <a href="{DIR}{ADMIN_DIR}/message/send_edit/sendtype/{$sendtype}/id/$list['id']" >编辑</a>
+                <a href="{DIR}{ADMIN_DIR}/message/list_delete/" data-post="sendtype/{$sendtype}/id/$list['id']/" data-reload="1">删除</a>
+            </td>
+        </tr>
+        <!--{/loop}-->
+    </table>
+    <!--{elseif $sendtype=='message'}-->
+    <table class="table table-bordered">
+        <tr>
+            <td>消息ID</td>
+            <td>消息标题</td>
+            <td>内容</td>
+            <td>发送时间</td>
+            <td>发送状态</td>
+            <td>操作</td>
+        </tr>
+        <!--{loop $send_list $list}-->
+        <tr>
+            <td>$list['id']</td>
+            <td>$list['title']</td>
+            <td>{$list['content']}</td>
+            <td>{date('Y-m-d H:i:s', $list['sendtime'])}</td>
+            <td>{print_r($issend[$list['issend']],1)}</td>
+            <td>
+                <a href="javascript:void(0)" >发送</a>
+                <a href="{DIR}{ADMIN_DIR}/message/send_edit/sendtype/{$sendtype}/id/$list['id']" >编辑</a>
+                <a href="{DIR}{ADMIN_DIR}/message/list_delete/" data-post="sendtype/{$sendtype}/id/$list['id']/" data-reload="1">删除</a>
+            </td>
+        </tr>
+        <!--{/loop}-->
+    </table>
+    <!--{/if}-->
+    <div class="page-box">{$page_html}</div>
+</div>
+<!--{template admin/footer}-->

@@ -1,0 +1,58 @@
+<div class="tab-pane active" id="accountNews">
+    <!--{if count($list)}-->
+    <div class="news-box">
+        <ul class="no-padding-margin">
+            <!--{loop $list $message}-->
+            <li class="<!--{if !$message['isread']}--> unread-li  J-unread<!--{/if}-->" data-id="{$message['id']}">
+                <!--{if !$message['isread']}-->
+                <div class="unread"></div>
+                <!--{/if}-->
+                <div class="content">
+                    $message['message']
+                </div>
+                <p class="time">
+                    {date('Y-m-d H:i:s', $message['dateline'])}
+                </p>
+            </li>
+            <!--{/loop}-->
+        </ul>
+    </div>
+
+    <div class="btn-box">
+        <a href="javascript:void(0);" class="mark-all J-mark-all-news">全部标记为已读</a>
+
+        <div class="paging-box">
+            {$page}/{$page_count}
+            <!--{if $page>1}-->
+            <a class="prev-page" href="{DIR}?c=user-message&page={print_r($page-1,1)}">上一页</a>
+            <!--{else}-->
+            <a class="prev-page" href="#">上一页</a>
+            <!--{/if}-->
+            <!--{if $page<$page_count}-->
+            <a class="next-page" href="{DIR}?c=user-message&page={print_r($page+1,1)}">下一页</a>
+            <!--{else}-->
+            <a class="next-page" href="#">下一页</a>
+            <!--{/if}-->
+            <a class="pop-page J-pop-page" href="javascript:void(0);">跳转</a>
+        </div>
+        <div class="pop-to-box J-pop-to-box">
+            跳转到第
+            <input class="J-page-input" type="num" data-url="user/message/page/%page%"/>
+            页
+            <a class="J-page-input-btn" href="javascript:void(0);">确定</a>
+        </div>
+    </div>
+
+    <!--{else}-->
+    <div class="no-content">
+        <p>暂无消息通知</p>
+    </div>
+    <!--{/if}-->
+</div>
+<script>
+    accountEvents = [];
+    accountEvents.push(function(){
+        initNewsPage();
+        setNewsStatus();
+    })
+</script>

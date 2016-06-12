@@ -1,0 +1,35 @@
+<!--{template admin/header}-->
+<!--{static ../static/admin/js/plugin/ueditor/ueditor.config.js admin/js/plugin/ueditor/_ueditor.js}-->
+<!--{static ../static/admin/js/plugin/ueditor/ueditor.all.min.js admin/js/plugin/ueditor/_ueditor.js 0}-->
+<!--{static ../static/admin/js/article.js admin/js/_article.js}-->
+<!--{eval
+}-->
+<div class="title">
+    banner图
+</div>
+<div class="content">
+    <div class="article-list-edit-box">
+        <form name="form_sub" action="{DIR}{ADMIN_DIR}/var/update_banner/" method="post" enctype="multipart/form-data" >
+            <div class="form-group">
+                <label>图片：</label>
+                <input type="file" name="pic">
+                <input type="hidden" name="data[idsource]" value="{$list[idsource]}" >
+                <input type="hidden" name="data[id]" value="{$list[id]}" >
+            </div>
+            <div class="form-group">
+                <label>排序：</label>
+                <input type="text" class="form-control" name="data[type]" value="{$list['type']}">
+            </div>
+            <div class="form-group">
+                <label>活动URL：</label>
+                <input type="text" class="form-control" name="data[description]" value="{$list['description']}">
+            </div>
+            <div class="btn-box">
+                <input type="submit" class="form-control confirm-btn" value="确定">
+                <a href="{DIR}{ADMIN_DIR}/var/banner/" class="form-control cancel-btn" >取消</a>
+            </div>
+        </form>
+
+    </div>
+</div>
+<!--{template admin/footer}-->

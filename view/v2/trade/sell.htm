@@ -1,0 +1,146 @@
+<!--{eval
+$pages['header_class'] = 'header-white';
+$pages['title'] = '股权交易中心';
+$pages['keys'] = '股权交易,众筹股权交易,众筹,众筹平台';
+$pages['desc'] = $conf['app_name']. '提供股权交易众筹股权交易,众筹,众筹平台。';
+
+$total_ratio = ($project['totalfinancing']/($project['minfinancing']*10000))*100;
+$expiretime = floor(($project['expiretime']-time())/86400);
+$invest_ratio = ($invest['price']/($project['minfinancing']*10000))*100;
+}-->
+
+<!--{if $project['isverify'] == 3}-->
+<!--{if $project['super_raise'] == 1}-->
+<!--{eval
+    $status_flag = 'super-raise';
+    $status_desc = '超募中'
+}-->
+<!--{else}-->
+<!--{eval
+    $status_flag = 'raising';
+    $status_desc = '众筹中'
+}-->
+<!--{/if}-->
+<!--{elseif $project['isverify'] == 5}-->
+<!--{eval
+    $status_flag = 'raise-end';
+    $status_desc = '众筹结束'
+}-->
+<!--{elseif $project['isverify'] == 4}-->
+<!--{eval
+    $status_flag = 'raise-success';
+    $status_desc = '众筹成功'
+}-->
+<!--{elseif $project['isverify'] == 2}-->
+<!--{eval
+    $status_flag = 'preheating';
+    $status_desc = '预热中'
+}-->
+<!--{/if}-->
+<!--{template inc/header}-->
+<div class="trading-modal-content" id="trade-message">
+    <div class="modal-header project-box">
+        <div class="title-box">
+            <div class="title">
+                {$project['title']}
+            </div>
+            <div class="status-box {$status_flag}">
+                {$status_desc}
+            </div>
+        </div>
+        <div class="state-line-box">
+            <div class="state-line" style="width: {$total_ratio}%"></div>
+        </div>
+        <div class="state-desc">
+            <ul>
+                <li>
+                    <p class="blue">
+                        <span class="num">
+                            {human_money($invest['price'], '%.2f</span> %s')}
+                    </p>
+                    <p>您的投资</p>
+                </li>
+                <li>
+                    <p class="blue"> <span class="num">{$invest_ratio}</span>%</p>
+                    <p>占股比例</p>
+                </li>
+                <li>
+                    <p class="blue"> <span class="num">{$expiretime}</span> 天</p>
+                    <p>剩余时间</p>
+                </li>
+                <li>
+                    <p class="blue"> <span class="num">{human_money($project['maxfinancing']*10000, '%.2f</span> %s')}</p>
+                    <p>融资目标</p>
+                </li>
+                <li>
+                    <p class="blue"> <span class="num">{human_money($project['valuation']*10000, '%.2f</span> %s')}</p>
+                    <p>项目估值</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <form method="post" action="{DIR}trade/sell/" onsubmit="return(window.API.postForm(this))" data-target="#trade-message"  id="trade-form">
+        <input type="hidden" name="id" value="{$invest['id']}">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-2 meta-label">
+                    转让份数
+                </div>
+                <div class="col-xs-3">
+                    <input type="text" disabled class="form-control has-unit" value="{$invest['num']}">
+                    <div class="unit">份</div>
+                </div>
+
+                <div class="col-xs-1"></div>
+                <div class="col-xs-2 meta-label" style="text-align: right; padding-right: 20px;">
+                    总额:
+                </div>
+                <div class="col-xs-4">
+                    <input type="text" disabled class="form-control has-unit J-total" >
+                    <div class="unit">元</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2 meta-label">
+                    每份价格
+                </div>
+                <div class="col-xs-3">
+                    <input type="text" class="form-control has-unit J-sell-per" data-num="{$invest['num']}" onchange="setTotal(this)" name="trade[sellprice]" value="{$invest['price']}">
+                    <div class="unit">元</div>
+                </div>
+                <div class="col-xs-1"></div>
+                <div class="col-xs-2 meta-label"></div>
+                <div class="col-xs-4">
+                    <input type="text" disabled class="form-control has-unit J-total-capital">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2">
+                    转让原因
+                </div>
+                <div class="col-xs-10">
+                    <textarea class="form-control" name="trade[sellmessge]" value=""></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+        <p class="check-box">
+            <a href="javascript:void(0);" class="status-flag"></a>
+            我已阅读并同意 <a href="{DIR}?c=help-128" target="_blank">《用户服务协议》</a>
+        </p>
+        <p class="alert-warning">
+            <span>转让是一件很严肃的事，一单确认转让，审核通过后将不可取消</span>
+        </p>
+        <div class="btn-box">
+            <a href="javascript:void(0);" disabled class="btn J-trade-btn">确认转让</a>
+            <!--<input type="submit" disabled value="确认转让" class="btn J-trade-btn">-->
+        </div>
+        <a href="javascript:void(0);" class="bottom-link J-process-link">阅读股权转让流程图</a>
+        <div class="process-img-box J-process-img">
+            <img src="{$conf[static_url]}v2/images/trade/trade-process-img.png" alt="">
+        </div>
+    </div>
+    </form>
+</div>
+<!--{template inc/footer}-->
+<!--{static ../static/v2/js/trade.js ../static/v2/_trade.js}-->

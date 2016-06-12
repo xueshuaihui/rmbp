@@ -1,0 +1,221 @@
+<!--{eval
+    $status_selected = array( $project['status'] => ' selected');
+    $balance_selected = array( $project['balance'] => ' selected');
+    $stage_selected = array( $project['stage'] => ' selected');
+}-->
+<div class="row">
+    <div class="col-xs-2 form-label">项目名称</div>
+    <div class="col-xs-5">
+        <input class="form-control J-name" type="text" name="project[title]" value="{$project['title']}"
+               placeholder="请输入2-20个字的名称">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-2 form-label">公司名称</div>
+    <div class="col-xs-5">
+        <input class="form-control J-company" type="text" name="project[company]" value="{$project['company']}"
+               placeholder="请输入2-20个字的名称">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-2 form-label">项目简介</div>
+    <div class="col-xs-5">
+                    <textarea class="form-control J-project-intro"
+                              onKeyUp="checkWordNum(this)"
+                              data-min="1" data-max="120"
+                              name="project[intro]"
+                              placeholder="请输入不超过120个字的简介">{$project['intro']}</textarea>
+
+        <div class="word-num-show">
+            <span class="J-had-input">0</span>
+            <span>/</span>
+            <span class="J-max-input">120</span>
+        </div>
+    </div>
+    <div class="col-xs-5 tip tip-h J-tip warning-tip">
+        <div class="tip-box">
+            <p class="J-tip-content">请简要介绍下您的店铺，可以突出店铺的优势，让投资人迅速了解您的店铺</p>
+        </div>
+    </div>
+</div>
+<div class="row image">
+    <div class="col-xs-2 form-label">项目封面</div>
+    <div class="col-xs-5 J-basic-img">
+        <input style="display:none" type="file" id="projectBasicImgInput" onchange="imgCrop.change(this)" data-width="540" data-height="300" data-previd="projectBasicImgPrev">
+        <a href="javascript:void(0);" class="image-show basic-img J-upload-img-btn" id="projectBasicImgPrev" data-target="projectBasicImgInput">
+            <!--{if $project['banner']['path']}-->
+            <img src="{$conf[static_url]}{$project['banner']['path']}">
+            <!--{else}-->
+            <div class="upload-img-box">
+                <span>上传图片</span>
+            </div>
+            <!--{/if}-->
+        </a>
+        <input type="hidden" name="pics[project]" id="pics[project]" class="J-img">
+        <p class="img-desc">支持小于2M，格式为jpg、png的图片，分辨率为540*300px</p>
+    </div>
+    <div class="col-xs-5 tip tip-h J-tip warning-tip">
+        <div class="tip-box">
+            <p class="J-tip-content">该图片将作为众筹项目封面图展示在首页上</p>
+        </div>
+    </div>
+</div>
+<hr class="divider" />
+<div class="row">
+    <div class="col-xs-2 form-label">产品阶段</div>
+    <div class="col-xs-5">
+        <select class="form-control" name="project[status]" >
+            <option value="-1">请选择</option>
+            <option value="0"{$status_selected[0]}>概念阶段</option>
+            <option value="1"{$status_selected[1]}>研发阶段</option>
+            <option value="2"{$status_selected[2]}>正式发布</option>
+        </select>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-2 form-label">收入状况</div>
+    <div class="col-xs-5">
+        <select class="form-control" name="project[balance]" >
+            <option value="-1">请选择</option>
+            <option value="0"{$balance_selected[0]}>暂无收入</option>
+            <option value="1"{$balance_selected[1]}>有收入未盈利</option>
+            <option value="2"{$balance_selected[2]}>收支平衡</option>
+            <option value="3"{$balance_selected[3]}>已盈利</option>
+        </select>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-2 form-label">融资阶段</div>
+    <div class="col-xs-5">
+        <select class="form-control" name="project[stage]" >
+            <option value="-1">请选择</option>
+            <option value="1"{$stage_selected[1]}>天使轮</option>
+            <option value="2"{$stage_selected[2]}>A轮</option>
+            <option value="3"{$stage_selected[3]}>B轮</option>
+            <option value="4"{$stage_selected[4]}>C轮</option>
+            <option value="5"{$stage_selected[5]}>C轮后</option>
+        </select>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-2 form-label">所在城市</div>
+    <div class="col-xs-5">
+        <input type="text" name="project[region]" value="{$project[region]}" class="form-control" >
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-2 form-label">所属领域</div>
+    <div class="col-xs-10 field J-field">
+        <!--{loop $area_list $area}-->
+        <label><a href="javascript:void(0);" class="status-flag  <!--{if isset($area_ids[$area['id']])}-->select<!--{/if}-->" data-id="{$area['id']}"></a>{$area['name']}</label>
+        <!--{/loop}-->
+        <input type="hidden" name="area_ids" id="area_ids">
+    </div>
+</div>
+<hr class="divider" />
+<div class="row">
+    <div class="col-xs-2 form-label">官方网站</div>
+    <div class="col-xs-5">
+        <input type="text" name="project[3ndinfo][website]" value="{$project_field['3ndinfo']['website']}" class="form-control">
+    </div>
+    <div class="col-xs-5 tip J-tip">
+        <div class="optional">
+            可选项
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-2 form-label">官方微博</div>
+    <div class="col-xs-5">
+        <input type="text" name="project[3ndinfo][weibo]" value="{$project_field['3ndinfo']['weibo']}" class="form-control">
+    </div>
+    <div class="col-xs-5 tip J-tip">
+        <div class="optional">
+            可选项
+        </div>
+    </div>
+</div>
+<div class="row image">
+    <div class="col-xs-2 form-label">微信公众号</div>
+    <div class="col-xs-10">
+        <div class="row">
+            <div class="col-xs-6">
+                <input type="text" name="project[3ndinfo][weixin]" value="{$project_field['3ndinfo']['weixin']}" class="form-control J-weixin-input">
+            </div>
+            <div class="col-xs-6 tip J-tip">
+                <div class="optional">
+                    可选项
+                </div>
+            </div>
+        </div>
+        <div class="row no-m">
+            <div class="col-xs-6 J-weixin-img" >
+                <input style="display:none" type="file" id="projectWeixinImgInput" onchange="imgCrop.change(this)" data-width="344" data-height="344" data-previd="projectWeixinImgPrev">
+                <a href="javascript:void(0);" class="image-show J-upload-img-btn" id="projectWeixinImgPrev" data-target="projectWeixinImgInput">
+                    <!--{if $project['qr_code']['path']}-->
+                    <img src="{$conf[static_url]}{$project['qr_code']['path']}">
+                    <!--{else}-->
+                    <div class="upload-img-box">
+                        <span>上传二维码$project['qr_code']['path']</span>
+                    </div>
+                    <!--{/if}-->
+
+                </a>
+                <input type="hidden" name="qr_code[project]" id="qr_code[project]" class="J-img">
+                <p class="img-desc">支持小于2M，格式为jpg、png的图片，分辨率为344*344px</p>
+            </div>
+            <div class="col-xs-6 tip tip-h J-tip warning-tip">
+                <div class="tip-box">
+                    <p class="J-tip-content">若填写公众号则必须上传二维码</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-2 form-label">iOS APP地址</div>
+    <div class="col-xs-5">
+        <input type="text" name="project[urls][ios]" value="{$project_field[urls][ios]}" class="form-control">
+    </div>
+    <div class="col-xs-5 tip J-tip">
+        <div class="optional">
+            可选项
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-2 form-label">安卓 APP地址</div>
+    <div class="col-xs-5">
+        <input type="text" name="project[urls][android]" value="{$project_field[urls][android]}" class="form-control">
+    </div>
+    <div class="col-xs-5 tip J-tip">
+        <div class="optional">
+            可选项
+        </div>
+    </div>
+</div>
+<hr class="divider" />
+<div class="row">
+    <div class="col-xs-2 form-label">联系人手机</div>
+    <div class="col-xs-5">
+        <input class="form-control"type="text" name="project[phone]" value="{$project[phone]}" >
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-2 form-label">联系人邮箱</div>
+    <div class="col-xs-5">
+        <input class="form-control" type="text" name="project[email]" value="{$project[email]}">
+    </div>
+</div>
+<hr class="divider" />
+<div class="btn-box">
+    <a href="{DIR}publish/index/" class="btn pre-btn">上一步</a>
+    <input type="submit" name="submit" value="保存，下一步" class="btn next-btn">
+</div>
+
+<script>
+    publishGlobalEvents.push(function(){
+        initSelectField();
+        imgCrop.init();
+    })
+</script>

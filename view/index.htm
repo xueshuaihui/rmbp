@@ -1,0 +1,99 @@
+<!--{eval
+$pages['title'] = 'Plus众筹平台 - 让价值变得更有价值';
+}-->
+<!--{template header}-->
+<!--{static ../static/js/jquery.bxslider.min.js _bxsilder.js}-->
+<!--{static ../static/css/jquery.bxslider.css _bxsilder.css}-->
+<!--{template inc/nav}-->
+<!--{template inc/index_banner}-->
+<div class="container">
+    <!--{template inc/index_point}-->
+
+    <div class="project-lists">
+        <!--{loop $project_list $project}-->
+        <!--{eval $percent = get_percent($project['totalfinancing'],  $project['minfinancing']);}-->
+        <div class="project-list">
+            <a href="{DIR}project/detail/{url_id($project['id'])}/">
+                <img class="project-img" src="{$conf[static_url]}{$project['banner']['path']}" alt="">
+            </a>
+            <!--{if $project['isverify'] == 3}-->
+                <!--{if $project['superraise'] == 1}-->
+                    <div class="state-flag super-raise">
+                        已超募
+                    </div>
+                <!--{else}-->
+                    <div class="state-flag raising">
+                        众筹中
+                    </div>
+                <!--{/if}-->
+            <!--{elseif $project['isverify'] == 5}-->
+            <div class="state-flag raise-end">
+                众筹结束
+            </div>y
+            <!--{elseif $project['isverify'] == 4}-->
+            <div class="state-flag raise-success">
+                众筹成功
+            </div>
+            <!--{elseif $project['isverify'] == 2}-->
+            <div class="state-flag preheating">
+                预热中
+            </div>
+            <!--{/if}-->
+
+            <div class="desc">
+                <a href="{DIR}project/detail/{url_id($project['id'])}/">
+                    <h1 class="title">$project['title']</h1>
+                </a>
+
+                <p class="company">$project['company']</p>
+
+                <p class="short-desc">$project['intro']</p>
+
+                <div class="state-line-box">
+                    <div class="state-line" style="width:{$percent}%"></div>
+                </div>
+                <div class="state-desc">
+                    <ul>
+                        <li>
+                            <p class="num">{$project['totalfinancing']} 万</p>
+                            <p>已筹集</p>
+                        </li>
+                        <li>
+                            <p class="num">{$percent}%</p>
+                            <p>完成度</p>
+                        </li>
+                        <li>
+                            <!--{if $project['isverify'] == 2}-->
+                            <p class="num">等待开始</p>
+                            <p>剩余时间</p>
+                            <!--{else}-->
+                            <p class="num">{get_left_time($project['expiretime'])} 天</p>
+                            <p>剩余时间</p>
+                            <!--{/if}-->
+                        </li>
+                        <li>
+                            <p class="num">$project['minfinancing'] 万</p>
+                            <p>融资目标</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--{/loop}-->
+    </div>
+</div>
+<script>
+    $('.bxslider').bxSlider({
+        mode: 'fade',
+        auto: true,
+        speed: 900,
+        parse: 5000,
+        autoControls: true,
+        useCSS: false
+    });
+</script>
+<!--{template user_login}-->
+<!--{template user_register}-->
+<!--{template user_forgot}-->
+<!--{template inc/modal_alert_info}-->
+<!--{template footer}-->

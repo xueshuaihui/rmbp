@@ -1,0 +1,38 @@
+<!--{eval
+if($article['title']){
+    $pages['title'] = $article['title'].' - 新手问答';
+}
+}-->
+<!--{template header}-->
+<!--{template inc/nav}-->
+<style>
+    .help-content {
+        color: #666;
+        line-height: 2;
+        letter-spacing: 1px;
+    }
+    .help-content b, .help-content strong{
+        font-weight:400;
+        font-size: 16px;
+        padding-bottom: 10px;
+        color:#111;
+    }
+</style>
+<div class="container C-QA">
+    <div class="nav-box">
+        <ul class="nav nav-tabs">
+            <!--{loop $article_list $art}-->
+            <li
+            <!--{if $article['id'] == $art['id']}--> class="active"<!--{/if}-->>
+            <a href="{DIR}?c=help-{$art['id']}">$art['title']</a>
+            </li>
+            <!--{/loop}-->
+        </ul>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane active help-content">
+            {$article['content']}
+        </div>
+    </div>
+</div>
+<!--{template footer}-->

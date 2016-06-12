@@ -1,0 +1,189 @@
+<div class="tab-pane active" id="accountInvestment">
+    <!--{if !$user_invest}-->
+    <div class="no-content">
+        <p>您当前无投资项目。</p>
+    </div>
+    <!--{/if}-->
+    <ul class="no-padding-margin">
+        <!--{loop $user_invest $list}-->
+        <!--{eval
+            $ratio = sprintf('%.2f', ($list['price']*100)/($list['project']['valuation']*10000));
+            if($ratio == 0){
+                $ratio = sprintf('%.4f', ($list['price']*100)/($list['project']['valuation']*10000));
+            }
+            $degree = get_percent($list['project']['totalfinancing'],  $list['project']['minfinancing']);
+        }-->
+        <li>
+            <div class="title-box">
+                <a href="{DIR}project/detail/{url_id($list['project']['id'])}/" target="_blank">
+                    <h1 class="title">
+                        {$list['project']['title']}
+                    </h1>
+                </a>
+                <!--{if $list['project']['isverify']=='-1'}-->
+                <div class="status unpass">未通过</div><!--未通过-->
+                <!--{elseif $list['project']['isverify']=='0'}-->
+                <div class="status draft">草稿</div><!--草稿-->
+                <!--{elseif $list['project']['isverify']=='1'}-->
+                <div class="status check-pending">待审核</div><!--待审核-->
+                <!--{elseif $list['project']['isverify']=='2'}-->
+                <div class="status preheating">预热中</div><!--预热中-->
+                <!--{elseif $list['project']['isverify']=='3'}-->
+
+                    <!--{if $list['project']['superraise']=='1'}-->
+                    <div class="status super-raise">已超募</div><!--已超募-->
+                    <!--{else}-->
+                    <div class="status financing">融资中</div><!--融资中-->
+                    <!--{/if}-->
+
+                <!--{elseif $list['project']['isverify']=='4'}-->
+                <div class="status succeed">融资成功</div><!--融资成功-->
+                <!--{elseif $list['project']['isverify']=='5'}-->
+                <div class="status failed">融资失败</div><!--融资失败-->
+                    <!--{/if}-->
+            </div>
+            <div class="status-box">
+                <div class="state-line-box">
+                    <div class="state-line" style="width: {$degree}%"></div>
+                </div>
+                <div class="state-desc">
+                    <ul>
+                        <li>
+                            <p class="num">{human_money($list['price'],'%.2f %s')} </p>
+
+                            <p class="desc">您的投资</p>
+                        </li>
+                        <li>
+                            <p class="num">{$ratio}%</p>
+
+                            <p class="desc">占股</p>
+                        </li>
+                        <li>
+                            <p class="num">{floor(( $list['project']['expiretime']-time())/86400)} 天</p>
+
+                            <p class="desc">剩余时间</p>
+                        </li>
+                        <li>
+                            <p class="num">{human_money($list['project']['minfinancing']* 10000, '%.2f %s')}</p>
+
+                            <p class="desc">融资目标</p>
+                        </li>
+                        <li>
+                            <p class="num">{human_money($list['project']['valuation'] *10000, '%.2f %s')}</p>
+
+                            <p class="desc">项目估值</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="button-box">
+                <!--{if $list[isrefund]==1}-->
+                <a href="javascript:void(0);" class="btn C-J-static-waiting-btn">已撤资，待审核</a>
+                <!--{elseif $list[isrefund]==-1}-->
+                <a href="javascript:void(0);" class="btn C-J-static-waiting-btn">撤资审核失败</a>
+                <!--{elseif $list[isrefund]==2}-->
+                <a href="javascript:void(0);" class="btn C-J-static-waiting-btn">已撤资</a>
+                <!--{elseif $list[ispaied]}-->
+                    <!--{if $list['project']['istrade']}-->
+                    <a href="{DIR}trade/sell/id/{$list['id']}/" data-ajax="1" class="btn" data-id="{$list['id']}">我要转让</a>
+                    <!--{else}-->
+                    <a href="javascript:void(0);" class="btn C-pray-btn J-refund-order" data-id="{$list['id']}">后悔了，撤资</a>
+                    <!--{/if}-->
+                <!--{elseif $list[iscancel]}-->
+                <a href="javascript:void(0);" class="btn C-pray-btn C-J-static-waiting-btn">已取消支付</a>
+                <!--{elseif !$list[ispaied]}-->
+                    <a href="{DIR}api/order_continue/id/{$list['id']}/FORM_HASH/{misc::form_hash()}/" target="_blank" class="btn C-J-C-withdrawal J-continue-{$list['id']}">继续付款</a>
+                    <a href="javascript:void(0);" class="btn C-pray-btn J-cancel-order J-cancel-{$list['id']}" data-id="{$list['id']}">取消支付</a>
+                <!--{else}-->
+                    <a href="javascript:void(0);" class="btn C-J-static-waiting-btn">静待交割</a>
+                <!--{/if}-->
+            </div>
+        </li>
+        <!--{/loop}-->
+    </ul>
+</div>
+<div class="modal" id="cancelPayDialog" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <p>
+                您的支付尚未完成，确定要放弃吗？
+                <br>
+                您可能将失去投资该项目的机会。
+            </p>
+            <div class="btn-box">
+                <a href="javascript:void(0);" class="btn J-cancelPay-confirm-btn" data-id="">
+                    确定
+                </a>
+                <a href="javascript:void(0);" class="btn C-pray-btn J-cancelPay-cancel-btn">
+                    取消
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade refund-reason-modal  J-refund-reason" id="myReasonModel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="warning">撤资后您将失去投资该项目的机会</div>
+            </div>
+            <div class="modal-body ">
+                <div class="row">您撤资的原因是：</div>
+                <div class="row">
+                    <div class="col-xs-1">
+                        <a href="javascript:void(0);" class="status-flag select" data-value="0"></a>
+                    </div>
+                    <div class="col-xs-11">
+                        项目风险高，回报低
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-1">
+                        <a href="javascript:void(0);" class="status-flag" data-value="1"></a>
+                    </div>
+                    <div class="col-xs-11">
+                        投资期限太长
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-1">
+                        <a href="javascript:void(0);" class="status-flag" data-value="2"></a>
+                    </div>
+                    <div class="col-xs-11">
+                        短期急需资金周转
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-1">
+                        <a href="javascript:void(0);" class="status-flag" data-value="3"></a>
+                    </div>
+                    <div class="col-xs-2">
+                        其他：
+                    </div>
+                    <div class="col-xs-9">
+                        <input type="text" disabled="disabled" class="form-control J-other-reason-input">
+                    </div>
+                </div>
+                <div class="error-box"></div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0);" class="btn C-J-confirm" data-id="">确定</a>
+                <a href="javascript:void(0);" class="btn C-J-cancel" data-dismiss="modal">取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal trading-modal J-trading-modal"  role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<script>
+    globalEvents.push(function(){
+        API.ajax($('.J-trading-modal .modal-content'),function(){
+            $('.J-trading-modal').modal('show');
+            setTotal();
+        })
+    });
+</script>

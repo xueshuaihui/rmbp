@@ -1,0 +1,114 @@
+<div class="tab-pane active" id="basisInfo">
+    <!--{if $project['guys']}-->
+    <div class="row partners">
+        <div class="lable">
+            <p>创始团队</p>
+        </div>
+        <ul class="<!--{if count($project['guys']) > 2 }--> J-partner-bxslider <!--{/if}-->  no-padding-margin">
+            <!--{loop $project['guys'] $guy}-->
+            <li>
+                <img src="{$conf['static_url']}{$guy['pic']}" alt="">
+
+                <h1 class="name">{$guy['truename']}</h1>
+
+                <p class="position">{$guy['job']}</p>
+
+                <p class="desc">
+                    {$guy['intro']}
+                </p>
+            </li>
+            <!--{/loop}-->
+        </ul>
+    </div>
+    <!--{/if}-->
+    <!--{if false}-->
+    <div class="row status-box">
+        <div class="lable">
+            <p>项目现状</p>
+        </div>
+        <div class="content">
+            <ul class="no-padding-margin">
+                <li class="top-oringe">
+                    <div class="img img-1"></div>
+                    <div class="status">
+                        <p>{print_r($status_array[$project['status']], 1)}</p>
+
+                        <p class="desc">产品阶段</p>
+                    </div>
+
+                </li>
+                <li class="top-green">
+                    <div class="img img-2"></div>
+                    <div class="status">
+                        <p>{print_r($balance_array[$project['balance']], 1)}</p>
+
+                        <p class="desc">收入状况</p>
+                    </div>
+                </li>
+                <li class="top-blue">
+                    <div class="img img-3"></div>
+                    <div class="status">
+
+                        <p>$project['region']</p>
+
+                        <p class="desc">所在城市</p>
+                    </div>
+                </li>
+                <li class="top-oringe">
+                    <div class="img img-4"></div>
+                    <div class="status">
+                        <p>{print_r($stage_array[$project['stage']],1)}</p>
+
+                        <p class="desc">融资阶段</p>
+                    </div>
+                </li>
+                <li class="top-green">
+                    <div class="img img-5"></div>
+                    <div class="status J-status-5">
+                        <p>
+                            <!--{loop $project['areas'] $area}-->
+                            <span>{$area['name']}</span>
+                            <!--{/loop}-->
+                        </p>
+
+                        <p class="desc">所属领域</p>
+                    </div>
+                </li>
+                <li class="top-blue">
+                    <div class="img img-6"></div>
+                    <div class="status J-status-6" rel="{count($project['urls'])}">
+                        <!--{if $project['urls']['site'] || $project['urls']['ios'] || $project['urls']['android']}-->
+                        <p>
+                            <!--{if $project['urls']['site']}-->
+                            <span class="C-link"><a href="$project['urls']['site']" target="_blank"
+                                                    rel="nofollow">网站</a></span>
+                            <!--{/if}-->
+                            <!--{if $project['urls']['ios']}-->
+                            <span class="C-link"><a href="$project['urls']['ios']" target="_blank"
+                                                    rel="nofollow">iOS</a></span>
+                            <!--{/if}-->
+                            <!--{if $project['urls']['android']}-->
+                            <span class="C-link"><a href="$project['urls']['android']" target="_blank" rel="nofollow">Android</a></span>
+                            <!--{/if}-->
+                        </p>
+                        <!--{/if}-->
+
+                        <!--{if !$project['urls']['site'] && !$project['urls']['ios'] && !$project['urls']['android']}-->
+                        <p class="no-display">暂无产品展示</p>
+                        <!--{/if}-->
+
+                        <p class="desc">产品展示</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--{/if}-->
+    <div class="row description">
+        <div class="lable">
+            <p>项目详情</p>
+        </div>
+        <div class="content">{replace_content($project['description'])}
+        </div>
+    </div>
+</div>

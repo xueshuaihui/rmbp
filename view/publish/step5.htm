@@ -1,0 +1,82 @@
+<!--{eval
+    $verify_array = array(
+        -2 => '下线',
+        -1 => '未通过',
+        0 => '提交中',
+        1 => '待审核',
+        2 => '预热中',
+        3 => '众筹中',
+        4 => '众筹成功',
+        5 => '众筹失败',
+    );
+}-->
+<fieldset>
+    <div class="row">
+        <div class="col-xs-2">姓名</div>
+        <div class="col-xs-5"><input type="text" class="form-control J-name"
+                                     name="project[creator]" value="{$project['creator']}"
+                                     onchange="judgeOnlyChineseOrEnlish(this)" placeholder="请输入中文或英文字符，不允许特殊字符">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2">电话</div>
+        <div class="col-xs-5"><input type="text" maxLength="11" class="form-control J-phone"
+                                     name="project[phone]" value="{$project['phone']}" onchange="judgePhoneNum(this)"
+                                     placeholder="请填写正确的手机号码"></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2">邮件</div>
+        <div class="col-xs-5"><input type="text" class="form-control J-email" onchange="judgeEmail(this)"
+                                     name="project[email]" value="{$project['email']}" placeholder="请填写正确的邮箱地址"></div>
+    </div>
+
+    <!--{if $user->group_id == 999}-->
+    <div class="row">
+        <div class="col-xs-2">审核结果</div>
+        <div class="col-xs-5">
+            <select name="project[isverify]" class="form-control" onchange="changeMessage(this)" data-type="project_verify"
+                    data-target="verifymessage">
+                <!--{loop $verify_array $val $text}-->
+                <option value="{$val}"
+                <!--{if $val == $project['isverify']}--> selected{/if}>{$text}</option>
+                <!--{/loop}-->
+            </Select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2">审核消息</div>
+        <div class="col-xs-5">
+            <textarea name="project[verifymessage]" id="verifymessage" class="form-control">$project['verifymessage']</textarea>
+        </div>
+    </div>
+    <!--{static ../static/js/admin_message.js _admin_message.js}-->
+    <!--{else}-->
+    <input type="hidden" class="J-isverify" name="project[isverify]" value="{$project[isverify]}" />
+    <!--{/if}-->
+
+    <div class="row checkbox m-b-10">
+        <p>
+            <input type="checkbox" class="J-checkbox">
+            我已阅读并同意签署
+            <a href="{DIR}?c=help-128" target="_blank">《用户服务协议》</a>
+            <a href="{DIR}?c=help-130" target="_blank">《投资人规则》</a>
+            <a href="{DIR}?c=help-131" target="_blank">《风险提示书》</a>
+        </p>
+    </div>
+    <div class="error-box"></div>
+</fieldset>
+<div class="modal fade" id="myProjectReleaseModel" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body ">
+                <p>
+                    项目发布是一件很严肃的事情，一旦审核通过将很难更改
+                </p>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0);" class="btn C-J-confirm">确定</a>
+                <a href="javascript:void(0);" class="btn C-J-cancel" data-dismiss="modal">再想想</a>
+            </div>
+        </div>
+    </div>
+</div>

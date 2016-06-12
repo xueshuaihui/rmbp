@@ -1,0 +1,23 @@
+<!--{eval
+$header_active = array(
+    core::R('c') => ' class="active"',
+);
+}-->
+<div class="header">
+    <div class="container">
+        <nav class="navbar" role="navigation">
+            <div class="navbar-header">
+                <a class="logo" href="{DIR}"><img src="{$conf[static_url]}images/logo.png"></a>
+            </div>
+            <ul class="nav navbar-nav">    
+ <li
+                {$header_active['index']}><a href="{DIR}">首页</a></li>
+                <li
+                {$header_active['publish']}><a href="{DIR}?c=publish-index" class="J-project-release-link">项目发布</a></li>
+                <li
+                {$header_active['help']}><a href="{DIR}?c=help-index">新手问答</a></li>
+                        </ul>
+            <div id="user-panel"></div>
+        </nav>
+    </div>
+</div>

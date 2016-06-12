@@ -1,0 +1,217 @@
+<!--{template mobile/header}-->
+<!--{static ../static/mobile/css/jquery-ui-1.10.3.custom.min.css _mobile_certificate.css 0}-->
+<!--{static ../static/mobile/css/jquery.cropzoom.css _mobile_certificate.css}-->
+
+
+<div class="user-box J-user-box">
+    <div class="certificate-title">认证投资人申请</div>
+    <form id="certificateForm">
+        <div class="am-g input-box">
+            <div class="am-u-sm-4 form-label">真实姓名</div>
+            <div class="am-u-sm-8 form-input">
+                <input type="text" class="input J-truename" name="user[truename]" value="{$user_data['truename']}" placeholder="未设置">
+            </div>
+        </div>
+        <div class="am-g input-box">
+            <div class="am-u-sm-7 form-label">
+                <p class="img-input-label">
+                    上传头像
+                    <span class="desc">支持小于2M，格式为jpg、png图片，推荐尺寸为400*400px</span>
+                </p>
+            </div>
+            <div class="am-u-sm-5 form-input user-img-box">
+                <input type="file" class="hide" id="userHeadInput" onchange="cropImg(this)">
+                {avatar($user_data['uid'], ' class="J-user-img" alt="" data-target="userHeadInput"')}
+                <input id="userAvatarInput" type="hidden" name="user[avatar]"/>
+            </div>
+        </div>
+
+        <!--{if !$user_data['phone']}-->
+        <div class="am-g input-box">
+            <div class="am-u-sm-4 form-label">
+                手机
+            </div>
+            <div class="am-u-sm-8 form-input">
+                <input type="text" class="input J-phone" placeholder="未设置" name="user[phone]" value="{$user_data['phone']}">
+            </div>
+        </div>
+        <div class="am-g input-box">
+            <div class="am-u-sm-8 form-input">
+                <input type="text" class="input fetch-code-input J-check-code" name="user[regcode]" placeholder="输入验证码">
+            </div>
+            <div class="am-u-sm-4 form-input ">
+                <input type="button" class="input fetch-code-btn J-check-code-btn" data-page="investor" data-type="phone" value="获取验证码">
+            </div>
+        </div>
+        <!--{else}-->
+        <div class="am-g input-box">
+            <div class="am-u-sm-4 form-label">
+                手机
+            </div>
+            <div class="am-u-sm-8 form-input">
+                <input type="text" class="input J-phone" placeholder="未设置" name="user[phone]" value="{$user_data['phone']}" <!--{if $user_data['phone']}--> disabled
+                <!--{/if}-->>
+            </div>
+        </div>
+        <!--{/if}-->
+
+        <div class="am-g input-box">
+            <div class="am-u-sm-4 form-label">
+                邮箱地址
+            </div>
+            <div class="am-u-sm-8 form-input">
+                <input type="text" class="input J-email" name="user[email]"  value="{$user_data['email']}" <!--{if $user_data['email']}--> disabled <!--{/if}--> placeholder="未设置">
+            </div>
+        </div>
+        <div class="am-g input-box">
+            <div class="am-u-sm-4 form-label">
+                所在城市
+            </div>
+            <div class="am-u-sm-8 form-input">
+                <input type="text" class="input J-at-city" name="user[region]" value="{$user_data['region']}" placeholder="请填写您目前所在的城市">
+            </div>
+        </div>
+        <div class="am-g input-box">
+            <div class="am-u-sm-4 form-label">
+                公司名称
+            </div>
+            <div class="am-u-sm-8 form-input">
+                <input type="text" class="input J-company" name="user[company]" value="{$user_data['company']}"  placeholder="请填写您目前所在的公司名称">
+            </div>
+        </div>
+        <div class="am-g input-box">
+            <div class="am-u-sm-4 form-label">
+                个人职位
+            </div>
+            <div class="am-u-sm-8 form-input">
+                <input type="text" class="input J-position" name="user[job]" value="{$user_data['job']}" placeholder="请填写您的职位">
+            </div>
+        </div>
+        <div class="am-g input-box">
+            <div class="am-u-sm-4 form-label">微信</div>
+            <div class="am-u-sm-8 form-input">
+                <input class="input J-weixin" type="text" placeholder="请填写您的微信账号"
+                       name="user[account3nd][weixin]"   value="{$user_data['account3nd']['weixin']}">
+            </div>
+        </div>
+        <!--{eval
+            $investor_show = array();
+            $investor_tab = array();
+            $person_tab = array();
+
+            if(is_numeric($user_data['investor']) && ($user_data['investor'] > -1 || $user_data['investor'] < 4)){
+                  $person_tab[$user_data['investor']] = ' select';
+                  $investor_tab[0] = ' select';
+                  $investor_show[1] = ' style="display:none"';
+                  $user_data['investor'] = '';
+            } else if($user_data['investor']) {
+                  $investor_tab[1] = ' select';
+                  $investor_show[0] = ' style="display:none"';
+            } else{
+                  $investor_tab[0] = ' select';
+                  $investor_show[1] = ' style="display:none"';
+            }
+        }-->
+        <div class="am-g input-box">
+            <div class="am-u-sm-4 form-label">
+                投资身份
+            </div>
+            <div class="am-u-sm-8 form-input">
+                <div class="am-g identity-select-box J-identity-select-box">
+                    <div class="am-u-sm-6 identity-select J-personal-identity">
+                        <p>
+                            <a href="javascript:void(0);" class="status-flag {$investor_tab[0]}"></a>
+                            <span>个人</span>
+                        </p>
+                    </div>
+                    <div class="am-u-sm-6 identity-select J-organization-identity">
+                        <p>
+                            <a href="javascript:void(0);" class="status-flag {$investor_tab[1]}"></a>
+                            <span>机构</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="am-g input-box identity-content-box">
+            <div class="personal-content J-personal-content">
+                <p class="desc">符合以下条件之一的自然人投资者</p>
+                <p class="J-content"><a href="javascript:void(0);" class="status-flag {$person_tab[3]}" data-value="3"></a>我的金融资产超过100万元</p>
+                <p class="J-content"><a href="javascript:void(0);" class="status-flag {$person_tab[2]}" data-value="2"></a>我的年收入超过30万元</p>
+                <p class="J-content"><a href="javascript:void(0);" class="status-flag {$person_tab[1]}" data-value="1"></a>我是专业的风险投资人</p>
+                <p class="J-content"><a href="javascript:void(0);" class="status-flag {$person_tab[0]}" data-value="0"></a>我不符合上述任一条件</p>
+            </div>
+            <div class="organization-content J-organization-content">
+                <input type="text" class="input" placeholder="请输入公司名称" value="{$user_data['investor']}">
+            </div>
+            <input type="hidden" name="user[investor]" value="{$user_data['investor']}" id="investor"/>
+        </div>
+
+        <div class="am-g input-box">
+            <div class="am-u-sm-4 form-label">
+                关注城市
+            </div>
+            <div class="am-u-sm-8 control J-control J-city-control" data-target="J-feed-City">
+                <a href="javascript:void(0);" class="fold-status down"></a>
+            </div>
+        </div>
+        <div class="am-g feed-city J-feed-City" style="display:none;" data-ids="{$region_ids}">
+        </div>
+        <div class="am-g input-box">
+            <div class="am-u-sm-4 form-label">
+                关注领域
+            </div>
+            <div class="am-u-sm-8 control J-control J-field-control" data-target="J-feed-field">
+                <a href="javascript:void(0);" class="fold-status down"></a>
+            </div>
+        </div>
+        <div class="am-g feed-city J-feed-field" style="display:none;">
+            <!--{loop $area_list $area}-->
+            <input type="button" data-id="{$area['id']}" class="<!--{if isset($area_feed[$area['id']])}--> select<!--{/if}-->" value="{$area['name']}"/>
+            <!--{/loop}-->
+        </div>
+        <div class="am-g input-box check-box">
+            <input type="checkbox" class="checkbox">
+            <p>我已阅读并同意签署
+                <a href="{DIR}?c=help-128">《用户服务协议》</a>
+                <a href="{DIR}?c=help-130">《投资人规则》</a>
+                <a href="{DIR}?c=help-131">《风险提示书》</a>
+            </p>
+        </div>
+        <div class="bottom-btn-box">
+            <input type="button" value="确定" class="btn J-certificate-submit">
+        </div>
+
+    </form>
+</div>
+
+<div class="crop-boxes J-crop-box">
+    <div id="crop_container"></div>
+    <input type="text" value="11" id="imgBoxSize" style="width: 100%; height: 0; opacity: 0;">
+
+    <div class="bottom-btn-box button-wrapper" >
+        <div class="am-u-sm-6">
+            <a class=" btn" id="crop" href="javascript:void(0)">截图</a>
+        </div>
+        <div class="am-u-sm-6">
+            <a class="am-u-sm-6 btn cancel-btn J-cancel-btn" href="javascript:void(0)">取消</a>
+        </div>
+    </div>
+
+</div>
+
+
+
+<script type="tpl" id="hotCityModal">
+    <input type="button"  data-id="<%=id%>" data-code="<%=code%>" value="<%=name%>"/>
+</script>
+
+<script type="tpl" id="feedFieldModal">
+    <input type="button"  data-id="<%=id%>" data-code="<%=code%>" value="<%=name%>"/>
+</script>
+
+<!--{template mobile/footer}-->
+<!--{static ../static/mobile/js/plugin/jquery-ui-1.10.3.custom.min.js _mobile_certificate.js 0}-->
+<!--{static ../static/mobile/js/plugin/jquery.cropzoom.js _mobile_certificate.js}-->
+<!--{static ../static/mobile/js/certificate.js _mobile_certificate.js}-->

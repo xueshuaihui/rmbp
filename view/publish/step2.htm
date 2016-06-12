@@ -1,0 +1,46 @@
+<fieldset>
+        <div class="row">
+            <div class="col-xs-2 ">本轮估值</div>
+            <div class="col-xs-3 w-150">
+                <input id="valuation" name="project[valuation]" onchange="judgeMoney(this)" type="text"
+                       placeholder="项目估值"
+                       value="{if $project['valuation']>0}{$project['valuation']}{/if}" class="form-control J-current-valuation">
+            </div>
+            <div class="col-xs-1 unit">
+                <p>万元</p>
+            </div>
+        </div>
+        <div class="row valuation">
+            <div class="col-xs-2 ">融资额度</div>
+            <div class="col-xs-2 w-150 limit">
+                <input id="valuationMin" name="project[minfinancing]" onchange="judgeMinValuation(this)" type="text"
+                       value="{if $project['minfinancing']>0}{$project['minfinancing']}{/if}" class="form-control"
+                       placeholder="最低融资">
+            </div>
+            <div class="col-xs-1 unit">
+                <p>万元</p>
+            </div>
+            <div class="col-xs-1 ">
+                <div class="arrow"></div>
+            </div>
+            <div class="col-xs-2 w-150 limit">
+                <input id="valuationMax" name="project[maxfinancing]" onchange="judgeMaxValuation(this)" type="text"
+                       value="{if $project['maxfinancing']>0}{$project['maxfinancing']}{/if}" class="form-control"
+                       placeholder="最高融资">
+            </div>
+            <div class="col-xs-1 unit">
+                <p>万元</p>
+            </div>
+        </div>
+        <div class="row m-b-10">
+            <div class="col-xs-2 ">众筹时间</div>
+            <div class="col-xs-2 w-150 limit">
+                <input id="deadline" name="project[financingday]" onchange="judgeTime(this)" type="text" class="form-control"
+                       value="{if $project['financingday']}{$project['financingday']}{/if}" placeholder="不超过90天">
+            </div>
+            <div class="col-xs-1 unit">
+                <p>天</p>
+            </div>
+        </div>
+        <div class="error-box"></div>
+    </fieldset>

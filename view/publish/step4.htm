@@ -1,0 +1,108 @@
+<fieldset>
+    <div id="guy-wrap" qu></div>
+
+    <div class="row partner add-delete-btns">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-3 box"><input type="button" class="add-btn" data-action="add-guy">
+            <a data-action="add-guy" href="javascript:void(0);">增加小伙伴</a></div>
+        <div class="col-xs-3 box"><input type="button" class="delete-btn" onclick="click_delete_partner()">
+            <a href="javascript:void(0);" onclick="click_delete_partner()">删除已有伙伴</a>
+        </div>
+    </div>
+    <div class="modal fade C-J-crop-modal" id="partnerImgCropModal" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="image-box">
+                        <p><img></p>
+                    </div>
+                    <div class="preview-box">
+                        <img>
+                    </div>
+                    <canvas width="200" height="200" class="J-canvas"
+                            style="overflow:hidden; display:none"></canvas>
+                </div>
+                <div class="C-crop-btns">
+                    <a href="javascript:void(0);" class="btn C-J-confirm">确定</a>
+                    <a href="javascript:void(0);" data-dismiss="modal" class="btn C-J-cancel">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="error-box"></div>
+    <script id="modelImgInput" type="model/img">
+        <input type="hidden" name="guys[<%=index%>][pic]" value="<%=src%>" />
+        <img src="<%=src%>"/>
+
+    </script>
+</fieldset>
+
+<script type="tpl" id="guyTpl">
+    <div class="partner-box">
+            <h1 class="title partner-title">第<span class="partner-num"></span>位小伙伴</h1>
+            <div class="row action-btns">
+                <div class="col-xs-3"><a href="javascrip:void(0)" class="btn action-delete" data-index="<%=index-1%>" data-action="remove-guy">删除</a></div>
+                <div class="col-xs-3"><a href="javascrip:void(0)" class="btn action-cancel" onclick="cancel_delete_partner()">取消</a></div>
+            </div>
+            <div class="clear"></div>
+            <input type="hidden" name="guys[<%=index%>][id]" value="<%=id%>">
+            <div class="row">
+                <div class="col-xs-2 lable">姓名</div>
+                <div class="col-xs-5">
+                    <input type="text"
+                            onchange="judgeOnlyChineseOrEnlish(this)"
+                            name="guys[<%=index%>][truename]"
+                            value="<%=truename%>"
+                            class="form-control J-name"
+                            placeholder="请输入中文或英文字符，不允许特殊字符">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2 lable">职位</div>
+                <div class="col-xs-5">
+                    <input type="text" onchange="judgeOnlyChineseOrEnlish(this)"
+                            name="guys[<%=index%>][job]"
+                            value="<%=job%>"
+                            class="form-control J-position" placeholder="请输入中文或英文字符，不允许特殊字符">
+                </div>
+                <div class="col-xs-5 partner-sample"><img src="{$conf[static_url]}images/partner-sample.png" alt="">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2 lable">个人简介</div>
+                <div class="col-xs-5">
+                    <textarea type="text" placeholder="请输入120个字符以内的简介" onchange="judgePersonalDesc(this)"
+                              name="guys[<%=index%>][intro]"
+                              onkeyup="checkWordNum(this)" class="form-control J-short-desc" data-max="120"><%=intro%></textarea>
+
+                    <div class="C-word-num-show">
+                        <span class="J-had-input">0</span>
+                        <span>/</span>
+                        <span class="J-max-input">120</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row image partner-img">
+                <div class="col-xs-2 lable">头像图片</div>
+                <div class="col-xs-8">
+                    <input type="file" class="img-input-file" onchange="cropPartnerImg(this)" id="partner_img_<%=index%>">
+                    <a href="javascript:void(0);" class="btn partner_img_input J-img-input">上传</a>
+                    <span>支持小于2M，格式为jpg、png的图片，推荐尺寸400*400px</span>
+                    <div class="img-prev-box">
+                        <%if(pic.url){%>
+                            <img src="{$conf[static_url]}<%=pic%>">
+                        <%}%>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</script>
+
+<!--{static ../static/js/project-release-step4.js _project_release_4.js}-->
+
+<script>
+    $(function () {
+        window.guyComponent.init({json_encode($guy_list)});
+    });
+</Script>

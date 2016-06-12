@@ -1,0 +1,119 @@
+<div class="J-guys-box"></div>
+
+<div class="row add-box">
+    <a href="javascript:void(0);" data-action="add-guy" class="add-btn J-add-guy-btn">
+        <span>添加成员</span>
+    </a>
+</div>
+<hr class="divider" />
+<div class="btn-box three-btns-box">
+    <a href="{DIR}publish/step3/" class="btn pre-btn">上一步</a>
+    <input type="submit" onclick="$('.J-submit-confirm').val(0)" value="保存草稿" class="btn mid-btn">
+    <input class="btn next-btn" type="submit" onclick="$('.J-submit-confirm').val(1)" value="提交审核">
+    <input class="btn next-btn hide J-submit-confirm" data-status="" type="submit" onclick="$('.J-submit-confirm').val(0)">
+</div>
+<script type="tpl" id="guyTpl">
+    <div class="block-box J-guy-box">
+        <a href="javascript:void(0);" class="delete-btn J-delete-guy-btn" data-index="<%=index-1%>" data-action="remove-guy" title="删除">&times;</a>
+        <div class="row">
+        <input type="hidden" name="guys[<%=index%>][id]" value="<%=id%>">
+            <div class="col-xs-2 form-label">成员姓名</div>
+            <div class="col-xs-5">
+                <input class="form-control J-name" type="text"
+                        name="guys[<%=index%>][truename]"
+                        value="<%=truename%>"
+                        placeholder="请输入中文或英文字符，不允许特殊字符"
+                        onchange="check.regCheck(this)"
+                        data-regtype="only_chinese_english">
+            </div>
+            <div class="col-xs-5 tip J-tip">
+                <div class="tip-box">
+                    <p class="J-tip-content"></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2 form-label">成员职位</div>
+            <div class="col-xs-5">
+                <input class="form-control J-position" type="text"
+                        name="guys[<%=index%>][job]"
+                        value="<%=job%>"
+                        placeholder="请输入中文或英文字符，不允许特殊字符"
+                        onchange="check.regCheck(this)"
+                        data-regtype="only_chinese_english">
+            </div>
+            <div class="col-xs-5 tip J-tip">
+                <div class="tip-box">
+                    <p class="J-tip-content"></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2 form-label">个人简介</div>
+            <div class="col-xs-5">
+                <textarea class="form-control J-intro"
+                           name="guys[<%=index%>][intro]"
+                           onkeyup="checkWordNum(this)"
+                           placeholder="请输入160个字符以内的简介"
+                           data-min="1"
+                           data-max="160"
+                           onchange="check.wordNumCheck(this)"><%=intro%></textarea>
+                <div class="word-num-show">
+                    <span class="J-had-input">0</span>
+                    <span>/</span>
+                    <span class="J-max-input">160</span>
+                </div>
+            </div>
+            <div class="col-xs-5 tip tip-h J-tip">
+                <div class="tip-box">
+                    <p class="J-tip-content"></p>
+                </div>
+            </div>
+        </div>
+        <div class="row image">
+            <div class="col-xs-2 form-label">个人头像</div>
+            <div class="col-xs-5 J-img-box">
+                <input style="display:none" type="file" class="J-img-input" id="guyImgInput"  onchange="imgCrop.change(this)" data-width="380" data-height="380" data-previd="guyImgPrev">
+                <a href="javascript:void(0);" class="image-show J-upload-img-btn" id="guyImgPrev" data-target="guyImgInput">
+                    <%if(pic.url){%>
+                        <img src="{$conf[static_url]}<%=pic.url%>">
+                    <%}else{%>
+                        <div class="upload-img-box">
+                            <span>上传图片</span>
+                        </div>
+                    <%}%>
+                </a>
+                <input type="hidden" name="guys[<%=index%>][pic]" value="" class="J-img"/>
+                <p class="img-desc">支持小于2M，格式为jpg、png的图片，分辨率为380*380px</p>
+            </div>
+            <div class="col-xs-5 tip tip-h J-tip">
+                <div class="tip-box">
+                    <p class="J-tip-content"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<div class="modal fade" id="myProjectReleaseModel" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body ">
+                <p>
+                    项目发布是一件很严肃的事情，一旦审核通过将很难更改
+                </p>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0);" class="btn C-J-confirm">确定</a>
+                <a href="javascript:void(0);" class="btn C-J-cancel" data-dismiss="modal">再想想</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" class="J-isverify" name="project[isverify]" value="">
+
+<script>
+    publishGlobalEvents.push(function(){
+        imgCrop.init();
+    })
+</script>

@@ -1,0 +1,85 @@
+<!--{eval
+$pages['title'] = 'Plus众筹平台 - 让价值变得更有价值';
+}-->
+<!--{template mobile/header}-->
+
+<div class="project-lists">
+    <!--{loop $project_list $project}-->
+    <!--{eval $percent = get_percent($project['totalfinancing'],  $project['minfinancing']);}-->
+    <div class="project-list">
+        <div class="img-box" data-verify="{$project['isverify']}">
+            <a href="{DIR}project/detail/{url_id($project['id'])}/">
+                <!--{if $project['banner']['path']}-->
+                <img src="{$conf['static_url']}/mobile/images/project-default.png" data-src="{$conf[static_url]}{$project['banner']['path']} " alt="{$project['title']}">
+                <!--{/if}-->
+            </a>
+            <!--{if $project['isverify'] == 3}-->
+                <!--{if $project['superraise'] == 1}-->
+                    <div class="status-flag super-raise">
+                        已超募
+                    </div>
+                <!--{else}-->
+                    <div class="status-flag raising">
+                        众筹中
+                    </div>
+                <!--{/if}-->
+            <!--{elseif $project['isverify'] == 5}-->
+            <div class="status-flag raise-end">
+                众筹结束
+            </div>
+            <!--{elseif $project['isverify'] == 4}-->
+            <div class="status-flag raise-success">
+                众筹成功
+            </div>
+            <!--{elseif $project['isverify'] == 2}-->
+            <div class="status-flag preheating">
+                预热中
+            </div>
+            <!--{/if}-->
+
+            <div class="am-g title-box">
+                <div class="am-u-sm-9 title">
+                    <a href="{DIR}project/detail/{url_id($project['id'])}/">$project['title']</a>
+                </div>
+                <div class="am-u-sm-3 like-box">
+                    <!--{if $project['feednum']}-->
+                        <span class="like-label">
+                            <img src="{$conf['static_url']}/mobile/images/red-heart.png" alt="">
+                        </span>
+                        {$project['feednum']}
+                    <!--{/if}-->
+                </div>
+            </div>
+        </div>
+        <div class="status-box">
+            <div class="status-line-box"><div class="status-line" style="width:{$percent}%"></div>
+            </div>
+            <div class="am-g status-desc">
+                <div class="am-u-sm-3 desc">
+                    <p class="num">{$project['totalfinancing']} 万</p>
+                    <p>已筹集</p>
+                </div>
+                <div class="am-u-sm-3 desc">
+                    <p class="num">{$percent}%</p>
+                    <p>完成度</p>
+                </div>
+                <div class="am-u-sm-3 desc">
+                    <!--{if $project['isverify'] == 2}-->
+                    <p class="num">等待开始</p>
+                    <p>剩余时间</p>
+                    <!--{else}-->
+                    <p class="num">{get_left_time($project['expiretime'])} 天</p>
+                    <p>剩余时间</p>
+                    <!--{/if}-->
+                </div>
+                <div class="am-u-sm-3 desc">
+                    <p class="num">$project['minfinancing'] 万</p>
+                    <p>融资目标</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--{/loop}-->
+
+</div>
+<!--{template mobile/footer}-->

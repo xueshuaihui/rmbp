@@ -1,0 +1,70 @@
+<!--{if !core::R('ajax')}-->
+<!--{eval
+$pages['header_class'] = 'header-white';
+
+$titles = array(
+    'center' => '基本资料',
+    'invested' => '投资的项目',
+    'financing' => '融资的项目',
+    'feed' => '关注的项目',
+    'message' => '消息通知',
+    'security' => '账户安全',
+);
+$pages['title'] = $titles[core::R('a')];
+
+$pages['mobile_url'] = 'user/center/';
+}-->
+<!--{template inc/header}-->
+<!--{static ../static/css/imgareaselect-default.css css/_imgareaselect.css}-->
+<!--{static ../static/v2/images/account_icon/* ../static/v2/_account_icon}-->
+<!--{static ../static/v2/css/account.scss ../static/v2/_account.css}-->
+<!--{eval
+    $active_tab = array(core::R('a') => ' active');
+}-->
+<div class="account-box">
+    <div class="container">
+        <div class="nav-box J-tab-box">
+            <ul class="nav nav-tabs " data-target='{json_encode($active_tab)}'>
+                <li class="J-center-li {$active_tab['center']}"><a href="{DIR}?c=user-center" data-target="tab-content" data-ajax="1" data-type="tab-link" data-id="center">基本资料</a></li>
+                <li class="J-message-li {$active_tab['message']}"><a href="{DIR}?c=user-message" data-target="tab-content" data-ajax="1" data-type="tab-link" data-id="message">消息通知</a></li>
+                <li class="J-invested-li {$active_tab['invested']}"><a href="{DIR}?c=user-invested" data-target="tab-content" data-ajax="1" data-type="tab-link" data-id="invested">投资的项目</a></li>
+                <li class="J-financing-li{$active_tab['financing']}"><a href="{DIR}?c=user-financing" data-target="tab-content" data-ajax="1" data-type="tab-link" data-id="financing">融资的项目</a></li>
+                <li class="J-feed-li {$active_tab['feed']}"><a href="{DIR}?c=user-feed" data-target="tab-content" data-ajax="1" data-type="tab-link" data-id="feed">关注的项目</a></li>
+                <li class="J-security-li {$active_tab['security']}"><a href="{DIR}?c=user-security" data-target="tab-content" data-ajax="1" data-type="tab-link" data-id="security">账户安全</a></li>
+            </ul>
+        </div>
+        <div id="tab-content">
+            <div class="tab-content" data-id="{core::R('a')}">
+<!--{/if}-->
+                <!--{if core::R('a') == 'center'}-->
+                <!--{template user/center}-->
+                <!--{elseif core::R('a') == 'message'}-->
+                <!--{template user/message}-->
+                <!--{elseif core::R('a') == 'invested'}-->
+                <!--{template user/invested}-->
+                <!--{elseif core::R('a') == 'financing'}-->
+                <!--{template user/financing}-->
+                <!--{elseif core::R('a') == 'feed'}-->
+                <!--{template user/feed}-->
+                <!--{elseif core::R('a') == 'security'}-->
+                <!--{template user/security}-->
+                <!--{/if}-->
+<!--{if !core::R('ajax')}-->
+            </div>
+        </div>
+    </div>
+</div>
+<!--{template inc/footer}-->
+<!--{static ../static/js/jquery.imgareaselect.pack.js ../static/v2/_account.js}-->
+<!--{static ../static/v2/js/jquery.validate.js ../static/v2/_account.js}-->
+<!--{static ../static/v2/js/img-crop.js ../static/v2/_account.js}-->
+<!--{static ../static/v2/js/account.js ../static/v2/_account.js}-->
+<script>
+    accountEvents.push(function(){
+        API.ajax('',function(){
+            initAccountEvents();
+        });
+        initTabClick();
+    })
+</script>
+<!--{/if}-->

@@ -1,0 +1,53 @@
+<!--{template admin/header}-->
+<!--{static ../static/admin/js/plugin/ueditor/ueditor.config.js admin/js/plugin/ueditor/_ueditor.js}-->
+<!--{static ../static/admin/js/plugin/ueditor/ueditor.all.min.js admin/js/plugin/ueditor/_ueditor.js 0}-->
+<!--{static ../static/admin/js/article.js admin/js/_article.js}-->
+<!--{eval
+    $title = array('email' => '邮件消息','phone' => '短信消息','message' => '发送消息');
+    //$radio = array('all' => '','' => '');
+}-->
+<div class="title">
+    {$title[$sendtype]}
+</div>
+<div class="content">
+<div class="article-list-edit-box">
+    <form name="form_sub" action="{DIR}{ADMIN_DIR}/message/edit_action/sendtype/{$sendtype}/" method="post" enctype="multipart/form-data" >
+        <!--{if $sendtype=='email'}-->
+        <div class="form-group">
+            <label>邮件标题：</label>
+            <input type="text" class="form-control" name="data[title]" value="{$send_list['title']}">
+        </div>
+        <!--{elseif $sendtype=='message'}-->
+        <div class="form-group">
+            <label>消息标题：</label>
+            <input type="text" class="form-control" name="data[title]" value="{$send_list['title']}">
+        </div>
+        <!--{/if}-->
+
+        <div class="form-group">
+            <label>发送时间：</label>
+            <input type="text" class="form-control" name="data[sendtime]" value="{$send_list['sendtime']}" placeholder="{date('Y-m-d H:i:s')}">
+        </div>
+
+        <input type="hidden" name="id" value="{$id}">
+        <div class="form-group">
+            <label>接收用户：</label>
+            <!--<input type="text" class="form-control" name="data[receive_uids]" value="{$send_list['receive_uids']}">-->
+            <input type="radio" name="uids" value="all" <!--{if $send_list['receive_uids']=='all'}-->checked<!--{/if}--> >全部用户
+            <input type="radio" name="uids" value="" <!--{if $send_list['receive_uids']!='all'}-->checked<!--{/if}--> >指定用户<input type="text" name="data[receive_uids]" value="{$send_list['receive_uids']}" placeholder="请填写用户的ID">
+        </div>
+        <div>
+            <label>内容：</label>
+            <div>
+                <textarea class="form-control J-short-desc"  alt="100" name="data[content]">{$send_list['content']}</textarea>
+            </div>
+        </div>
+        <div class="btn-box">
+            <input type="submit" class="form-control confirm-btn" value="保存">
+            <a href="{DIR}{ADMIN_DIR}/message/send_list/sendtype/{$sendtype}/" class="form-control cancel-btn" >取消</a>
+        </div>
+    </form>
+
+</div>
+</div>
+<!--{template admin/footer}-->

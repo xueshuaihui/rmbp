@@ -1,0 +1,275 @@
+<!--{eval
+$title_array = array(
+    'detail' => '',
+    'timeline' => '动态',
+    'plan' => '融资计划',
+    'qa' => '问答',
+    'invest' => '投资列表',
+);
+$project_id = url_id($project['id']);
+!$pages['title'] && $pages['title'] = $project['title'] . ($title_array[$pro]? ' - '.$title_array[$pro] : '');
+!$pages['keys'] && $pages['keys'] = $project['title'] . ($title_array[$pro]? ','.$title_array[$pro] : '');
+!$pages['desc'] && $pages['desc'] = $project['intro'] . ($title_array[$pro]? ','.$title_array[$pro] : '');
+$pages['mobile_url'] = 'project/detail/'.$project_id.'/';
+}-->
+<!--{template header}-->
+
+<!--{static ../static/js/plugin/ueditor/ueditor.config.js js/plugin/ueditor/_ueditor.js}-->
+<!--这里对压缩过的文件处理不是很好，所以最后加了一个参数，是否打包的时候压缩文件-->
+<!--{static ../static/js/plugin/ueditor/ueditor.all.min.js js/plugin/ueditor/_ueditor.js 0}-->
+
+<!--{static ../static/js/hc_zoom.js _project_detail.js}-->
+<!--{static ../static/js/jquery.bxslider.min.js _project_detail.js}-->
+<!--{static ../static/css/jquery.bxslider.css _bxsilder.css}-->
+
+<!--{template inc/nav}-->
+
+<!--{eval
+    $status_array = array(
+        0 => '概念阶段',
+        1 => '研发中',
+        2 => '已上线',
+    );
+    $balance_array = array(
+        0 => '无收入',
+        1 => '有收入未盈利',
+        2 => '收支平衡',
+        3 => '已盈利'
+    );
+    $stage_array = array(
+        1 => '天使轮',
+        2 => 'A轮',
+        3 => 'B轮',
+        4 => 'C轮',
+        5 => 'C轮后',
+        6 => '实体店融资',
+    );
+
+    $degree = min(($project['totalfinancing']/($project['maxfinancing']*10000))*100, 100);
+    $sell_percent = round($project['minfinancing'] *100 / $project['valuation'], 2);
+
+    $tab_active = array(
+        $pro => ' class="active"',
+    );
+
+    $remain_time = $project['expiretime']?floor(( $project['expiretime']-time())/86400):0;
+}-->
+<div class="container">
+    <div class="C-project-detail J-project" data-target="{$project['id']}">
+        <div class="title-box">
+            <h1 class="title">{$project['title']}<!--span>{date('Y', $project['dateline'])}年</span--></h1>
+
+            <p class="title-desc">
+                {$project['intro']}
+            </p>
+
+            <div class="btns">
+                <a href="javascript:void(0)" class="btn C-J-focus unlike">
+                    <div class='img'></div>
+                    <p class="desc"> 关注(<span class="J-like-num">$project['feednum']</span>)</p>
+                </a>
+            </div>
+        </div>
+        <div class="tab-box J-tab-box">
+            <ul class="nav nav-tabs">
+                <li {$tab_active['detail']}><a href="{DIR}project/detail/{$project_id}/">项目介绍</a></li>
+                <li {$tab_active['plan']}><a href="{DIR}project/plan/{$project_id}/">融资计划</a></li>
+                <!--{if false}-->
+                <li
+                {$tab_active['timeline']}><a href="{DIR}project/timeline/{$project_id}/">项目动态</a></li>
+                <!--{/if}-->
+                <li
+                {$tab_active['qa']}><a href="{DIR}project/qa/{$project_id}/">项目问答</a></li>
+                <li
+                {$tab_active['invest']}><a href="{DIR}project/invest/{$project_id}/">投资列表</a></li>
+            </ul>
+            <div class="share-box">
+                <div class="bdsharebuttonbox">
+                    <a href="#" class="bds_weixin J-weixin" data-cmd="weixin" title="分享到微信"  herf="http://share.baidu.com/code#" data-src="{DIR}qr/index/project_id/{$project_id}/">
+                        <div class="weixin-img-box J-weixin-img">
+                            <div class="weixin">
+                                <img src="" class="weixin-img"/>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友" herf="http://share.baidu.com/code#"></a>
+                    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博" herf="http://share.baidu.com/code#"></a>
+                </div>
+                <script>
+                    window._bd_share_config = {
+                        "common": {
+                            "bdSnsKey": {},
+                            "bdText": "",
+                            "bdMini": "2",
+                            "bdMiniList": false,
+                            "bdPic": "",
+                            "bdStyle": "0",
+                            "bdSize": "24"
+                        }, "share": {}
+                    };
+                    with (document)0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+                </script>
+            </div>
+        </div>
+    </div>
+    <div class="left-box C-project-detail">
+        <div class="tab-content">
+            <!--{if $pro == 'detail'}-->
+                <!--{template project/detail}-->
+            <!--{elseif $pro == 'timeline'}-->
+                <!--{template project/timeline}-->
+            <!--{elseif $pro == 'qa'}-->
+                <!--{template project/qa}-->
+            <!--{elseif $pro == 'invest'}-->
+                <!--{if $user->user_id == 0}-->
+                    <!--{template project/guest}-->
+                <!--{else}-->
+                    <!--{template project/invest}-->
+                <!--{/if}-->
+            <!--{elseif $pro == 'plan'}-->
+                <!--{if $user->user_id == 0}-->
+                    <!--{template project/guest}-->
+                <!--{else}-->
+                    <!--{template project/plan}-->
+                <!--{/if}-->
+            <!--{/if}-->
+
+        </div>
+    </div>
+    <div class="right-box C-project-detail">
+        <div class="row invest-progress">
+            <div class="lable">
+                <p>融资进度</p>
+            </div>
+            <div class="row top-line">
+                <div class="title">已筹集：<span class="blue"> ￥{human_money($project['totalfinancing'])}</span></div>
+                <div class="state-line-box">
+                    <div class="state-line" style="width: {$project['degree']}%"></div>
+                </div>
+            </div>
+            <div class="status-metas">
+                <div class="row">
+                    <div class="col-xs-6 label">完成度</div>
+                    <div class="col-xs-6 desc">{round($project['degree'])}%</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 label">融资目标</div>
+                    <div class="col-xs-6 desc"><span class="blue ">{$project['minfinancing']}万</span></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 label">出让股份</div>
+                    <div class="col-xs-6 desc">{$project['sellpercent']}%</div>
+                </div>
+                <!--{if $project['remaintime']>= 0}-->
+                <div class="row">
+                    <div class="col-xs-6 label">剩余时间</div>
+                    <div class="col-xs-6 desc">{$project['remaintime']}天</div>
+                </div>
+                <!--{/if}-->
+            </div>
+            <div class="btn-box">
+                <a href="javascript:void(0);" class="btn C-J-dialog"><span class="desc">约约约</span></a>
+            </div>
+
+        </div>
+        <!--{if $project['leads']}-->
+        <div class="row leader">
+            <div class="lable">
+                <p>项目领投人</p>
+            </div>
+            <!--{loop $project['leads'] $lead}-->
+            <div class="intro">
+                <img src="{$conf[static_url]}{$lead['pic']}" alt="$lead['pic']">
+
+                <div class="desc">
+                    <div class="title">$lead['name']</div>
+                    <p>
+                        {$lead['intro']}
+                    </p>
+                </div>
+            </div>
+            <!--{/loop}-->
+        </div>
+        <!--{/if}-->
+        <div class="row gift-show">
+            <div class="lable">
+                <p>投资金额</p>
+            </div>
+            <!--{loop $invest_list $invest}-->
+
+            <!--{eval
+                $max_left_num = ($project['maxfinancing']*10000 / $invest['price']);
+                $min_left_num = ($project['minfinancing']*10000 / $invest['price']);
+            }-->
+            <div class="show-box">
+                <div class="intro">
+                    <div class="short-desc">
+                        <div class="money">￥{$invest['price']}</div>
+                        <!--{if $invest['leftnum'] < $min_left_num }-->
+                        <p>{print_r($invest['returnnum']- $invest['leftnum'], 1)} 人已支持，剩余投资份数： {$max_left_num} 份</p>
+                        <!--{else}-->
+                        <p>{print_r($invest['returnnum']- $invest['leftnum'], 1)} 人已支持，剩余超募份数： {$min_left_num} 份</p>
+                        <!--{/if}-->
+                    </div>
+                    <div class="btn-box">
+                        <a href="javascript:void(0);" data-status="{$project['isverify']}" data-isauth="{$isauth}" data-href="{DIR}order/index/{url_id($invest['id'])}/" class="btn J-support-btn">我要支持</a>
+                    </div>
+                </div>
+                <!--{if $invest['message']}-->
+                <div class="display">
+                    <div class="desc">
+                        {$invest['message']}
+                    </div>
+                    <ul class="display-imgs">
+                        <!--{loop $invest['attachment_list'] $attachment}-->
+                        <li>
+                            <div class="zoom_img_box J_zoom_img_box" style="width:135px; height:135px;">
+                                <img class="show-img" src="{$conf['static_url']}{$attachment['path']}"/>
+                                <img src="{$conf['static_url']}{$attachment['path']}" style="display:none;"
+                                     hc_zoom="position:'left',large_border:'2px solid #ddd',border:'none',bg_color:'#fff', auto_change:'true'"/>
+                            </div>
+                        </li>
+                        <!--{/loop}-->
+                    </ul>
+                    <div class="clear"></div>
+                </div>
+                <!--{/if}-->
+
+            </div>
+            <!--{/loop}-->
+        </div>
+
+        <div class="row quick-QA">
+            <div class="lable">
+                <p>快速问答</p>
+            </div>
+            $setting['fast_qa']
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="myDialogModel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body ">
+                <textarea name="dialog-editor" onkeyup="checkWordNum(this)" placeholder="请您简要归纳一下想要约谈的内容" data-max="200"></textarea>
+                <div class="C-word-num-show">
+                    <span class="J-had-input">0</span>
+                    <span>/</span>
+                    <span class="J-max-input">200</span>
+                </div>
+                <div class="error-box"></div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0);" class="btn C-J-confirm">确定</a>
+                <a href="javascript:void(0);" class="btn C-J-cancel" data-dismiss="modal">取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--{static ../static/js/project-detail.js _project_detail.js}-->
+<!--{template footer}-->

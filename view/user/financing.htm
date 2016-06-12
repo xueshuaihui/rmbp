@@ -1,0 +1,89 @@
+<div class="tab-pane active" id="accountFinancing">
+    <!--{if !$project}-->
+    <div class="no-content">
+        <p>您当前无融资项目。</p>
+    </div>
+    <!--{/if}-->
+    <ul class="no-padding-margin">
+        <!--{loop $project $project}-->
+        <!--{eval
+            if($project['isverify'] == 0 && !$project['title']){
+                continue;
+            }
+            $degree = $project['totalfinancing']/$project['maxfinancing']*100;
+        }-->
+        <li>
+            <div class="title-box">
+                <a href="{DIR}project/detail/{url_id($project['id'])}/" target="_blank">
+                    <h1 class="title">
+                        {$project['title']}
+                    </h1>
+                </a>
+                <!--{if $project['isverify']=='-1'}-->
+                <div class="status unpass">未通过</div><!--未通过-->
+                <!--{elseif $project['isverify']=='0'}-->
+                <div class="status draft">草稿</div><!--草稿-->
+                <!--{elseif $project['isverify']=='1'}-->
+                <div class="status check-pending">待审核</div><!--待审核-->
+                <!--{elseif $project['isverify']=='2'}-->
+                <div class="status preheating">预热中</div><!--预热中-->
+                <!--{elseif $project['isverify']=='3'}-->
+                    <!--{if $list['project']['superraise']=='1'}-->
+                    <div class="status super-raise">已超募</div><!--已超募-->
+                    <!--{else}-->
+                    <div class="status financing">融资中</div><!--融资中-->
+                    <!--{/if}-->
+                <!--{elseif $project['isverify']=='4'}-->
+                <div class="status succeed">融资成功</div><!--融资成功-->
+                <!--{elseif $project['isverify']=='5'}-->
+                <div class="status failed">融资失败</div><!--融资失败-->
+                <!--{/if}-->
+            </div>
+            <div class="status-box">
+                <div class="state-line-box">
+                    <div class="state-line" style="width: {$degree}%"></div>
+                </div>
+                <div class="state-desc">
+                    <ul>
+                        <li>
+                            <p class="num">{human_money($project['totalfinancing'],'%.2f %s')}</p>
+
+                            <p class="desc">已筹集</p>
+                        </li>
+                        <li>
+                            <p class="num">{$project['invest_num']} 位</p>
+
+                            <p class="desc">投资者</p>
+                        </li>
+                        <li>
+                            <p class="num"><!--{if $project['expiretime']=='0'}-->0<!--{else}-->{floor((
+                                $project['expiretime']-time())/86400)}<!--{/if}--> 天</p>
+
+                            <p class="desc">剩余时间</p>
+                        </li>
+                        <li>
+                            <p class="num">{human_money($project['minfinancing']*10000, '%.2f %s')}</p>
+
+                            <p class="desc">融资目标</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="button-box">
+                <!--<a href="javascript:void(0);" class="btn C-J-cancel-btn">取消融资</a>-->
+                <!--{if $project['isverify']=='-1'}-->
+                <a href="{DIR}publish/step1/?project_id={url_id($project['id'])}/" class="btn C-J-continue-btn" target="_blank">继续编辑</a>
+                <!--{elseif $project['isverify']=='0'}-->
+                <a href="{DIR}publish/step1/?project_id={url_id($project['id'])}/" class="btn C-J-continue-btn" target="_blank">继续编辑</a>
+                <!--{elseif $project['isverify']=='1'}-->
+                <a href="{DIR}project/detail/{url_id($project['id'])}/" class="btn C-J-continue-btn" target="_blank">查看项目</a>
+                <!--{elseif $project['isverify']=='2'}-->
+                <a href="{DIR}project/detail/{url_id($project['id'])}/" class="btn C-J-continue-btn" target="_blank">查看项目</a>
+                <!--{elseif $project['isverify']=='3'}-->
+                <a href="{DIR}project/detail/{url_id($project['id'])}/" class="btn C-J-continue-btn" target="_blank">查看项目</a>
+                <!--{/if}-->
+            </div>
+        </li>
+        <!--{/loop}-->
+    </ul>
+</div>

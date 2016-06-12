@@ -1,0 +1,23 @@
+<!--{eval
+$titles = array(
+    'center' => '基本信息',
+    'invested' => '投资的项目',
+    'financing' => '融资的项目',
+    'message' => '消息通知',
+    'password' => '修改密码',
+);
+$pages['title'] = $titles[core::R('a')];
+
+$pages['pc_url'] = 'user/center/';
+}-->
+<!--{template mobile/header}-->
+
+
+<!--{if $a_user == 'invested'}-->
+<!--{template mobile/user/invested}-->
+<!--{elseif $a_user == 'message'}-->
+<!--{template mobile/user/message}-->
+<!--{/if}-->
+
+
+<!--{template mobile/footer}-->

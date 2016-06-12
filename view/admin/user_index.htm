@@ -1,0 +1,442 @@
+<!--{template admin/header}-->
+<!--{eval
+    $investor_array = array(
+        0 => '无条件',
+        1 => '专业投资人',
+        2 => '超30w',
+        3 => '超100w',
+    );
+
+    $user_title = array(
+        '' => '普通用户',
+        -1 => '未通过投资人',
+        0 => '普通用户',
+        1 => '待审核投资人',
+        2 => '已认证投资人',
+        '99' => '用户管理',
+        999 => '管理员用户',
+    );
+
+    $select_rank = array($search['rank'] => ' selected');
+    $select_sort_order = array($search['sort_order'] => ' selected');
+    $select_search = array($search['search'] => ' selected');
+    $select_screen = array($search['screen'] => ' selected');
+
+    if($isauth == 0){
+        $action = DIR.ADMIN_DIR.'/user/index/isauth/0/';
+    }else if($isauth == -1){
+        $action = DIR.ADMIN_DIR.'/user/index/isauth/-1/';
+    }else if($isauth == 1){
+        $action = DIR.ADMIN_DIR.'/user/index/isauth/1/';
+    }else if($isauth == 2){
+        $action = DIR.ADMIN_DIR.'/user/index/isauth/2/';
+    }else{
+        $action = DIR.ADMIN_DIR.'/user/index/';
+    }
+
+}-->
+<div class="title">
+    {$user_title[$isauth]}
+</div>
+<!--{if $isauth ==-1 || $isauth ==1}-->
+<!--待审核投资人＋未通过投资人-->
+<div>
+    <form action="{$action}" method="post">
+        <label>排序：</label>
+        <select name="search[rank]">
+            <option selected="" value="">选择排序项目</option>
+            <option value="uid" {print_r($select_rank[uid],1)}>id</option>
+            <option value="regtime" {print_r($select_rank[regtime],1)}>申请时间</option>
+        </select>
+        <select name="search[sort_order]">
+            <option selected="" value="">排序方式</option>
+            <option value="ASC" {print_r($select_sort_order[ASC],1)}>升序</option>
+            <option value="DESC" {print_r($select_sort_order[DESC],1)}>降序</option>
+        </select>
+
+        <label>搜索：</label>
+        <select name="search[search]">
+            <option selected="" value="">选择搜索项</option>
+            <option value="uid" {print_r($select_search[uid],1)}>id</option>
+            <option value="truename" {print_r($select_search[truename],1)}>姓名</option>
+            <option value="phone" {print_r($select_search[phone],1)}>手机</option>
+            <option value="email" {print_r($select_search[email],1)}>邮箱</option>
+            <option value="company" {print_r($select_search[company],1)}>公司</option>
+            <option value="job" {print_r($select_search[job],1)}>职位</option>
+            <option value="region" {print_r($select_search[region],1)}>城市</option>
+        </select>
+        <input type="text" name="search[search_value]" value="{$search['search_value']}">
+
+        <label>筛选：</label>
+        <select name="search[screen]">
+            <option selected="" value="">选择投资身份</option>
+            <option value="investor1" {print_r($select_screen[investor1],1)}>个人</option>
+            <option value="investor2" {print_r($select_screen[investor2],1)}>机构</option>
+        </select>
+        <label>日期筛选：</label>
+        <input type="text" name="search[start]" value="{$search['start']}" maxlength="10" placeholder="{date('Y-m-d')}" style="width: 100px;">
+        <input type="text" name="search[end]" value="{$search['end']}" maxlength="10" placeholder="{date('Y-m-d')}" style="width: 100px;">
+        <input type="submit" value="确定">
+    </form>
+</div>
+<!--{elseif $isauth ==2}-->
+<!--已通过投资人-->
+<div>
+    <form action="{$action}" method="post">
+        <label>排序：</label>
+        <select name="search[rank]">
+            <option selected="" value="">选择排序项目</option>
+            <option value="uid" {print_r($select_rank[uid],1)}>id</option>
+            <option value="feedprojectnum" {print_r($select_rank[feedprojectnum],1)}>关注项目数</option>
+            <option value="meetnum" {print_r($select_rank[meetnum],1)}>约见数</option>
+            <option value="projectnum" {print_r($select_rank[projectnum],1)}>投资项目数</option>
+        </select>
+        <select name="search[sort_order]">
+            <option selected="" value="">排序方式</option>
+            <option value="ASC" {print_r($select_sort_order[ASC],1)}>升序</option>
+            <option value="DESC" {print_r($select_sort_order[DESC],1)}>降序</option>
+        </select>
+
+        <label>搜索：</label>
+        <select name="search[search]">
+            <option selected="" value="">选择搜索项</option>
+            <option value="uid" {print_r($select_search[uid],1)}>id</option>
+            <option value="truename" {print_r($select_search[truename],1)}>姓名</option>
+            <option value="phone" {print_r($select_search[phone],1)}>手机</option>
+            <option value="email" {print_r($select_search[email],1)}>邮箱</option>
+            <option value="company" {print_r($select_search[company],1)}>公司</option>
+            <option value="job" {print_r($select_search[job],1)}>职位</option>
+            <option value="region" {print_r($select_search[region],1)}>城市</option>
+        </select>
+        <input type="text" name="search[search_value]" value="{$search['search_value']}">
+
+        <label>筛选：</label>
+        <select name="search[screen]">
+            <option selected="" value="">选择投资身份</option>
+            <option value="investor1" {print_r($select_screen[investor1],1)}>个人</option>
+            <option value="investor2" {print_r($select_screen[investor2],1)}>机构</option>
+        </select>
+        <input type="submit" value="确定">
+    </form>
+</div>
+<!--{else}-->
+<!--普通用户管理-->
+<div>
+    <form action="{$action}" method="post">
+        <label>排序：</label>
+        <select name="search[rank]">
+            <option selected="" value="">选择排序项目</option>
+            <option value="uid" {print_r($select_rank[uid],1)}>id</option>
+            <option value="regtime" {print_r($select_rank[regtime],1)}>注册时间</option>
+            <option value="logtime" {print_r($select_rank[logtime],1)}>最后登录时间</option>
+            <option value="projectnum" {print_r($select_rank[projectnum],1)}>创建项目数</option>
+            <option value="feedprojectnum" {print_r($select_rank[feedprojectnum],1)}>关注项目数</option>
+        </select>
+        <select name="search[sort_order]">
+            <option selected="" value="">排序方式</option>
+            <option value="ASC" {print_r($select_sort_order[ASC],1)}>升序</option>
+            <option value="DESC" {print_r($select_sort_order[DESC],1)}>降序</option>
+        </select>
+
+        <label>搜索：</label>
+        <select name="search[search]">
+            <option selected="" value="">选择搜索项</option>
+            <option value="uid" {print_r($select_search[uid],1)}>id</option>
+            <option value="username" {print_r($select_search[username],1)}>姓名</option>
+            <option value="phone" {print_r($select_search[phone],1)}>手机</option>
+            <option value="email" {print_r($select_search[email],1)}>邮箱</option>
+        </select>
+        <input type="text" name="search[search_value]" value="{$search['search_value']}">
+
+        <input type="submit" value="确定">
+    </form>
+</div>
+<!--{/if}-->
+
+<div class="content">
+    <!--{if $isauth == -1}-->
+    <!--未通过投资人-->
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>用户ID</th>
+                    <th>姓名</th>
+                    <th>手机</th>
+                    <th>邮箱</th>
+                    <th>身份详情</th>
+                    <th>投资身份</th>
+                    <th>公司</th>
+                    <th>职位</th>
+                    <th>城市</th>
+                    <th>申请时间</th>
+                    <th>原因</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!--{loop $user_list $user}-->
+                <!--{eval
+                    $investor = $investor_array[$user['investor']];
+                    $investor = $investor ? $investor : $user['investor'];
+                    if($user['investor']=='0' || $user['investor']=='1' || $user['investor']=='2' || $user['investor']=='3'){
+                        $investment_identity = '个人';
+                    }else{
+                        $investment_identity = '机构';
+                    }
+                }-->
+                <tr>
+                    <td>$user['uid']</td>
+                    <td><a href="{DIR}{ADMIN_DIR}/user/field_project/user_id/{url_id($user['uid'])}/">$user['truename']</a></td>
+                    <td>$user['phone']</td>
+                    <td>{$user['email']}</td>
+                    <td>{$investor}</td>
+                    <td>{$investment_identity}</td>
+                    <td>{$user['company']}</td>
+                    <td>{$user['job']}</td>
+                    <td>{$user['region']}</td>
+                    <td>{date('Y-m-d H:i', $user['authtime'])}</td>
+                    <td><a href="javascript:void(0);" onclick="showModal(this)" data-id="{$user['authmessage']}">查看</a></td>
+
+                    <td>
+                        <input type="button" value="通过" name="user[isauth]" onclick="verifyProject(this)" data-type="person_auth"
+                               data-target="verifymessage" data-id="{$user['user_id']}" data-value="2">
+                    </td>
+                </tr>
+                <!--{/loop}-->
+            </tbody>
+        </table>
+    <!--{elseif $isauth ==1}-->
+    <!--待审核投资人-->
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>用户ID</th>
+                    <th>姓名</th>
+                    <th>手机</th>
+                    <th>邮箱</th>
+                    <th>身份详情</th>
+                    <th>投资身份</th>
+                    <th>公司</th>
+                    <th>职位</th>
+                    <th>城市</th>
+                    <th>申请时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!--{loop $user_list $user}-->
+                <!--{eval
+                    $investor = $investor_array[$user['investor']];
+                    $investor = $investor ? $investor : $user['investor'];
+                    if($user['investor']=='0' || $user['investor']=='1' || $user['investor']=='2' || $user['investor']=='3'){
+                        $investment_identity = '个人';
+                    }else{
+                        $investment_identity = '机构';
+                    }
+                }-->
+                <tr>
+                    <td>$user['uid']</td>
+                    <td><a href="{DIR}{ADMIN_DIR}/user/field_project/user_id/{url_id($user['uid'])}/">$user['truename']</a></td>
+                    <td>$user['phone']</td>
+                    <td>{$user['email']}</td>
+                    <td>{$investor}</td>
+                    <td>{$investment_identity}</td>
+                    <td>{$user['company']}</td>
+                    <td>{$user['job']}</td>
+                    <td>{$user['region']}</td>
+                    <td>{date('Y-m-d H:i', $user['authtime'])}</td>
+                    <td>
+                        <!--<a href="{DIR}{ADMIN_DIR}/user/change_state/isauth/{$isauth}/data[isauth]/2/data[user_id]/$user['user_id']" class="a-btn-l">通过</a>-->
+                        <!--<a href="{DIR}{ADMIN_DIR}/user/change_state/isauth/{$isauth}/data[isauth]/-1/data[user_id]/$user['user_id']" class="a-btn-l">不通过</a>-->
+                        <input type="button" value="通过" name="user[isauth]" onclick="verifyProject(this)" data-type="person_auth"
+                               data-target="verifymessage" data-id="{$user['user_id']}" data-value="2">
+                        <input type="button" value="不通过" name="user[isauth]" onclick="verifyProject(this)" data-type="person_auth"
+                               data-target="verifymessage" data-id="{$user['user_id']}" data-value="-1">
+                    </td>
+                </tr>
+                <!--{/loop}-->
+            </tbody>
+        </table>
+    <!--{elseif $isauth ==2}-->
+    <!--已认证投资人-->
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>用户ID</th>
+                    <th>姓名</th>
+                    <th>手机</th>
+                    <th>邮箱</th>
+                    <th>身份详情</th>
+                    <th>投资身份</th>
+                    <th>公司</th>
+                    <th>职位</th>
+                    <th>城市</th>
+                    <th>投资项目数</th>
+                    <th>关注项目数</th>
+                    <th>约见项目数</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            <!--{loop $user_list $user}-->
+            <!--{eval
+                $investor = $investor_array[$user['investor']];
+                $investor = $investor ? $investor : $user['investor'];
+                if($user['investor']=='0' || $user['investor']=='1' || $user['investor']=='2' || $user['investor']=='3'){
+                    $investment_identity = '个人';
+                }else{
+                    $investment_identity = '机构';
+                }
+            }-->
+            <tr>
+                <td>$user['uid']</td>
+                <!--<td><a href="{DIR}{ADMIN_DIR}/user/index/uid/{$user['uid']}/"  >$user['truename']</a></td>-->
+                <td><a href="{DIR}{ADMIN_DIR}/user/field_project/user_id/{url_id($user['uid'])}/">$user['truename']</a></td>
+                <td>$user['phone']</td>
+                <td>{$user['email']}</td>
+                <td>{$investor}</td>
+                <td>{$investment_identity}</td>
+                <td>{$user['company']}</td>
+                <td>{$user['job']}</td>
+                <td>{$user['region']}</td>
+                <td><a href="{DIR}{ADMIN_DIR}/user/invest_project/user_id/{url_id($user['uid'])}/">{$user['projectnum']}</a></td>
+                <td><a href="{DIR}{ADMIN_DIR}/user/feed_project/user_id/{url_id($user['uid'])}/">{$user['feedprojectnum']}</a></td>
+                <td><a href="{DIR}{ADMIN_DIR}/user/meet_project/user_id/{url_id($user['uid'])}/">{$user['meetnum']}</a></td>
+                <td>
+                    <input type="button" value="不通过" name="user[isauth]" onclick="verifyProject(this)" data-type="person_auth"
+                           data-target="verifymessage" data-id="{$user['user_id']}" data-value="-1">
+                </td>
+            </tr>
+            <!--{/loop}-->
+            </tbody>
+        </table>
+    <!--{else}-->
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>用户ID</th>
+                    <th>姓名</th>
+                    <th>手机</th>
+                    <th>邮箱</th>
+                    <th>创建项目</th>
+                    <th>关注项目</th>
+                    <th>投资人详情</th>
+                    <th>注册时间</th>
+                    <th>最后登录时间</th>
+                    <th>用户权限</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!--{loop $user_list $user}-->
+                <!--{eval
+                    $investor = $investor_array[$user['investor']];
+                    $investor = $investor ? $investor : $user['investor'];
+
+                    $group_select = array($user['group_id'] => ' selected');
+                }-->
+                <tr>
+                    <td>$user['uid']</td>
+                    <!--<td><a href="{DIR}{ADMIN_DIR}/user/index/uid/{$user['uid']}/" >$user['username']</a></td>-->
+                    <td><a href="{DIR}{ADMIN_DIR}/user/field_project/user_id/{url_id($user['uid'])}/">$user['truename']</a></td>
+                    <td>$user['phone']</td>
+                    <td>{$user['email']}</td>
+                    <td><a href="{DIR}{ADMIN_DIR}/user/list_project/user_id/{url_id($user['uid'])}/">{$user['projectnum']}</a></td>
+                    <td><a href="{DIR}{ADMIN_DIR}/user/feed_project/user_id/{url_id($user['uid'])}/"  >{$user['feedprojectnum']}</a></td>
+                    <td><a href="{DIR}{ADMIN_DIR}/user/field_project/user_id/{url_id($user['uid'])}/"  class="a-btn-l">查看</a></td>
+                    <td>{date('Y-m-d H:i', $user['regtime'])}</td>
+                    <td>{date('Y-m-d H:i', $user['logtime'])}</td>
+                    <td>
+                        <select name="field[group_id]" data-post="value" data-url="{DIR}{ADMIN_DIR}/user/permissions/">
+                            <option value="field[user_id]/{$user['uid']}/field[group_id]/999/isauth/{$isauth}/" {$group_select[999]}>管理员</option>
+                            <option value="field[user_id]/{$user['uid']}/field[group_id]/100/isauth/{$isauth}/" {$group_select[100]}>心元用户</option>
+                            <option value="field[user_id]/{$user['uid']}/field[group_id]/0/isauth/{$isauth}/" {$group_select[0]}>普通用户</option>
+                        </Select>
+                    </td>
+                    <td>
+                        <!--<a href="{DIR}user/certificate/?user_id={$user['uid']}"  class="a-btn-l"><i class="icon-magic"></i>编辑</a>-->
+                        <!--{if $user['islock'] == 0}-->
+                            <a href="{DIR}{ADMIN_DIR}/user/islock/" data-post="field[user_id]/{$user['uid']}/field[islock]/1/isauth/{$isauth}/" data-reload="1">锁定</a>
+                        <!--{else}-->
+                            <a href="{DIR}{ADMIN_DIR}/user/islock/" data-post="field[user_id]/{$user['uid']}/field[islock]/0/isauth/{$isauth}/" data-reload="1">解锁</a>
+                        <!--{/if}-->
+                    </td>
+                </tr>
+                <!--{/loop}-->
+            </tbody>
+        </table>
+    <!--{/if}-->
+    <div class="page-box">{$page_html}</div>
+</div>
+
+<div class="modal fade" id="userModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                未通过投资人原因
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div>
+                        <textarea name="authmessage" id="authmessage" style="width: 550px; height: 100px;"></textarea>
+                    </div>
+                    <div class="btn-box">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="authmessageModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                投资人审核
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form action="{DIR}{ADMIN_DIR}/user/change_state/isauth/{$isauth}/" method="post" data-post="form" data-callback="closeModal">
+                    <input type="hidden" value="" name="data[user_id]">
+                    <input type="hidden" value="" name="data[isauth]">
+                    <div>
+                        <textarea name="data[authmessage]" id="verifymessage" class="form-control"></textarea>
+                    </div>
+                    <div class="btn-box">
+                        <input type="submit" class="form-control confirm-btn" value="确定">
+                        <input type="button" class="form-control cancel-btn" data-dismiss="modal"
+                               value="取消">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--{static ../static/js/admin_message.js _admin_message.js}-->
+<script>
+    function showModal(o) {
+        var message = $(o).data('id');
+        $('#userModal *[name="authmessage').val(message);
+        $('#userModal').modal('show');
+    }
+
+    function show2Modal(user_id, isauth) {
+        var message = new Array();;
+            message[-1] = '很遗憾的通知您，您的投资人资格申请未通过，原因如下：\n%1%\n若您符合条件之后，欢迎再次申请认证投资人。';
+            message[2] = '您的投资人资格申请刚刚通过审核，正式成为了Plus平台的认证投资人，赶紧点击查看正在平台上众筹的优质项目吧。';
+        $('#authmessageModal *[name="data[user_id]"]').val(user_id);
+        $('#authmessageModal *[name="data[isauth]"]').val(isauth);
+        $('#authmessageModal *[name="data[authmessage]').val(message[isauth]);
+        $('#authmessageModal').modal('show');
+    }
+    function verifyProject(o) {
+        var user_id = $(o).data('id'), isauth = $(o).data('value');
+        show2Modal(user_id, isauth);
+    }
+
+    window.closeModal = function (success) {
+        $('#authmessageModal').modal('hide');
+    }
+</script>
+<!--{template admin/footer}-->

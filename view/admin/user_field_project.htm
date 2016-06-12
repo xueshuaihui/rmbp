@@ -1,0 +1,65 @@
+<!--{template admin/header}-->
+<!--{template admin/user_header}-->
+<!--{eval
+$investor_arr = array(
+    0 => '不符合条件',
+    1 => '专业投资人',
+    2 => '年收入超30w',
+    3 => '金融资产超100万'
+);
+}-->
+<div class="title">
+    投资人信息
+</div>
+<div class="content">
+    <div>
+        <div>真实姓名：{$user_data['truename']}</div>
+    </div>
+    <div>
+        <div>公司：{$user_data['company']}</div>
+    </div>
+    <div>
+        <div>职位：{$user_data['job']}</div>
+    </div>
+    <div>
+        <div>微信：{$user_data['account3nd']['weixin']}</div>
+    </div>
+    <div>
+        <div>手机号：{$user_data['phone']}</div>
+    </div>
+    <div>
+        <div>邮箱：{$user_data['email']}</div>
+    </div>
+    <div>
+        <div>所在城市：{$user_data['region']}</div>
+    </div>
+    <div>
+        <div>投资身份：
+            <!--{if $user_data['investor']=='0' || $user_data['investor']=='1' || $user_data['investor']=='2' || $user_data['investor']=='3'}-->
+            {print_r($investor_arr[$user_data['investor']],1)}
+            <!--{else}-->
+            {$user_data['investor']}
+            <!--{/if}-->
+        </div>
+    </div>
+    <div>
+        <div>关注领域：
+            <!--{loop $user_area $area}-->
+            <span>{$area['name']}</span>
+            <!--{/loop}-->
+        </div>
+    </div>
+    <div>
+        <div>关注城市：
+            <!--{loop $user_region $region}-->
+            <span>{$region['name']}</span>
+            <!--{/loop}-->
+        </div>
+    </div>
+    <!--<div>-->
+        <!--<div>自我介绍：{$user_data['']}</div>-->
+    <!--</div>-->
+
+</div>
+<div class="page-box">{$page_html}</div>
+<!--{template admin/footer}-->

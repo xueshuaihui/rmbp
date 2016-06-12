@@ -1,0 +1,619 @@
+<!--{template admin/header}-->
+<!--{eval
+   $status_array = array(
+        0 => '概念阶段',
+        1 => '研发中',
+        2 => '已上线',
+    );
+    $balance_array = array(
+        0 => '无收入',
+        1 => '有收入未盈利',
+        2 => '收支平衡',
+        3 => '已盈利'
+    );
+    $stage_array = array(
+        1 => '天使轮',
+        2 => 'A轮',
+        3 => 'B轮',
+        4 => 'C轮',
+        5 => 'C轮后',
+        6 => '实体店融资',
+    );
+    $verify_array = array(
+        -4 => '心元候选',
+        -3 => '心元',
+        -2 => '下线',
+        -1 => '未通过',
+        0 => '提交中',
+        1 => '待审核',
+        6 => '已通过',
+        2 => '预热中',
+        3 => '众筹中',
+        4 => '众筹成功',
+        5 => '众筹失败',
+    );
+    $verify_title = array(
+        '' => '所有项目',
+        -2 => '下线项目',
+        1 => '待审核项目',
+        2 => '已通过项目',
+        3 => '已完成项目',
+        4 => '未通过项目',
+        5 => '编辑中项目',
+    );
+    $title = $verify_title[$verify];
+    if(!$title){
+        $title = '全部项目';
+    }
+
+    $select_rank = array($search['rank'] => ' selected');
+    $select_sort_order = array($search['sort_order'] => ' selected');
+    $select_search = array($search['search'] => ' selected');
+    $select_screen = array($search['screen'] => ' selected');
+
+    if($verify == 2){
+        $action = DIR.ADMIN_DIR.'/project/index/verify/2/';
+    }else if($verify == 3){
+        $action = DIR.ADMIN_DIR.'/project/index/verify/3/';
+    }else if($verify == 4){
+        $action = DIR.ADMIN_DIR.'/project/index/verify/4/';
+    }else if($verify == 5){
+        $action = DIR.ADMIN_DIR.'/project/index/verify/5/';
+    }else if($verify == -2){
+        $action = DIR.ADMIN_DIR.'/project/index/verify/-2/';
+    }else if($verify == 1){
+        $action = DIR.ADMIN_DIR.'/project/index/verify/1/';
+    }
+}-->
+<div class="title">
+    $verify_title[$verify]
+</div>
+
+<!--{if $verify==2 || $verify==3}-->
+<!--已通过项目＋已完成项目-->
+<div>
+    <form action="{$action}" method="post">
+        <label>排序：</label>
+        <select name="search[rank]">
+            <option selected="" value="">选择排序项目</option>
+            <option value="id" {print_r($select_rank[id],1)}>id</option>
+            <option value="minfinancing" {print_r($select_rank[minfinancing],1)}>最低融资目标</option>
+            <option value="maxfinancing" {print_r($select_rank[maxfinancing],1)}>最高融资目标</option>
+            <option value="totalfinancing" {print_r($select_rank[totalfinancing],1)}>已融资金额</option>
+            <!--<option value="feedprojectnum" {print_r($select_rank[feedprojectnum],1)}>投资人数</option>-->
+            <option value="feednum" {print_r($select_rank[feednum],1)}>关注数</option>
+            <option value="meetnum" {print_r($select_rank[meetnum],1)}>约见数</option>
+            <option value="expiretime" {print_r($select_rank[expiretime],1)}>截止时间</option>
+        </select>
+        <select name="search[sort_order]">
+            <option selected="" value="">排序方式</option>
+            <option value="ASC" {print_r($select_sort_order[ASC],1)}>升序</option>
+            <option value="DESC" {print_r($select_sort_order[DESC],1)}>降序</option>
+        </select>
+
+        <label>搜索：</label>
+        <select name="search[search]">
+            <option selected="" value="">选择搜索项</option>
+            <option value="id" {print_r($select_search[id],1)}>id</option>
+            <option value="title" {print_r($select_search[title],1)}>项目名</option>
+            <option value="truename" {print_r($select_search[truename],1)}>创建用户</option>
+        </select>
+        <input type="text" name="search[search_value]" value="{$search['search_value']}">
+
+        <label>筛选：</label>
+        <select name="search[screen]">
+            <option selected="" value="">选择状态</option>
+            <option value="1" {print_r($select_screen[1],1)}>待上线</option>
+            <option value="2" {print_r($select_screen[2],1)}>预热中</option>
+            <option value="3" {print_r($select_screen[3],1)}>融资中</option>
+        </select>
+        <label>日期筛选：</label>
+        <input type="text" name="search[start]" value="{$search['start']}" maxlength="10" placeholder="{date('Y-m-d')}"
+               style="width: 100px;">
+        <input type="text" name="search[end]" value="{$search['end']}" maxlength="10" placeholder="{date('Y-m-d')}"
+               style="width: 100px;">
+        <input type="submit" value="确定">
+    </form>
+</div>
+<!--{else}-->
+<!--其他-->
+<div>
+    <form action="{$action}" method="post">
+        <label>排序：</label>
+        <select name="search[rank]">
+            <option selected="" value="">选择排序项目</option>
+            <option value="id" {print_r($select_rank[id],1)}>id</option>
+            <option value="minfinancing" {print_r($select_rank[minfinancing],1)}>最低融资目标</option>
+            <option value="maxfinancing" {print_r($select_rank[maxfinancing],1)}>最高融资目标</option>
+            <option value="dateline" {print_r($select_rank[dateline],1)}>创建时间</option>
+        </select>
+        <select name="search[sort_order]">
+            <option selected="" value="">排序方式</option>
+            <option value="ASC" {print_r($select_sort_order[ASC],1)}>升序</option>
+            <option value="DESC" {print_r($select_sort_order[DESC],1)}>降序</option>
+        </select>
+
+        <label>搜索：</label>
+        <select name="search[search]">
+            <option selected="" value="">选择搜索项</option>
+            <option value="id" {print_r($select_search[id],1)}>id</option>
+            <option value="title" {print_r($select_search[title],1)}>项目名</option>
+            <option value="truename" {print_r($select_search[truename],1)}>创建用户</option>
+            <option value="phone" {print_r($select_search[phone],1)}>手机</option>
+            <option value="email" {print_r($select_search[email],1)}>邮箱</option>
+            <option value="region" {print_r($select_search[region],1)}>城市</option>
+        </select>
+        <input type="text" name="search[search_value]" value="{$search['search_value']}">
+
+        <label>筛选：</label>
+        <select name="search[screen]">
+            <option selected="" value="">选择阶段</option>
+            <option value="1" {print_r($select_screen[1],1)}>天使轮</option>
+            <option value="2" {print_r($select_screen[2],1)}>A轮</option>
+            <option value="3" {print_r($select_screen[3],1)}>B轮</option>
+            <option value="4" {print_r($select_screen[4],1)}>C轮</option>
+            <option value="5" {print_r($select_screen[5],1)}>C轮后</option>
+            <option value="6" {print_r($select_screen[6],1)}>实体店融资</option>
+        </select>
+
+        <label>日期筛选：</label>
+        <input type="text" name="search[start]" value="{$search['start']}" maxlength="10" placeholder="{date('Y-m-d')}"
+               style="width: 100px;">
+        <input type="text" name="search[end]" value="{$search['end']}" maxlength="10" placeholder="{date('Y-m-d')}"
+               style="width: 100px;">
+        <input type="submit" value="确定">
+    </form>
+</div>
+<!--{/if}-->
+
+<div class="content">
+    <!--{if $verify == 1}-->
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>项目ID</th>
+            <th>项目名称</th>
+            <th>创建用户</th>
+            <th>手机</th>
+            <th>邮箱</th>
+            <th>融资阶段</th>
+            <th>融资目标</th>
+            <th>城市</th>
+            <th>创建时间</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--{loop $project_list $project}-->
+        <!--{eval
+        $phone = $project['phone'] ? $project['phone'] : $project['user']['phone'];
+        $email = $project['email'] ? $project['email'] : $project['user']['email'];
+        $stage = $stage_array[$project['stage']];
+        $isverify_s = array($project['isverify'] => ' selected');
+        }-->
+        <tr>
+            <td>$project['id']</td>
+            <td>
+                <a href="{DIR}{ADMIN_DIR}/project/project_info/project_id/{url_id($project['id'])}/">$project['title']</a>
+            </td>
+            <td>
+                <a href="{DIR}{ADMIN_DIR}/user/field_project/user_id/{url_id($project['user']['uid'])}/">$project['user_field']['truename']</a>
+            </td>
+            <td>{$phone}</td>
+            <td>$email</td>
+            <td>{$stage}</td>
+            <td>{$project['minfinancing']}-{$project['maxfinancing']}万</td>
+            <td>$project['region']</td>
+            <td>{date('Y-m-d H:i', $project['dateline'])}</td>
+            <td>
+                {print_r($verify_array[$project['isverify']],1)}
+            </td>
+            <td>
+                <!--<a href="{DIR}publish/step5/?project_id={url_id($project['id'])}" target="_blank" class="a-btn-l"><i-->
+                <!--class="icon-magic"></i>编辑</a>-->
+                <select name="project[isverify]" onchange="verifyProject(this)" data-type="project_verify"
+                        data-target="verifymessage" data-id="{$project['id']}">
+                    <option value="{$project['isverify']}">请选择</option>
+                    <option value="6">通过</option>
+                    <option value="-1">不通过</option>
+                </Select>
+            </td>
+        </tr>
+        <!--{/loop}-->
+        </tbody>
+    </table>
+    <!--{elseif $verify == 2}-->
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>项目ID</th>
+            <th>项目名称</th>
+            <th>创建用户</th>
+            <th>融资目标</th>
+            <th>已融资金额</th>
+            <th>融资进度</th>
+            <th>投资人数</th>
+            <th>关注数</th>
+            <th>约见数</th>
+            <th>截止日期</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--{loop $project_list $project}-->
+        <!--{eval
+        $phone = $project['phone'] ? $project['phone'] : $project['user']['phone'];
+        $email = $project['email'] ? $project['email'] : $project['user']['email'];
+        $stage = $stage_array[$project['stage']];
+        $plan = $project['totalfinancing']/$project['maxfinancing']*100;
+        $isverify_s = array($project['isverify'] => ' selected');
+        }-->
+        <tr>
+            <td>$project['id']</td>
+            <td>
+                <a href="{DIR}{ADMIN_DIR}/project/project_info/project_id/{url_id($project['id'])}/">$project['title']</a>
+            </td>
+            <td>
+                <a href="{DIR}{ADMIN_DIR}/user/field_project/user_id/{url_id($project['user']['uid'])}/">$project['user_field']['truename']</a>
+            </td>
+            <td>{$project['minfinancing']}-{$project['maxfinancing']}万</td>
+            <td>{$project['totalfinancing']}万</td>
+            <td>{$plan}%</td>
+            <td>
+                <a href="{DIR}{ADMIN_DIR}/project/invest/project_id/{url_id($project['id'])}/">{$project['invest_num']}</a>
+            </td>
+            <td><a href="{DIR}{ADMIN_DIR}/project/attent/project_id/{url_id($project['id'])}/">{$project['feednum']}</a>
+            </td>
+            <td><a href="{DIR}{ADMIN_DIR}/project/meet/project_id/{url_id($project['id'])}/">{$project['meetnum']}</a>
+            </td>
+            <td>{date('Y-m-d H:i', $project['expiretime'])}</td>
+            <td>
+                {print_r($verify_array[$project['isverify']],1)}
+            </td>
+            <td>
+                <select name="project[isverify]" onchange="verifyProject(this)" data-type="project_verify"
+                        data-target="verifymessage" data-id="{$project['id']}">
+                    <option value="{$project['isverify']}">请选择</option>
+                    <option value="2">预热中</option>
+                    <option value="3">众筹中</option>
+                    <option value="-1">不通过</option>
+                    <option value="-2">下线</option>
+                </Select>
+
+            </td>
+        </tr>
+        <!--{/loop}-->
+        </tbody>
+    </table>
+    <!--{elseif $verify == 3}-->
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>项目ID</th>
+            <th>项目名称</th>
+            <th>创建用户</th>
+            <th>融资目标</th>
+            <th>已融资金额</th>
+            <th>融资进度</th>
+            <th>投资人数</th>
+            <th>关注数</th>
+            <th>约见数</th>
+            <th>截止日期</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--{loop $project_list $project}-->
+        <!--{eval
+        $phone = $project['phone'] ? $project['phone'] : $project['user']['phone'];
+        $email = $project['email'] ? $project['email'] : $project['user']['email'];
+        $stage = $stage_array[$project['stage']];
+        $plan = $project['totalfinancing']/$project['maxfinancing']*100;
+        }-->
+        <tr>
+            <td>$project['id']</td>
+            <td>
+                <a href="{DIR}{ADMIN_DIR}/project/project_info/project_id/{url_id($project['id'])}/">$project['title']</a>
+            </td>
+            <td>
+                <a href="{DIR}{ADMIN_DIR}/user/field_project/user_id/{url_id($project['user']['uid'])}/">$project['user_field']['truename']</a>
+            </td>
+            <td>{$project['minfinancing']}-{$project['maxfinancing']}万</td>
+            <td>{$project['totalfinancing']}</td>
+            <td>{$plan}%</td>
+            <td>
+                <a href="{DIR}{ADMIN_DIR}/project/invest/project_id/{url_id($project['id'])}/">{$project['invest_num']}</a>
+            </td>
+            <td><a href="{DIR}{ADMIN_DIR}/project/attent/project_id/{url_id($project['id'])}/">{$project['feednum']}</a>
+            </td>
+            <td><a href="{DIR}{ADMIN_DIR}/project/meet/project_id/{url_id($project['id'])}/">{$project['meetnum']}</a>
+            </td>
+            <td>{date('Y-m-d H:i', $project['expiretime'])}</td>
+            <td>
+                {print_r($verify_array[$project['isverify']],1)}
+            </td>
+            <td>
+                <select name="project[isverify]" onchange="verifyProject(this)" data-type="project_verify"
+                        data-target="verifymessage" data-id="{$project['id']}">
+                    <option value="{$project['isverify']}">请选择</option>
+                    <option value="-2">下线</option>
+                </Select>
+            </td>
+        </tr>
+        <!--{/loop}-->
+        </tbody>
+    </table>
+    <!--{elseif $verify == 4}-->
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>项目ID</th>
+            <th>项目名称</th>
+            <th>创建用户</th>
+            <th>手机</th>
+            <th>邮箱</th>
+            <th>融资阶段</th>
+            <th>融资目标</th>
+            <th>城市</th>
+            <th>创建时间</th>
+            <th>原因</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--{loop $project_list $project}-->
+        <!--{eval
+        $phone = $project['phone'] ? $project['phone'] : $project['user']['phone'];
+        $email = $project['email'] ? $project['email'] : $project['user']['email'];
+        $stage = $stage_array[$project['stage']];
+        }-->
+        <tr>
+            <td>$project['id']</td>
+            <td>
+                <a href="{DIR}{ADMIN_DIR}/project/project_info/project_id/{url_id($project['id'])}/">$project['title']</a>
+            </td>
+            <td>
+                <a href="{DIR}{ADMIN_DIR}/user/field_project/user_id/{url_id($project['user']['uid'])}/">$project['user_field']['truename']</a>
+            </td>
+            <td>{$phone}</td>
+            <td>$email</td>
+            <td>{$stage}</td>
+            <td>{$project['minfinancing']}-{$project['maxfinancing']}万</td>
+            <td>$project['region']</td>
+            <td>{date('Y-m-d H:i', $project['dateline'])}</td>
+            <!--<td><a href="javascript:void(0);" target="_blank">查看</a></td>-->
+            <td><a href="javascript:void(0);" onclick="viewModal(this);"
+                   data-id="{$project[field][verifymessage]}">查看</a></td>
+            <td>
+                <select name="project[isverify]" onchange="verifyProject(this)" data-type="project_verify"
+                        data-target="verifymessage" data-id="{$project['id']}">
+                    <option value="{$project['isverify']}">请选择</option>
+                    <option value="6">通过</option>
+                </Select>
+            </td>
+        </tr>
+        <!--{/loop}-->
+        </tbody>
+    </table>
+    <!--{elseif $verify == 5}-->
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>项目ID</th>
+            <th>项目名称</th>
+            <th>创建用户</th>
+            <th>手机</th>
+            <th>邮箱</th>
+            <th>融资阶段</th>
+            <th>融资目标</th>
+            <th>城市</th>
+            <th>创建时间</th>
+            <!--<th>操作</th>-->
+        </tr>
+        </thead>
+        <tbody>
+        <!--{loop $project_list $project}-->
+        <!--{eval
+        $phone = $project['phone'] ? $project['phone'] : $project['user']['phone'];
+        $email = $project['email'] ? $project['email'] : $project['user']['email'];
+        $stage = $stage_array[$project['stage']];
+        }-->
+        <tr>
+            <td>$project['id']</td>
+            <td>
+                <a href="{DIR}{ADMIN_DIR}/project/project_info/project_id/{url_id($project['id'])}/">$project['title']</a>
+            </td>
+            <td>
+                <a href="{DIR}{ADMIN_DIR}/user/field_project/user_id/{url_id($project['user']['uid'])}/">$project['user_field']['truename']</a>
+            </td>
+            <td>{$phone}</td>
+            <td>$email</td>
+            <td>{$stage}</td>
+            <td>{$project['minfinancing']}-{$project['maxfinancing']}万</td>
+            <td>$project['region']</td>
+            <td>{date('Y-m-d H:i', $project['dateline'])}</td>
+        </tr>
+        <!--{/loop}-->
+        </tbody>
+    </table>
+    <!--{elseif $verify == -2}-->
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>项目ID</th>
+            <th>项目名称</th>
+            <th>创建用户</th>
+            <th>手机</th>
+            <th>邮箱</th>
+            <th>融资阶段</th>
+            <th>融资目标</th>
+            <th>城市</th>
+            <th>创建时间</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--{loop $project_list $project}-->
+        <!--{eval
+        $phone = $project['phone'] ? $project['phone'] : $project['user']['phone'];
+        $email = $project['email'] ? $project['email'] : $project['user']['email'];
+        $stage = $stage_array[$project['stage']];
+        }-->
+        <tr>
+            <td>$project['id']</td>
+            <td>
+                <a href="{DIR}{ADMIN_DIR}/project/project_info/project_id/{url_id($project['id'])}/">$project['title']</a>
+            </td>
+            <td>
+                <a href="{DIR}{ADMIN_DIR}/user/field_project/user_id/{url_id($project['user']['uid'])}/">$project['user_field']['truename']</a>
+            </td>
+            <td>{$phone}</td>
+            <td>$email</td>
+            <td>{$stage}</td>
+            <td>{$project['minfinancing']}-{$project['maxfinancing']}万</td>
+            <td>$project['region']</td>
+            <td>{date('Y-m-d H:i', $project['dateline'])}</td>
+            <td>
+                {print_r($verify_array[$project['isverify']],1)}
+            </td>
+            <td>
+                <select name="project[isverify]" onchange="verifyProject(this)" data-type="project_verify"
+                        data-target="verifymessage" data-id="{$project['id']}">
+                    <option value="{$project['isverify']}">请选择</option>
+                    <option value="6">通过</option>
+                    <option value="2">预热中</option>
+                    <option value="3">众筹中</option>
+                    <option value="4">成功</option>
+                    <option value="5">失败</option>
+                </Select>
+            </td>
+        </tr>
+        <!--{/loop}-->
+        </tbody>
+    </table>
+    <!--{else}-->
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>项目ID</th>
+            <th>项目名称</th>
+            <th>创建用户</th>
+            <th>手机</th>
+            <th>邮箱</th>
+            <th>融资阶段</th>
+            <th>融资目标</th>
+            <th>城市</th>
+            <th>创建时间</th>
+            <th>状态</th>
+            <!--<th>操作</th>-->
+        </tr>
+        </thead>
+        <tbody>
+        <!--{loop $project_list $project}-->
+        <!--{eval
+        $phone = $project['phone'] ? $project['phone'] : $project['user']['phone'];
+        $email = $project['email'] ? $project['email'] : $project['user']['email'];
+        $stage = $stage_array[$project['stage']];
+        }-->
+        <tr>
+            <td>$project['id']</td>
+            <td>
+                <a href="{DIR}{ADMIN_DIR}/project/project_info/project_id/{url_id($project['id'])}/">$project['title']</a>
+            </td>
+            <td>
+                <a href="{DIR}{ADMIN_DIR}/user/field_project/user_id/{url_id($project['user']['uid'])}/">$project['user_field']['truename']</a>
+            </td>
+            <td>{$phone}</td>
+            <td>$email</td>
+            <td>{$stage}</td>
+            <td>{$project['minfinancing']}-{$project['maxfinancing']}万</td>
+            <td>$project['region']</td>
+            <td>{date('Y-m-d H:i', $project['dateline'])}</td>
+            <td>
+                <select name="project[isverify]" onchange="verifyProject(this)" data-type="project_verify"
+                        data-target="verifymessage" data-id="{$project['id']}">
+                    <!--{loop $verify_array $val $text}-->
+                    <option value="{$val}"
+                    <!--{if $val == $project['isverify']}--> selected{/if}>{$text}</option>
+                    <!--{/loop}-->
+                </Select>
+            </td>
+        </tr>
+        <!--{/loop}-->
+        </tbody>
+    </table>
+    <!--{/if}-->
+    <div class="page-box">{$page_html}</div>
+</div>
+
+<div class="modal fade" id="viewModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                未通过原因
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <textarea name="verifymessage" class="form-control"></textarea>
+                </div>
+                <div class="btn-box">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="projectModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                审核原因
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form action="{DIR}{ADMIN_DIR}/project/update/" method="post" data-post="form"
+                      data-callback="closeModal">
+                    <input type="hidden" value="" name="project[id]">
+                    <input type="hidden" value="" name="project[isverify]">
+                    <input type="hidden" value="{$verify}" name="project[verify]">
+
+                    <div>
+                        <textarea name="project[verifymessage]" id="verifymessage" class="form-control">$project['verifymessage']</textarea>
+                    </div>
+                    <div class="btn-box">
+                        <input type="submit" class="form-control confirm-btn" value="确定">
+                        <input type="button" class="form-control cancel-btn" data-dismiss="modal"
+                               value="取消">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--{static ../static/js/admin_message.js _admin_message.js}-->
+<script>
+    function viewModal(o) {
+        var message = $(o).data('id');
+        $('#viewModal *[name="verifymessage').val(message);
+        $('#viewModal').modal('show');
+    }
+    function showModal(id, value) {
+        $('#projectModal *[name="project[isverify]"]').val(value);
+        $('#projectModal *[name="project[id]"]').val(id);
+        $('#projectModal').modal('show');
+    }
+    function verifyProject(o) {
+        var id = $(o).data('id'), value = $(o).val();
+        showModal(id, value);
+        changeMessage(o);
+    }
+    window.closeModal = function (success) {
+        $('#projectModal').modal('hide');
+    }
+</script>
+<!--{template admin/footer}-->

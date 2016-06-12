@@ -1,0 +1,81 @@
+<div class="tab-pane active">
+    <!--{if $user->user_id == 0}-->
+        <!--{template project/guest}-->
+    <!--{else}-->
+        <!--{if $user_id != $project['user_id'] && ($isauth == -1 || $isauth == 0)}-->
+            <div class="row description">
+                <div class="lable">
+                    <p>{$project['title']}投资回报</p>
+                </div>
+                <div class="content">您还未认证投资人，请先
+                    <a href="{DIR}?c=user-certificate"> 认证 </a>
+                    后，才能查看完整内容。</div>
+            </div>
+        <!--{/if}-->
+
+        <!--{if $user_id != $project['user_id'] && $isauth == 1}-->
+            <div class="row description">
+                <div class="lable">
+                    <p>{$project['title']}投资回报</p>
+                </div>
+                <div class="content">
+                    您的认证投资人申请正在审核中，审核通过后，才能查看完整内容。
+                </div>
+            </div>
+        <!--{/if}-->
+
+        <!--{if $isauth == 2 || $user_id == $project['user_id']}-->
+            <!--{if !$project['invest']}-->
+            <div class="no-content">
+                <p>
+                    小编正在快马加鞭的整理
+                </p>
+            </div>
+            <!--{else}-->
+            <div class="row description">
+                <div class="table-box">
+                    <div class="row title">
+                        投资回报
+                    </div>
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-xs-3 table-label">分红条件：</div>
+                            <div class="col-xs-9" style="text-align: left; line-height: 20px; padding: 10px 0 10px 10px;">
+                                {print_r($project['invest']['bonuscondition'] ? $project['invest']['bonuscondition'] : '暂无')}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3 table-label">分红周期：</div>
+                            <div class="col-xs-9">{$project['invest']['bonuscircle']}年</div>
+                        </div>
+                        <div class="row">
+                            <!--{eval
+                                $_bonusrate = $project['invest']['bonusrate'];
+                                $bonusrate_array = array(
+                                    1 => '按月分红',
+                                    2 => '按季分红',
+                                    3 => '按年分红'
+                                );
+                            }-->
+                            <div class="col-xs-3 table-label">分红频率：</div>
+                            <div class="col-xs-9">{$bonusrate_array[$_bonusrate]}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3 table-label">预期每月分红额：</div>
+                            <div class="col-xs-9">$project['invest']['bonusexpect']万元</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-box">
+                    <div class="row title">
+                        其他回报
+                    </div>
+                    <div class="content other-return-box">
+                        {print_r($project['invest']['message'] ? $project['invest']['message'] : '暂无')}
+                    </div>
+                </div>
+            </div>
+            <!--{/if}-->
+        <!--{/if}-->
+    <!--{/if}-->
+</div>

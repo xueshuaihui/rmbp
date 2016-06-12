@@ -1,0 +1,6 @@
+/*[tplStatic 1.0 - 1510]*/
+
+$(function(){window.guyComponent=(function(){var guyList=[],guyTpl=tpl('guyTpl'),that=this;function bindEvent(ele){ele.find('.J-img-input').unbind('click').click(function(){$(this).prev().unbind('click').click();removeError($(this));});}
+that.add=function(data){if(!data){data={index:0,id:'',truename:'',job:'',intro:'',pic:{}};}
+var index=guyList.push(data);guyList[index-1].index=index;var guyElement=$(guyTpl(guyList[index-1]));guyList[index-1].dom=guyElement;bindEvent(guyElement);$('#guy-wrap').append(guyElement);setGuyBox();};that.remove=function(index){if(guyList[index]){var guy=guyList[index];if(confirm('确定删除这位小伙伴吗？')){window.API.post('remove_guy',{id:guy.id},function(){guyList[index].dom.remove();setGuyBox();});}}};that.init=function(guyData){if(guyData.length==0){guyComponent.add();}else{for(var i in guyData){guyComponent.add(guyData[i]);}}}
+return that;})();$(document).on('click','*[data-action]',function(){switch($(this).data('action')){case'add-guy':guyComponent.add();break;case'remove-guy':guyComponent.remove($(this).data('index'));break;}});});;

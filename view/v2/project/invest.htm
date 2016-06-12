@@ -1,0 +1,81 @@
+<div class="tab-pane active invest-list-box">
+    <!--{if $user->user_id == 0}-->
+        <!--{template project/guest}-->
+    <!--{else}-->
+        <!--{if $user_id != $project['user_id'] && ($isauth == -1 || $isauth == 0)}-->
+            <div class="row description">
+                <div class="lable">
+                    <p>{$project['title']}计划</p>
+                </div>
+                <div class="content">您还未认证投资人，请先
+                    <a href="{DIR}?c=user-certificate"> 认证 </a>
+                    后，才能查看完整内容。
+                </div>
+            </div>
+        <!--{/if}-->
+
+        <!--{if $user_id != $project['user_id'] && $isauth == 1}-->
+            <div class="row description">
+                <div class="lable">
+                    <p>{$project['title']}计划</p>
+                </div>
+                <div class="content">
+                    您的认证投资人申请正在审核中，审核通过后，才能查看完整内容。
+                </div>
+            </div>
+        <!--{/if}-->
+
+        <!--{if $isauth == 2 || $user_id == $project['user_id']}-->
+        <!--{if !$project['invests']}-->
+        <div class="no-content">
+            <p>
+                投资人的位置正虚位以待中
+            </p>
+        </div>
+        <!--{/if}-->
+
+        <ul class="no-padding-margin">
+            <!--{loop $project['invests'] $invest_info}-->
+            <!--{eval
+            $invest_user = mb_substr($invest_info['user']['username'], 0, 1, 'utf-8');
+            $invest_len = mb_strlen($invest_info['user']['username']) - 1;
+            $invest_user .= str_repeat('*', $invest_len);
+            /*
+            $str_len = strlen($invest_user) ;
+            if($str_len== ){
+                $invest_user = substr($invest_user, 0, 1);
+            }else if($str_len == 3){
+                $invest_user = mb_substr($invest_user, 0, 1, 'utf-8');
+            }else if($str_len == 4){
+                $invest_user = mb_substr($invest_user, 0, 1, 'utf-8');
+            }
+            */
+            }-->
+            <li>
+                <a href="{DIR}home/index/user_id/{url_id($invest_info['user_id'])}/" target="_blank">
+                    {avatar($invest_info['user_id'], ' alt="" class="head-icon"')}
+                </a>
+
+                <div class="desc-box">
+                    <p class="head">
+                        <span class="name">{$invest_user}</span>
+                        <span class="time">{date('Y-m-d H:i' , $invest_info['dateline'])}</span>
+                    </p>
+
+                    <p class="desc">
+                        <span class="lable">投资金额：</span>
+                             <span class="money">
+                                 ￥
+                                 <span class="num">
+                                     {$invest_info['price']}
+                                 </span>
+                                 元
+                        </span>
+                    </p>
+                </div>
+            </li>
+            <!--{/loop}-->
+        </ul>
+        <!--{/if}-->
+    <!--{/if}-->
+</div>

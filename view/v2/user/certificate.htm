@@ -1,0 +1,313 @@
+<!--{eval
+$pages['header_class'] = 'header-white';
+$pages['title'] = '投资人申请';
+}-->
+<!--{template inc/header}-->
+<!--{static ../static/v2/images/form_icon/* ../static/v2/_form_icon}-->
+<!--{static ../static/v2/css/form.scss ../static/v2/_form.css}-->
+<!--{static ../static/css/imgareaselect-default.css css/_imgareaselect.css}-->
+<!--{static ../static/v2/css/certificate.scss ../static/v2/_certificate.css}-->
+
+<div class="form-box">
+    <div class="container">
+        <div class="title">
+            <span>认证投资人申请</span>
+        </div>
+        <form id="investorCertification" class="certificate-box">
+            <div class="form-content">
+                <div class="row">
+                    <div class="col-xs-2 form-label">个人头像</div>
+                    <div class="col-xs-5 investor-img-box">
+                        <a href="javascript:void(0);" class="image-show J-upload-logo" id="userImgPrev" data-target="userImgInput">
+                            {avatar($user_data['uid'], 'id="investorImg" alt=""')}
+                        </a>
+                        <div class="desc-box">
+                            <p>支持小于2M，格式为jpg、png的图片，推荐尺寸400*400px</p>
+                            <input type="file" style="display:none" id="userImgInput" onchange="imgCrop.change(this)" data-width="200" data-height="200" data-previd="userImgPrev">
+                            <input class="btn J-upload-logo" type="button" value="上传" data-target="userImgInput">
+                        </div>
+                        <!-- 头像上传字段 -->
+                        <input id="userAvatarInput" type="hidden" name="user[avatar]"/>
+                    </div>
+                    <div class="modal fade crop-modal J-crop-modal" data-backdrop="static">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div class="image-box">
+                                        <p><img></p>
+                                    </div>
+                                    <div class="preview-box" style="width:150px;">
+                                        <img>
+                                    </div>
+                                    <canvas class="J-canvas" style="overflow:hidden; display:none"></canvas>
+                                </div>
+                                <div class="crop-btns">
+                                    <a href="javascript:void(0);" class="btn confirm-btn J-confirm-btn" onclick="imgCrop.confirm()">确定</a>
+                                    <a href="javascript:void(0);" class="btn cancel-btn"  onclick="imgCrop.cancel()">取消</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 form-label">真实姓名</div>
+                    <div class="col-xs-5">
+                        <input class="form-control J-name" type="text"
+                               placeholder="请输入中文或英文字符，不允许特殊字符"
+                               name="user[truename]"
+                               value="{$user_data['truename']}"
+                               onchange="check.regCheck(this)"
+                               data-regtype="only_chinese_english">
+                    </div>
+                    <div class="col-xs-5 tip J-tip">
+                        <div class="tip-box">
+                            <p class="J-tip-content"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!--{if !$user_data['phone']}-->
+                <div class="row">
+                    <div class="col-xs-2 form-label">手机号码</div>
+                    <div class="col-xs-5">
+                        <input class="form-control J-phone" maxLength="11" type="text"
+                               placeholder="请输入您的手机号码" name="user[phone]" value="{$user_data['phone']}" id="investorPhoneInput">
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 form-label">验证码</div>
+                    <div class="col-xs-3">
+                        <input class="form-control J-check-code" name="user[regcode]" type="text" placeholder="输入手机验证码">
+                    </div>
+                    <div class="col-xs-2 J-verification-code">
+                        <input class="btn check-code-btn J-check-code-btn" type="button" value="获取验证码"
+                               data-page="investor" data-type="phone"
+                               data-target="investorPhoneInput">
+                    </div>
+                    <div class="col-xs-5 tip J-tip">
+                        <div class="tip-box">
+                            <p class="J-tip-content"></p>
+                        </div>
+                    </div>
+                </div>
+                <!--{else}-->
+                <div class="row">
+                    <div class="col-xs-2 form-label">手机号码</div>
+                    <div class="col-xs-5">
+                        <input class="form-control J-phone" maxLength="11" type="text"
+                               placeholder="请输入您的手机号码" disabled value="{$user_data['phone']}">
+                    </div>
+                </div>
+                <!--{/if}-->
+
+                <div class="row">
+                    <div class="col-xs-2 form-label">邮箱地址</div>
+                    <div class="col-xs-5">
+                        <input class="form-control J-email" type="text"
+                               name="user[email]" value="{$user_data['email']}" <!--{if $user_data['email']}--> disabled
+                        <!--{/if}-->
+                        placeholder="请输入您的邮箱">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 form-label">所在城市</div>
+                    <div class="col-xs-5 city">
+                        <input class="form-control J-at-city" type="text"
+                               name="user[region]"
+                               value="{$user_data['region']}"
+                               placeholder="输入城市"
+                               onchange="check.regCheck(this)"
+                               data-regtype="only_chinese_english">
+                    </div>
+                    <div class="col-xs-5 tip J-tip">
+                        <div class="tip-box">
+                            <p class="J-tip-content"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 form-label">公司名称</div>
+                    <div class="col-xs-5">
+                        <input class="form-control J-company" type="text" maxlength="20"
+                               name="user[company]" value="{$user_data['company']}"
+                               placeholder="请填写您目前所在公司的名称">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 form-label">个人职位</div>
+                    <div class="col-xs-5">
+                        <input class="form-control J-position" type="text" placeholder="请填写您的职位"
+                               name="user[job]" value="{$user_data['job']}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 form-label">微信</div>
+                    <div class="col-xs-5">
+                        <input class="form-control J-weixin" type="text" placeholder="请填写您的微信账号"
+                               name="user[account3nd][weixin]" value="{$user_data['account3nd']['weixin']}">
+                    </div>
+                </div>
+                <!--{eval
+                    $investor_show = array();
+                    $investor_tab = array();
+                    $person_tab = array();
+
+                    if(is_numeric($user_data['investor']) && ($user_data['investor'] > -1 || $user_data['investor'] < 4)){
+                          $person_tab[$user_data['investor']] = ' select';
+                          $investor_tab[0] = ' select';
+                          $investor_show[1] = ' style="display:none"';
+                          $user_data['investor'] = '';
+                    } else if($user_data['investor']) {
+                          $investor_tab[1] = ' select';
+                          $investor_show[0] = ' style="display:none"';
+                    } else{
+                          $investor_tab[0] = ' select';
+                          $investor_show[1] = ' style="display:none"';
+                    }
+                }-->
+                <div class="row">
+                    <div class="col-xs-2 form-label">投资身份</div>
+                    <div class="col-xs-5 identity-box J-identity-box">
+                        <ul>
+                            <li><a href="javascript:void(0);" class="status-flag{$investor_tab[0]}" data-target="personal-content"></a><span>个人</span></li>
+                            <li><a href="javascript:void(0);" class="status-flag{$investor_tab[1]}" data-target="organization-content"></a><span>机构</span></li>
+                        </ul>
+                        <div class="content personal-content" data-id="personal-content" {$investor_show[0]}>
+                            <p>符合以下条件之一的自然人投资者</p>
+                            <p><a href="javascript:void(0);" class="status-flag{$person_tab[3]}" data-value="3"></a>我的金融资产超过100万元</p>
+                            <p><a href="javascript:void(0);" class="status-flag{$person_tab[2]}" data-value="2"></a>我的年收入超过30万元</p>
+                            <p><a href="javascript:void(0);" class="status-flag{$person_tab[1]}" data-value="1"></a>我是专业的风险投资人</p>
+                            <p><a href="javascript:void(0);" class="status-flag{$person_tab[0]}" data-value="0"></a>我不符合上述任一条件</p>
+                        </div>
+                        <div class="content organization-content" data-id="organization-content" {$investor_show[1]}>
+                            <input type="text" class="form-control" placeholder="请输入公司名称" value="{$user_data['investor']}"/>
+                        </div>
+                    </div>
+                    <!--请将上边的选择结果填到这个隐藏表单中-->
+                    <input type="hidden" name="user[investor]" value="{$user_data['investor']}" id="investor"/>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 form-label">关注城市</div>
+                    <div class="col-xs-10 C-focus-city J-focus-city">
+
+                        <input class="form-control city-input-btn" type="button" id="city-input" value="选择"
+                               data-ids="{$region_ids}">
+                    </div>
+                    <script type="tpl" id="cityShowModal">
+                <div class="C-city J-city">
+                    <input class="form-control city-btn select" type="button" value="<%=val%>"  data-id="<%=id%>">
+                    <div class="close" data-id="<%=id%>">&times;</div>
+                </div>
+
+            </script>
+
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 form-label">关注领域</div>
+                    <div class="col-xs-10 field J-field">
+                        <!--{loop $area_list $area}-->
+                        <label><a href="javascript:void(0);" class="status-flag <!--{if isset($area_feed[$area['id']])}--> select<!--{/if}-->" data-id="{$area['id']}"></a>{$area['name']}</label>
+                        <!--{/loop}-->
+                    </div>
+                </div>
+                <!--{if $is_admin}-->
+                <!--{eval
+                    $auth_array = array(
+                        -1 => '未通过投资人',
+                        1 => '待审核投资人',
+                        2 => '已认证投资人',
+                    );
+                    $isauth = $user_data['isauth'];
+                }-->
+                <div class="row">
+                    <div class="col-xs-2 form-label">审核结果</div>
+                    <div class="col-xs-5 fields J-isauth">
+                        <select name="isauth" class="form-control" onchange="changeMessage(this)" data-type="person_auth"
+                                data-target="authmessage">
+                            <!--{loop $auth_array $val $text}-->
+                            <option value="{$val}"
+                            <!--{if $val== $isauth}-->
+                            selected
+                            <!--{/if}-->>{$text}</option>
+                            <!--{/loop}-->
+                        </Select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 form-label">通知消息</div>
+                    <div class="col-xs-5 J-message">
+                        <textarea name="message" class="form-control" id="authmessage">{$user_data['authmessage']}</textarea>
+                    </div>
+                </div>
+                <!--{static ../static/js/admin_message.js _admin_message.js}-->
+                <!--{else}-->
+                <input type="hidden" class="J-isverify" name="project[isverify]" value="0" />
+                <!--{/if}-->
+                <div class="row check-row">
+                    <div class="col-xs-2 form-label"></div>
+                    <div class="col-xs-10 J-agree-list">
+                        <p>
+                            <!--<input type="checkbox">-->
+                            <a href="javascript:void(0);" class="status-flag"></a>
+                            我已阅读并同意
+                            <a href="{DIR}?c=help-128" target="_blank">《用户服务协议》</a>
+                            <a href="{DIR}?c=help-130" target="_blank">《投资人规则》</a>
+                            <a href="{DIR}?c=help-131" target="_blank">《风险提示书》</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="error-box"></div>
+                <div class="row">
+                    <div class="submit-btn">
+                        <!--{if $is_admin}-->
+                        <input type="hidden" name="uid" value="{$user_data['user_id']}" />
+                        <!--{/if}-->
+                        <input type="button" class="btn J-submit" value="提交申请">
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="alert-box J-alert"></div>
+        <div class="modal fade" id="certifySuccessModel" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body ">
+                        <p>投资人申请提交成功，我们会抓紧对您的申请进行审核，审核通过即可进行投资</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{DIR}" class="btn C-J-confirm">确定</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="citySelectModal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content city-select-modal-content J-select-city-box">
+            <div class="modal-header">
+                选择城市（可多选）
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body ">
+                <div class="city J-city">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0);" class="btn J-confirm">确定</a>
+            </div>
+            <script type="tpl" id="hotCityModal">
+                <input type="button"  data-id="<%=id%>" data-code="<%=code%>" value="<%=name%>"/>
+            </script>
+        </div>
+    </div>
+</div>
+
+<!--{template inc/footer}-->
+<!--{static ../static/js/jquery.imgareaselect.pack.js ../static/v2/_certificate.js}-->
+<!--{static ../static/v2/js/jquery.validate.js ../static/v2/_certificate.js}-->
+<!--{static ../static/v2/js/form.js ../static/v2/_certificate.js}-->
+<!--{static ../static/v2/js/img-crop.js ../static/v2/_account.js}-->
+<!--{static ../static/v2/js/certificate.js ../static/v2/_certificate.js}-->

@@ -1,0 +1,5 @@
+/*[tplStatic 1.0 - 1511]*/
+
+$(function(){window.shopComponent=(function(){var shopList=[],shopTpl=tpl('shopTpl'),that=this;that.add=function(data){if(!data){data={index:0,id:'',name:'',address:'',totalfinancing:'',opcircle:'',payoffday:'',shopsize:'',passengers:'',perconsumption:'',permonth:'',perprofits:''};}
+var index=shopList.push(data);shopList[index-1].index=index;var shopElement=$(shopTpl(shopList[index-1]));shopList[index-1].dom=shopElement;$('.J-stores-box').append(shopElement);block.setIndex("shop");};that.remove=function(index){if(shopList[index]){var shop=shopList[index];if(confirm('确定删除该店铺吗？')){window.API.post('remove_shop',{id:shop.id},function(){shopList[index].dom.remove();block.setIndex("shop");});}}};that.init=function(shopData){if(shopData.length==0){}else{for(var i in shopData){shopComponent.add(shopData[i]);}}}
+return that;})();$(document).on('click','*[data-action]',function(){switch($(this).data('action')){case'add-shop':shopComponent.add();break;case'remove-shop':shopComponent.remove($(this).data('index'));break;}});});;

@@ -1,0 +1,140 @@
+<!--{if !core::R('ajax')}-->
+<!--{eval
+    $pages['header_class'] = 'header-white';
+
+    $tab_active = array(
+        core::R('a') => ' class="active"',
+    );
+}-->
+<!--{template inc/header}-->
+<!--{static ../static/v2/images/home_icon/* ../static/v2/_home_icon}-->
+<!--{static ../static/v2/css/home.scss ../static/v2/_home.css}-->
+
+<div class="detail-content-top J-user personal-top" data-target="{$user_data['user_id']}">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-2">
+                <div class="icon-box">
+                    <!--<img src="{$conf[static_url]}v2/images/partner-sample/1.jpg" alt="">-->
+                    {avatar($user_data['uid'], 'class="J-head-icon" alt=""')}
+                    <!--{if $user_data['isauth']}-->
+                    <div class="verified-box">
+                        <span>已认证</span>
+                    </div>
+                    <!--{else}-->
+                    <div class="verified-box">
+                        <span>未认证</span>
+                    </div>
+                    <!--{/if}-->
+                </div>
+            </div>
+            <div class="col-xs-7 metas">
+                <div class="row">
+                    <a href="javascript:void(0);" class="user">{$user_data['truename']}</a>
+                    <a href="javascript:void(0);" class="city">{$user_data['region']}</a>
+                    <a href="javascript:void(0);" class="id">{$user_data['company']} <span>|</span> {$user_data['job']}</a>
+                </div>
+
+                <div class="row mul-span-row">
+                    <a href="javascript:void(0);" class="area">
+                        <!--{loop $user_region $region}-->
+                        <span>{$region['name']}</span>
+                        <!--{/loop}-->
+                    </a>
+                </div>
+
+                <div class="row mul-span-row">
+                    <a href="javascript:void(0);" class="field">
+                        <!--{eval $areas = array_slice($user_area,0,5)}-->
+                        <!--{loop $areas $area}-->
+                        <span>{$area['name']}</span>
+                        <!--{/loop}-->
+                    </a>
+                </div>
+            </div>
+
+            <!--{eval
+                $feed_link = DIR."home/user_feed/user_id/".url_id($user_data['user_id'])."/";
+                $fans_link = DIR."home/user_fans/user_id/".url_id($user_data['user_id'])."/";
+            }-->
+            <div class="col-xs-3 fans-box">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <a href="javascript:void(0);" data-href="{$feed_link}" class="J-focus-num-btn">
+                            <div class="f-l">
+                                <p class="num J-feed-num">{$user_data['feednum']}</p>
+                                <p>关注</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-xs-6">
+                        <a href="javascript:void(0);" data-href="{$fans_link}" class="J-focus-num-btn">
+                            <div class="f-r">
+                                <p class="num J-fans-num">{$user_data['fannum']}</p>
+                                <p>粉丝</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <!--{if $user_data['user_id'] != $user_id}-->
+                <div class="row btn-box">
+                    <a href="javascript:void(0);" class="btn animated J-feed-btn">
+                        <span>关注</span>
+                    </a>
+                </div>
+                <!--{/if}-->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="tab-box detail-tab-box J-tab-box">
+    <div class="container">
+        <ul class="nav nav-tabs">
+            <li {$tab_active[invest]}><a href="{DIR}?c=home-invest&user_id={url_id($user_data['user_id'])}" data-target="tab-content"
+                                         data-ajax="1" data-type="tab-link" data-id="invest">投资的项目</a></li>
+            <li {$tab_active[financing]}><a href="{DIR}?c=home-financing&user_id={url_id($user_data['user_id'])}"
+                                            data-target="tab-content" data-ajax="1" data-type="tab-link"
+                                            data-id="financing">融资的项目</a></li>
+            <li {$tab_active[feed]}><a href="{DIR}?c=home-feed&user_id={url_id($user_data['user_id'])}" data-target="tab-content"
+                                       data-ajax="1" data-type="tab-link" data-id="feed">关注的项目</a></li>
+        </ul>
+    </div>
+</div>
+<div class="detail-content J-detail-content">
+    <div class="container" id="tab-content">
+        <div class="tab-content" data-id="{core::R('a')}">
+            <!--{/if}-->
+            <!--{if core::R('a') == 'invest'}-->
+            <!--投资的项目-->
+            <!--{template home/invest}-->
+            <!--{elseif core::R('a') == 'financing'}-->
+            <!--融资的项目-->
+            <!--{template home/financing}-->
+            <!--{elseif core::R('a') == 'feed'}-->
+            <!--关注的项目-->
+            <!--{template home/feed}-->
+            <!--{/if}-->
+            <!--{if !core::R('ajax')}-->
+        </div>
+    </div>
+</div>
+
+<div class="modal personal-modal J-personal-modal" role="dialog">
+    <div class="modal-dialog">
+    </div>
+</div>
+
+
+<!--{template inc/footer}-->
+<!--{static ../static/v2/js/home.js ../static/v2/_home.js}-->
+<!--{static ../static/v2/js/index.js ../static/v2/_index.js}-->
+<script>
+    globalEvents.push(function () {
+        API.ajax('',function(){
+            setImgLazy();
+        });
+        initTabClick();
+    });
+</script>
+
+<!--{/if}-->

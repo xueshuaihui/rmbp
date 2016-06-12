@@ -1,0 +1,291 @@
+<!--{eval
+$pages['title'] = '投资人申请';
+}-->
+<!--{template header}-->
+<!--{static ../static/js/jquery.imgareaselect.pack.js _certificate.js}-->
+<!--{static ../static/js/investor-certification.js _certificate.js}-->
+<!--{static ../static/css/imgareaselect-default.css css/_imgareaselect.css}-->
+<!--{template inc/nav}-->
+<div class="container">
+    <form id="investorCertification">
+        <h1 class="title">认证投资人申请</h1>
+
+        <div class="row">
+            <div class="col-xs-2 lable">真实姓名</div>
+            <div class="col-xs-3">
+                <input class="form-control J-name" type="text" onchange="judgeOnlyChineseOrEnlish(this)"
+                       name="user[truename]" value="{$user_data['truename']}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2 lable">个人头像</div>
+            <div class="col-xs-5 investor-img-box">
+                {avatar($user_data['uid'], 'id="investorImg" alt=""')}
+                <p>支持小于2M，格式为jpg、png的图片，推荐尺寸400*400px</p>
+                <input type="file" style="display:none" onchange="cropImg(this)">
+                <input class="btn" id="investorImgInput" type="button" value="上传">
+                <!-- 头像上传字段 -->
+                <input id="userAvatarInput" type="hidden" name="user[avatar]"/>
+            </div>
+
+            <div class="modal fade C-J-crop-modal" id="cropInvestorIconModal" data-backdrop="static">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="image-box">
+                                <p><img></p>
+                            </div>
+                            <div class="preview-box">
+                                <img>
+                            </div>
+                            <canvas width="200" height="200" class="J-canvas"
+                                    style="overflow:hidden; display:none"></canvas>
+                        </div>
+                        <div class="C-crop-btns">
+                            <a href="javascript:void(0);" class="btn C-J-confirm">确定</a>
+                            <a href="javascript:void(0);" data-dismiss="modal" class="btn C-J-cancel">取消</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--{if !$user_data['phone']}-->
+        <div class="row">
+            <div class="col-xs-2">手机号码</div>
+            <div class="col-xs-3">
+                <input class="form-control J-phone" maxLength="11" onchange="judgePhoneNum(this)" type="text"
+                       placeholder="请输入您的手机号码" name="user[phone]" value="{$user_data['phone']}" id="investorPhoneInput">
+            </div>
+            <div class="col-xs-2 verification-code-lable J-verification-code">验证码</div>
+            <div class="col-xs-2 verification-code-input J-verification-code">
+                <input class="form-control J-check-code" name="user[regcode]" type="text" placeholder="输入验证码">
+            </div>
+            <div class="col-xs-2 verification-code-box J-verification-code">
+                <input class="btn verification-code-btn J-check-code-btn" type="button" value="获取验证码"
+                       data-page="investor" data-type="phone"
+                       data-target="investorPhoneInput">
+            </div>
+        </div>
+        <!--{else}-->
+        <div class="row">
+            <div class="col-xs-2">手机号码</div>
+            <div class="col-xs-3">
+                <input class="form-control J-phone" maxLength="11" onchange="judgePhoneNum(this)" type="text"
+                       placeholder="请输入您的手机号码" disabled value="{$user_data['phone']}">
+            </div>
+        </div>
+        <!--{/if}-->
+
+        <div class="row">
+            <div class="col-xs-2 lable">邮箱地址</div>
+            <div class="col-xs-3">
+                <input class="form-control J-email" type="text" onchange="judgeEmail(this)"
+                       name="user[email]" value="{$user_data['email']}" <!--{if $user_data['email']}--> disabled
+                <!--{/if}-->
+                placeholder="请输入您的邮箱">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2">所在城市</div>
+            <div class="col-xs-3 city">
+                <input class="form-control J-at-city" type="text" onchange="judgeOnlyChineseOrEnlish(this)"
+                       name="user[region]" value="{$user_data['region']}"
+                       placeholder="输入城市">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2 lable">公司名称</div>
+            <div class="col-xs-5">
+                <input class="form-control J-company" type="text" maxlength="20"
+                       name="user[company]" value="{$user_data['company']}"
+                       placeholder="请填写您目前所在公司的名称">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2 lable">个人职位</div>
+            <div class="col-xs-5">
+                <input class="form-control J-position" type="text" placeholder="请填写您的职位"
+                       name="user[job]" value="{$user_data['job']}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2 lable">微信</div>
+            <div class="col-xs-5">
+                <input class="form-control J-weixin" type="text" placeholder="请填写您的微信账号"
+                       name="user[account3nd][weixin]" value="{$user_data['account3nd']['weixin']}">
+            </div>
+        </div>
+        <!--{eval
+            $investor_show = array();
+            $investor_tab = array();
+            $person_tab = array();
+
+            if(is_numeric($user_data['investor']) && ($user_data['investor'] > -1 || $user_data['investor'] < 4)){
+                  $person_tab[$user_data['investor']] = ' select';
+                  $investor_tab[0] = ' select';
+                  $investor_show[1] = ' style="display:none"';
+                  $user_data['investor'] = '';
+            } else if($user_data['investor']) {
+                  $investor_tab[1] = ' select';
+                  $investor_show[0] = ' style="display:none"';
+            } else{
+                  $investor_tab[0] = ' select';
+                  $investor_show[1] = ' style="display:none"';
+            }
+        }-->
+        <div class="row">
+            <div class="col-xs-2 lable">投资身份</div>
+            <div class="col-xs-5 J-identity-box">
+                <div class="identity-box J-personal-identity">
+                    <a href="javascript:void(0);" class="status-flag{$investor_tab[0]}"></a><span>个人</span>
+                </div>
+                <div class="identity-box J-organization-identity">
+                    <a href="javascript:void(0);" class="status-flag{$investor_tab[1]}"></a><span>机构</span>
+                </div>
+                <div class="content personal-content" {$investor_show[0]}>
+                    <p>符合以下条件之一的自然人投资者</p>
+
+                    <p><a href="javascript:void(0);" class="status-flag{$person_tab[3]}" data-value="3"></a>我的金融资产超过100万元
+                    </p>
+
+                    <p><a href="javascript:void(0);" class="status-flag{$person_tab[2]}" data-value="2"></a>我的年收入超过30万元
+                    </p>
+
+                    <p><a href="javascript:void(0);" class="status-flag{$person_tab[1]}" data-value="1"></a>我是专业的风险投资人
+                    </p>
+
+                    <p><a href="javascript:void(0);" class="status-flag{$person_tab[0]}" data-value="0"></a>我不符合上述任一条件
+                    </p>
+                </div>
+                <div class="content organization-content" {$investor_show[1]}>
+                    <input type="text" class="form-control" placeholder="请输入公司名称" value="{$user_data['investor']}"/>
+                </div>
+            </div>
+            <!--请将上边的选择结果填到这个隐藏表单中-->
+            <input type="hidden" name="user[investor]" value="{$user_data['investor']}" id="investor"/>
+        </div>
+        <div class="row">
+            <div class="col-xs-2">关注城市</div>
+            <div class="col-xs-8 C-focus-city J-focus-city">
+
+                <input class="form-control city-input-btn" type="button" id="city-input" value="选择"
+                       data-ids="{$region_ids}">
+            </div>
+            <script type="tpl" id="cityShowModal">
+                <div class="C-city J-city">
+                    <input class="form-control city-btn select" type="button" value="<%=val%>"  data-id="<%=id%>">
+                    <div class="close" data-id="<%=id%>">&times;</div>
+                </div>
+
+            </script>
+
+        </div>
+        <div class="row">
+            <div class="col-xs-2 fields-lable">关注领域</div>
+            <div class="col-xs-8 fields J-focus-fields">
+                <!--{loop $area_list $area}-->
+                <div class="field-box"><a href="javascript:void(0);"
+                                          class="status-flag<!--{if isset($area_feed[$area['id']])}--> select<!--{/if}-->"
+                                          alt="$area['name']" data-id="{$area['id']}"></a><span>$area['name']</span>
+                </div>
+                <!--{/loop}-->
+                <!--input type="hidden" name="feeds[are]" value="" id="are" /-->
+            </div>
+        </div>
+        <!--{if $is_admin}-->
+        <!--{eval
+            $auth_array = array(
+                -1 => '未通过投资人',
+                1 => '待审核投资人',
+                2 => '已认证投资人',
+            );
+            $isauth = $user_data['isauth'];
+        }-->
+        <div class="row">
+            <div class="col-xs-2 fields-lable">审核结果</div>
+            <div class="col-xs-8 fields J-isauth">
+                <select name="isauth" class="form-control" onchange="changeMessage(this)" data-type="person_auth"
+                        data-target="authmessage">
+                    <!--{loop $auth_array $val $text}-->
+                    <option value="{$val}"
+                    <!--{if $val== $isauth}-->
+                    selected
+                    <!--{/if}-->>{$text}</option>
+                    <!--{/loop}-->
+                </Select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2 fields-lable">通知消息</div>
+            <div class="col-xs-8 fields J-message">
+                <textarea name="message" class="form-control" id="authmessage">{$user_data['authmessage']}</textarea>
+            </div>
+        </div>
+        <!--{static ../static/js/admin_message.js _admin_message.js}-->
+        <!--{else}-->
+        <input type="hidden" class="J-isverify" name="project[isverify]" value="0" />
+        <!--{/if}-->
+        <div class="row">
+            <div class="col-xs-2"></div>
+            <div class="col-xs-8 agree-list J-agree-list">
+                <p>
+                    <input type="checkbox">
+                    我已阅读并同意
+                    <a href="{DIR}?c=help-128" target="_blank">《用户服务协议》</a>
+                    <a href="{DIR}?c=help-130" target="_blank">《投资人规则》</a>
+                    <a href="{DIR}?c=help-131" target="_blank">《风险提示书》</a>
+                </p>
+            </div>
+        </div>
+        <div class="error-box"></div>
+        <div class="row">
+            <div class="submit-btn">
+                <!--{if $is_admin}-->
+                <input type="hidden" name="uid" value="{$user_data['user_id']}" />
+                <!--{/if}-->
+                <input type="button" class="btn J-submit" value="提交申请">
+            </div>
+        </div>
+    </form>
+    <div class="alert-box J-alert"></div>
+    <div class="modal fade" id="certifySuccessModel" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body ">
+                    <p>投资人申请提交成功，我们会抓紧对您的申请进行审核，审核通过即可进行投资</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="{DIR}" class="btn C-J-confirm">确定</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="citySelectModal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content city-select-modal-content J-select-city-box">
+            <div class="modal-header">
+                选择城市（可多选）
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body ">
+                <div class="city J-city">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0);" class="btn J-confirm">确定</a>
+            </div>
+            <script type="tpl" id="hotCityModal">
+                <input type="button"  data-id="<%=id%>" data-code="<%=code%>" value="<%=name%>"/>
+
+            </script>
+        </div>
+    </div>
+</div>
+
+<!--{template user_login}-->
+<!--{template user_register}-->
+<!--{template user_forgot}-->
+<!--{template inc/modal_alert_info}-->
+<!--{template footer}-->

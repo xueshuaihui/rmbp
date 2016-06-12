@@ -1,0 +1,90 @@
+<div class="tab-pane active discuss-list">
+    <!--{if $user->user_id == 0}-->
+        <!--{template project/guest}-->
+    <!--{else}-->
+        <!--{if !$project['qas']}-->
+        <div class="no-content">
+            <p>
+                该项目暂时没有相关问答。
+            </p>
+        </div>
+        <!--{/if}-->
+
+        <ul class="no-padding-margin C-qa-list J-qa-list">
+            <!--{loop $project['qas'] $qa}-->
+            <li>
+                <div class="row q">
+                    <div class="q-label">问</div>
+                    <div class="q-content">
+                        {$qa['message']}
+                    </div>
+                </div>
+                <div class="row a">
+                    <div class="a-person-box">
+                        {avatar($project_user['user_id'], 'alt=""')}
+                        <p>$project_user['truename']</p>
+                        <p class="position">$project_user['job']</p>
+                    </div>
+                    <div class="a-content-box">
+                        <div class="content">
+                            {$qa['reply']['message']}
+                        </div>
+                        <div class="time">
+                            {date('Y年m月d日')}
+                        </div>
+                        <!--{if $user->group_id==999}-->
+                        <div class="btn-box">
+                            <a href="javascript:void(0);" data-id1="$qa['id']" data-id2="$qa['reply']['id']" class="edit J-edit">编辑</a>
+                            <a href="javascript:void(0);" data-id="$qa['id']" class="delete J-delete">删除</a>
+                        </div>
+                        <!--{/if}-->
+                    </div>
+                </div>
+            </li>
+            <!--{/loop}-->
+        </ul>
+        <!--{if $user->group_id==999 || $user->user_id == $project['user_id']}-->
+        <div class="row q-btn-box J-q-btn-box">
+            <a href="javascript:void(0);" class="btn q-btn">添加问答</a>
+        </div>
+        <!--{elseif $user->user_id}-->
+        <div class="row q-btn-box J-q-btn-box">
+            <a href="javascript:void(0);" class="btn q-btn">提交问题</a>
+        </div>
+        <!--{/if}-->
+
+        <div class="modal fade" id="myQuestionModel" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="question-box">
+                            <textarea name="dialog-editor" onkeyup="checkWordNum(this)" data-id="" class="J-question-input" placeholder="请您简要归纳一下想要了解的问题" data-max="100"></textarea>
+                            <div class="word-num-show">
+                                <span class="J-had-input">0</span>
+                                <span>/</span>
+                                <span class="J-max-input">100</span>
+                            </div>
+                        </div>
+                        <!--{if $user->group_id==999 || $user->user_id == $project['user_id']}-->
+                        <div class="answer-box">
+                            <p>答案：</p>
+                            <textarea name="dialog-editor" data-id="" class="J-answer-input" placeholder="答案" ></textarea>
+                        </div>
+                        <!--{/if}-->
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <a href="javascript:void(0);" class="btn C-J-confirm">确定</a>
+                        <a href="javascript:void(0);" class="btn C-J-cancel" data-dismiss="modal">取消</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!--{/if}-->
+
+</div>

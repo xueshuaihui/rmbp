@@ -1,0 +1,19 @@
+<!--{if $banner_list[0]['idsource']>1}-->
+<div class="banner-box" rel="{count($banner_list)}">
+    <ul class="bxslider">
+        <!--{loop $banner_list $index $val}-->
+        <!--{if $val['description']}-->
+        <a href="{$val['description']}" target="_blank">
+            <li>
+                <img src="{$conf[static_url]}{$val['path']}" alt="" style="max-height:500px;">
+            </li>
+        </a>
+        <!--{else}-->
+        <li>
+            <img src="{$conf[static_url]}{$val['path']}" alt="" style="max-height:500px;">
+        </li>
+        <!--{/if}-->
+        <!--{/loop}-->
+    </ul>
+</div>
+<!--{/if}-->

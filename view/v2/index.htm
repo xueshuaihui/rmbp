@@ -1,0 +1,194 @@
+<!--{eval
+    $pages['title'] = 'Plus众筹平台 - 让价值变得更有价值|众筹网,股权众筹,项目众筹,众筹创业';
+    $pages['keys'] = '众筹平台,众筹网,股权众筹,项目众筹,众筹创业';
+    $pages['desc'] = 'Plus众筹平台是国内最大的众筹网站：提供股权众筹与项目众筹等各种众筹创业项目，做最好、最赚钱的众筹平台。';
+    $pages['name'] = 'index';
+
+    $index = 1;
+}-->
+<!--{template inc/header}-->
+<!--{static ../static/v2/images/index_icon/* ../static/v2/_index_icon}-->
+<!--{static ../static/v2/css/index.scss ../static/v2/_index.css}-->
+<!--{template inc/index_banner}-->
+<!--{template inc/index_point}-->
+
+<div class="home-content-2">
+    <div class="container project-lists J-project-lists">
+        <ul>
+            <!--{loop $project_list $project}-->
+            <!--{eval
+                $raised_amount = $project['valuation']-$project['existfinancing'];
+                if($project['isverify'] == 3){
+                    if($project['super_raise'] == 1){
+                        $status_flag = 'super-raise';
+                        $status_desc = '超募中';
+                        $status_text = '超募中';
+                    }else if($project['remaintime'] == 0){
+                        $status_flag = 'raise-end';
+                        $status_desc = '众筹完';
+                        $status_text = '已结束';
+                    }else{
+                        $status_flag = 'raising';
+                        $status_desc = '众筹中';
+                        $status_text = '众筹中';
+                    }
+                }else if($project['isverify'] == 5){
+                    $status_flag = 'raise-end';
+                    $status_desc = '众筹完';
+                    $status_text = '已结束';
+                }else if($project['isverify'] == 4){
+                    $status_flag = 'raise-success';
+                    $status_desc = '众筹成功';
+                    $status_text = '已结束';
+                }else if($project['isverify'] == 2){
+                    $status_flag = 'preheating';
+                    $status_desc = '预热中';
+                    $status_text = '等待开始';
+                }else{
+                    $status_flag = '';
+                    $status_desc = '';
+                    $status_text = '';
+                }
+            }-->
+            <a href="{DIR}project/detail/{url_id($project['id'])}/" target="_blank" title="{$project['title']}">
+                <li class="<!--{if ($index++  % 3 == 0)}-->third <!--{/if}--> animated zoomIn">
+                <div class="img-box">
+                    <img data-src="{$conf[static_url]}{$project['banner']['path']}" alt="">
+                </div>
+                <div class="desc-box {$status_flag} J-project-list" data-status-line="{$project['degree']}"
+                     data-status-flag="{$status_flag}">
+                    <div class="animated jello">
+                        <div class="status-flag-box">
+                            <div class="status-flag">
+                                <span class="flag-desc">{$status_desc}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="status-line-box">
+                        <div class="J-status-line">
+                            <p class="line-desc">
+                                <span class="num"></span>%
+                            </p>
+                        </div>
+                    </div>
+                    <div class="title">{$project['title']}</div>
+                    <p class="company">{$project['company']}</p>
+
+                    <div class="desc">{$project['intro']}</div>
+                    <div class="row metas">
+                        <div class="col-xs-4">
+                            <p class="num">
+                                <span class="num-label">￥</span>{human_money($project['totalfinancing']*10000, '<span
+                                    class="num-content">%.2f</span><span class="num-label">%s')}</span>
+                            </p>
+
+                            <p class="meta-desc">
+                                已筹集
+                            </p>
+                        </div>
+                        <div class="col-xs-4">
+                            <p class="num">
+                                <!--{if $project['projecttype'] == 'store'}-->
+                                <span class="num-label">￥</span>{human_money($raised_amount*10000, '<span
+                                    class="num-content">%.2f</span><span class="num-label">%s')}</span>
+                                <!--{else}-->
+                                <span class="num-label">￥</span>{human_money($project['valuation']*10000, '<span
+                                    class="num-content">%.2f</span><span class="num-label">%s')}</span>
+                                <!--{/if}-->
+                            </p>
+
+                            <p class="meta-desc">
+                                融资目标
+                            </p>
+                        </div>
+                        <div class="col-xs-4">
+                            <p class="num">
+                                <!--{if $project['isverify'] != 3}-->
+                                <span class="num-content" style="margin-top:5px;line-height: 2.5;">{$status_text}</span>
+                                <!--{else}-->
+                                <span class="num-content">{get_left_time($project['expiretime'])}</span><span
+                                    class="num-label">天</span>
+
+                            <p class="meta-desc">
+                                剩余时间
+                            </p>
+                            <!--{/if}-->
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                </li>
+            </a>
+            <!--{/loop}-->
+        </ul>
+    </div>
+</div>
+<!--{template inc/news_list}-->
+<!--{template inc/index_news}-->
+
+<div class="home-content-3">
+    <div class="container reasons">
+        <div class="title-box">
+            <p class="title-1">为什么选择我们</p>
+
+            <p class="title-2">WHY WOULD YOU CHOOSE US</p>
+
+            <div class="line"></div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3 reason reason-1">
+                <div class="icon"></div>
+                <div class="icon-border"></div>
+                <div class="desc">
+                    <p>优秀风控体系</p>
+
+                    <p>100%安全保障</p>
+                </div>
+            </div>
+            <div class="col-xs-3 reason reason-2">
+                <div class="icon"></div>
+                <div class="icon-border"></div>
+                <div class="desc">
+                    <p>全程规范操作</p>
+
+                    <p>行业多年经验</p>
+                </div>
+            </div>
+            <div class="col-xs-3 reason reason-3">
+                <div class="icon"></div>
+                <div class="icon-border"></div>
+                <div class="desc">
+                    <p>无论是资金还是收益</p>
+
+                    <p>PLUS总能让你有钱</p>
+                </div>
+            </div>
+            <div class="col-xs-3 reason reason-4">
+                <div class="icon"></div>
+                <div class="icon-border"></div>
+                <div class="desc">
+                    <p>保证用户信息真实</p>
+
+                    <p>监管交易资金流向</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3">
+                <div class="flag"><span>安全</span></div>
+            </div>
+            <div class="col-xs-3">
+                <div class="flag"><span>专业</span></div>
+            </div>
+            <div class="col-xs-3">
+                <div class="flag"><span>收益</span></div>
+            </div>
+            <div class="col-xs-3">
+                <div class="flag"><span>透明</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--{template inc/footer}-->
+<!--{static ../static/v2/js/index.js ../static/v2/_index.js}-->

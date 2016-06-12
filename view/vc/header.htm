@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>{$pages['title']}</title>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <script>
+        var DIR="{DIR}", API_DIR="{DIR}", FORM_HASH="{misc::form_hash()}" , globalEvents = [];
+    </script>
+    <link rel="icon" type="image/png" href="{$conf['static_url']}/mobile/images/favicon.ico">
+    <!--{static ../static/vc/css/amazeui.min.css vc/css/_vc_global.css}-->
+    <!--{static ../static/vc/css/app.scss vc/css/_vc_global.css}-->
+</head>
+<body>
+
+
+<div class="am-g header">
+    <div class="am-u-sm-3 left-box">
+        <a href="{DIR}">
+            <img src="{$conf['static_url']}/mobile/images/home.png" alt="" class="home-icon">
+        </a>
+    </div>
+    <div class="am-u-sm-6 am-u-sm-centered">
+        <A href="{DIR}"><img src="{$conf['static_url']}/mobile/images/logo.png" alt="$conf['app_name']" class="header-logo"></A>
+    </div>
+    <div class="am-u-sm-3 right-box" id="user-box">
+
+    </div>
+</div>

@@ -1,0 +1,73 @@
+<div class="tab-pane active" id="dynamicList" data-target="{$project['id']}">
+    <!--{if !$project['timelines']}-->
+    <div class="no-content">
+        <p>
+            团队小伙伴们正在创业的路上飞奔，还没来得及添加动态
+        </p>
+    </div>
+    <!--{/if}-->
+    <div class="C-dynamicList J-dynamicList <!--{if !$project['timelines']}--> hide<!--{/if}-->">
+        <section id="cd-timeline" class="cd-container">
+            <!--{loop $project['timelines'] $timeline}-->
+            <div class="cd-timeline-block">
+                <div class="cd-timeline-img cd-picture"></div>
+                <div class="cd-timeline-content">
+                    <div class="title-box">
+                        <a href="javascript:void(0)" class="comment-slide J-detail-control"> </a>
+
+                        <p class="title J-title">{$timeline['title']}</p>
+                    </div>
+                    <div class="content-box J-content-box" style="display:none;">
+                        <!--{if $project[user_id]==$user->user_id}-->
+                        <a href="javascript:void(0)" class="edit-btn J-edit-btn" data-id="{$timeline['id']}"></a>
+                        <!--{/if}-->
+
+                        <div class="desc J-content">{$timeline['message']}</div>
+
+                        <!--{if $project[user_id]==$user->user_id}-->
+                        <a href="javascript:void(0)" class="delete J-delete-btn" data-id="{$timeline['id']}"
+                           data-target="{$timeline['project_id']}">刪除</a>
+                        <!--{/if}-->
+                    </div>
+
+                    <span class="cd-date">{date('Y-m-d' ,  $timeline['dateline'])}</span>
+                </div>
+            </div>
+            <!--{/loop}-->
+        </section>
+    </div>
+
+    <!--{if $project[user_id]==$user->user_id}-->
+    <div class="btn-box">
+        <a href="javascript:void(0)" class="btn C-J-new-dynamic">新增动态</a>
+    </div>
+    <!--{/if}-->
+
+    <div class="C-J-edit-box">
+        <input type="text" maxlength="15" placeholder="标题（15个字以内）" class="form-control">
+        <script id="projectDetailEditor" type="text/plain" style="width:100%; height:300px"></script>
+        <div class="C-J-edit-box-btn">
+            <a href="javascript:void(0);" class="btn save J-save-new-dynamic-btn" data-target={$timeline['project_id']}>保存</a>
+            <a href="javascript:void(0);" class="btn cancel J-cancel-new-dynamic-btn">取消</a>
+        </div>
+    </div>
+
+</div>
+<script type="tpl" id="projectTimeline">
+<div class="cd-timeline-block">
+    <div class="cd-timeline-img cd-picture"></div>
+    <div class="cd-timeline-content">
+        <div class="title-box">
+            <a href="javascript:void(0);" class="comment-slide J-detail-control" data-id="<%=timeline_id%>"></a>
+            <p class="title J-title"><%=title%></p>
+        </div>
+        <div class="content-box J-content-box" style="display:none;">
+            <a href="javascript:void(0)" class="edit-btn J-edit-btn"></a>
+            <div class="desc J-content"><%=content%></div><a href="javascript:void(0);" data-id="<%=timeline_id%>" class="delete J-delete-btn">刪除</a>
+        </div><span class="cd-date"><%=date%></span>
+    </div>
+</div>
+
+
+
+</script>

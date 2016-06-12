@@ -1,0 +1,60 @@
+<!--{eval
+$pages['header_class'] = 'header-white';
+$pages['title'] = '发布众筹';
+}-->
+<!--{template inc/header}-->
+<!--{static ../static/v2/images/publish_icon/* ../static/v2/_publish_icon}-->
+<!--{static ../static/v2/css/publish.scss ../static/v2/_publish.css}-->
+
+<div class="form-box publish-box publish-classify">
+    <div class="container">
+        <form method="post" action="{DIR}publish/step1/" id="project-form">
+            <input type="hidden" name="project[projecttype]" id="projecttype" value="">
+            <!--{if $project_id}-->
+            <input type="hidden" name="project_id" value="{url_id($project_id)}"/>
+            <!--{/if}-->
+        </form>
+        <div class="title-box">
+            <div class="title">
+                请选择您要众筹的类别
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <form class="classify-box">
+                    <p class="classify-title">我是店主，我要</p>
+                    <a class="classify-route" href="javascript:void 0" data-type="store">
+                        <div class="route-box">
+                            <div class="icon icon-1"></div>
+                            <p class="desc">实体店众筹</p>
+                        </div>
+                    </a>
+
+                </form>
+            </div>
+            <div class="col-xs-6">
+                <div class="classify-box f-r">
+                    <p class="classify-title">我是互联网创业者，我要</p>
+                    <a class="classify-route" href="javascript:void 0" data-type="tmt">
+                        <div class="route-box">
+                            <div class="icon icon-2"></div>
+                            <p class="desc">创业众筹</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--{template inc/footer}-->
+<Script>
+    $(function () {
+        $('.classify-route').on('click', function () {
+            $('#projecttype').val($(this).data('type'));
+            $('#project-form').submit();
+        });
+    });
+</Script>
+
+
+

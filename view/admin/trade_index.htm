@@ -1,0 +1,144 @@
+<!--{template admin/header}-->
+<!--{eval
+    $select_rank = array($search['rank'] => ' selected');
+    $select_sort_order = array($search['sort_order'] => ' selected');
+    $select_search = array($search['search'] => ' selected');
+    $select_screen = array($search['screen'] => ' selected');
+}-->
+<div class="title">
+    交易项目列表
+</div>
+
+<div>
+    <form action="{DIR}{ADMIN_DIR}/trade/index/" method="post">
+        <label>排序：</label>
+        <select name="search[rank]">
+            <option selected="" value="">选择排序项目</option>
+            <option value="id" {print_r($select_rank[id],1)}>项目id</option>
+        </select>
+        <select name="search[sort_order]">
+            <option selected="" value="">排序方式</option>
+            <option value="ASC" {print_r($select_sort_order[ASC],1)}>升序</option>
+            <option value="DESC" {print_r($select_sort_order[DESC],1)}>降序</option>
+        </select>
+
+        <label>搜索：</label>
+        <select name="search[search]">
+            <option selected="" value="">选择搜索项</option>
+            <option value="id" {print_r($select_search[id],1)}>id</option>
+            <option value="title" {print_r($select_search[title],1)}>项目名</option>
+            <option value="truename" {print_r($select_search[truename],1)}>创建用户</option>
+        </select>
+        <input type="text" name="search[search_value]" value="{$search['search_value']}">
+
+        <label>筛选：</label>
+        <select name="search[screen]">
+            <option selected="" value="">选择状态</option>
+            <option value="1" {print_r($select_screen[1],1)}>开启交易</option>
+            <option value="0" {print_r($select_screen[0],1)}>关闭交易</option>
+        </select>
+        <label>日期筛选：</label>
+        <input type="text" name="search[start]" value="{$search['start']}" maxlength="10" placeholder="{date('Y-m-d')}"
+               style="width: 100px;">
+        <input type="text" name="search[end]" value="{$search['end']}" maxlength="10" placeholder="{date('Y-m-d')}"
+               style="width: 100px;">
+        <input type="submit" value="确定">
+    </form>
+</div>
+
+<div class="content">
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>项目ID</th>
+            <th>项目名称</th>
+            <th>创建用户</th>
+            <th>融资金额</th>
+            <th>投资人数</th>
+            <th>截止日期</th>
+            <th>在转让笔数</th>
+            <th>分红时间</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--{loop $project $list}-->
+        <!--{eval
+            $invest_num = $invest_num[$list['id']]?$invest_num[$list['id']]:'0';
+            $sell_num = $sell_num[$list['id']]?$sell_num[$list['id']]:'0';
+            $expiretime = $list['expiretime']?date('Y-m-d H:i:s',$list['expiretime']):'暂无';
+            $istrade_array = array('0' => '关闭交易', '1' => '开启交易');
+            $returntime = $list['returntime']?date('Y-m-d',$list['returntime']):'';
+            $select_istrade = array($list['istrade'] => ' selected');
+        }-->
+        <tr>
+            <td>$list['id']</td>
+            <td><a href="{DIR}{ADMIN_DIR}/project/project_info/project_id/{url_id($list['id'])}/">$list['title']</a></td>
+            <td>
+                <a href="{DIR}{ADMIN_DIR}/user/field_project/user_id/{url_id($list['user_id'])}/">{$list['user_field']['truename']}</a>
+            </td>
+            <td>{$list['valuation']}</td>
+            <td>{$invest_num}</td>
+            <td>{$expiretime}</td>
+            <td>{$sell_num}</td>
+            <td>
+                <!--{if $returntime}-->
+                {$returntime}
+                <!--{else}-->
+                <a href="javascript:void(0);" onclick="showModal(this)" data-id="{$list['id']}">添加</a>
+                <!--{/if}-->
+
+            </td>
+            <td>{print_r($istrade_array[$list[istrade]],1)}</td>
+            <td>
+                <select name="project[istrade]" data-post="value" data-url="{DIR}{ADMIN_DIR}/trade/update_trade/">
+                    <option value="">请选择</option>
+                    <option value="project[id]/{$list['id']}/project[istrade]/1/" {$select_istrade[1]}>开启交易</option>
+                    <option value="project[id]/{$list['id']}/project[istrade]/0/" {$select_istrade[0]}>关闭交易</option>
+                </Select>
+            </td>
+        </tr>
+        <!--{/loop}-->
+        </tbody>
+    </table>
+    <div class="page-box">{$page_html}</div>
+</div>
+<div class="modal fade" id="projectModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                第一次分红时间
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{DIR}{ADMIN_DIR}/trade/update_return/" data-post="form"
+                      data-callback="closeModal">
+                    <div>
+                        <input type="hidden" name="id" value="">
+                        <input type="text" name="year" value="" style="width: 80px;">年
+                        <input type="text" name="month" value="" style="width: 80px;">月
+                        <input type="text" name="day" value="" style="width: 80px;">日
+                    </div>
+                    <div class="btn-box">
+                        <input type="submit" value="确定">
+                        <input type="button" value="取消" data-dismiss="modal">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--{static ../static/js/admin_message.js _admin_message.js}-->
+<script>
+    function showModal(o) {
+        var id = $(o).data('id');
+        $('#projectModal *[name=id]').val(id);
+        $('#projectModal').modal('show');
+    }
+
+    window.closeModal = function (success) {
+        $('#projectModal').modal('hide');
+    }
+</script>
+<!--{template admin/footer}-->

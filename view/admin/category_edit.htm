@@ -1,0 +1,94 @@
+<!--{template admin/header}-->
+<!--{static ../static/admin/js/plugin/ueditor/ueditor.config.js admin/js/plugin/ueditor/_ueditor.js}-->
+<!--{static ../static/admin/js/plugin/ueditor/ueditor.all.min.js admin/js/plugin/ueditor/_ueditor.js 0}-->
+<!--{static ../static/admin/js/article.js admin/js/_article.js}-->
+<!--{eval
+    $operation_title = array(
+        news => '文章分类',
+        help => '帮助分类',
+        label => '标签分类',
+    );
+    $title = $operation_title[$type];
+    $disabled_status = array( $category['disabled'] => ' checked');
+}-->
+<div class="title">
+    {$title}
+</div>
+<div class="content">
+<!--{if $type ==news}-->
+<div class="article-edit-box">
+    <form action="{DIR}{ADMIN_DIR}/article/category_action/" method="post" >
+        <input type="hidden" name="id" value="{$id}">
+        <input type="hidden" name="type" value="{$type}">
+        <div class="form-group">
+            <label>分类名称：</label>
+            <input type="text" class="form-control" name="category" value="{$category['category']}">
+        </div>
+        <div class="form-group">
+            <label>排序：</label>
+            <input type="text" class="form-control" name="sortid" value="{$category['sortid']}">
+        </div>
+        <div class="form-group">
+            <p><label>状态：</label></p>
+            <div class="status-box">
+                <label class="checkbox-inline">
+                    <input type="radio"  name="disabled" value="0" {$disabled_status[0]} checked> 启用
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio"  name="disabled" value="1" {$disabled_status[1]}> 禁用
+                </label>
+            </div>
+        </div>
+        <div class="btn-box">
+            <input type="submit" class="form-control confirm-btn" value="确定">
+            <a href="{DIR}{ADMIN_DIR}/article/category/type/news/" class="form-control cancel-btn" >取消</a>
+        </div>
+    </form>
+
+</div>
+<!--{/if}-->
+
+<!--{if $type ==help}-->
+<div class="help-edit-box">
+    <form action="{DIR}{ADMIN_DIR}/article/category_action/" method="post">
+        <input type="hidden" name="id" value="{$id}">
+        <input type="hidden" name="type" value="{$type}">
+        <div class="form-group">
+            <label>目录名称：</label>
+            <input type="text" class="form-control" name="category"  value="{$category['category']}">
+        </div>
+        <div class="form-group">
+            <label>目录排序：</label>
+            <input type="text" class="form-control" name="sortid" value="0"  value="{$category['sortid']}">
+        </div>
+        <div class="btn-box">
+            <input type="submit" class="form-control confirm-btn" value="确定">
+            <a href="{DIR}{ADMIN_DIR}/article/category/type/help/" class="form-control cancel-btn" >取消</a>
+        </div>
+    </form>
+
+</div>
+<!--{/if}-->
+
+<!--{if $type ==label}-->
+    <div class="help-edit-box">
+        <form action="{DIR}{ADMIN_DIR}/article/category_action/" method="post">
+            <input type="hidden" name="id" value="{$id}">
+            <input type="hidden" name="type" value="{$type}">
+            <div class="form-group">
+                <label>标签名称：</label>
+                <input type="text" class="form-control" name="category"  value="{$category['category']}">
+            </div>
+            <div class="form-group">
+                <label>标签排序：</label>
+                <input type="text" class="form-control" name="sortid" value="0"  value="{$category['sortid']}">
+            </div>
+            <div class="btn-box">
+                <input type="submit" class="form-control confirm-btn" value="确定">
+                <a href="{DIR}{ADMIN_DIR}/article/category/type/label/" class="form-control cancel-btn" >取消</a>
+            </div>
+        </form>
+    </div>
+<!--{/if}-->
+</div>
+<!--{template admin/footer}-->

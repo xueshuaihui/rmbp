@@ -1,0 +1,139 @@
+<!--{eval
+$pages['header_class'] = 'header-white';
+
+switch($step){
+	case 1:
+		$pages['title'] = '第一步 - 基本信息';
+	break;
+	case 2:
+		$pages['title'] = '第二步 - 详细介绍';
+	break;
+	case 3:
+		$pages['title'] = '第三步 - 融资计划';
+	break;
+	case 4:
+		$pages['title'] = '第四步 - 经营状况';
+	break;
+	case 5:
+		$pages['title'] = '第五步 - 投资回报';
+	break;
+	case 6:
+		$pages['title'] = '最后一步 - 编辑完成';
+	break;
+}
+    $project_id = url_id($project_id);
+
+    if($project['title']!=''){
+        $path2 = DIR.'publish/step2/?project_id='.$project_id ;
+        $pass1 = 1;
+    }else{
+        $path2 = 'javascript:void(0);';
+    }
+    if($project_field['description']!=''){
+        $path3 = DIR.'publish/step3/?project_id='.$project_id ;
+        $pass2 = 1;
+    }else{
+        $path3 = 'javascript:void(0);';
+    }
+    if($project['valuation']>0){
+        $path4 = DIR.'publish/step4/?project_id='.$project_id ;
+        $path5 = DIR.'publish/step5/?project_id='.$project_id ;
+        $pass3 = 1;
+    }else{
+        $path4 = 'javascript:void(0);';
+        $path5 = 'javascript:void(0);';
+    }
+    if($shop_list['0']['name']!=''){
+        $pass4 = 1;
+    }
+    if($invest_list['bonuscondition']!=''){
+        $pass5 = 1;
+    }
+
+}-->
+
+<!--{template inc/header}-->
+<!--{static ../static/v2/images/publish_icon/* ../static/v2/_publish_icon}-->
+<!--{static ../static/v2/images/form_icon/* ../static/v2/_form_icon}-->
+<!--{static ../static/v2/css/form.scss ../static/v2/_form.css}-->
+<!--{static ../static/v2/css/imgareaselect-default.css ../static/v2/css/_imgareaselect.css}-->
+<!--{static ../static/v2/css/publish.scss ../static/v2/_publish.css}-->
+<div class="form-box publish-box store-box">
+    <div class="container">
+        <ul class="steps-flag J-steps-ul" data-currentstep="$step" data-type="store">
+            <a href="{DIR}publish/step1/?project_id={$project_id}">
+                <li class="<!--{if $step != 1 && $pass1 == 1}--> passed<!--{/if}--> <!--{if $step == 1}--> current<!--{/if}-->"><span>基本信息</span></li>
+            </a>
+            <a href="{$path2}">
+                <li class="<!--{if $step != 2 && $pass2 == 1}--> passed<!--{/if}--> <!--{if $step == 2}--> current<!--{/if}-->"><span>详细介绍</span></li>
+            </a>
+            <a href="{$path3}">
+                <li class="<!--{if $step != 3 && $pass3 == 1}--> passed<!--{/if}--> <!--{if $step == 3}--> current<!--{/if}-->"><span>融资计划</span></li>
+            </a>
+            <a href="{$path4}">
+                <li class="<!--{if $step != 4 && $pass4 == 1}--> passed<!--{/if}--> <!--{if $step == 4}--> current<!--{/if}-->"><span>经营状况</span></li>
+            </a>
+            <a href="{$path5}">
+                <li class="<!--{if $step != 5 && $pass5 == 1}--> passed<!--{/if}--> <!--{if $step == 5}--> current<!--{/if}-->"><span>投资回报</span></li>
+            </a>
+        </ul>
+        <form class="J-form-box" action="{DIR}publish/step{print_r($step+1, 1)}/" method="post">
+            <!--{if $project_id}-->
+            <input type="hidden" name="project_id" value="{$project_id}"/>
+            <!--{/if}-->
+            <div class="form-content">
+                <!--{if $step == 1}-->
+                <!--{template publish_store/step1}-->
+                <!--{elseif $step == 2}-->
+                <!--{template publish_store/step2}-->
+                <!--{elseif $step == 3}-->
+                <!--{template publish_store/step3}-->
+                <!--{elseif $step == 4}-->
+                <!--{template publish_store/step4}-->
+                <!--{elseif $step == 5}-->
+                <!--{template publish_store/step5}-->
+                <!--{elseif $step == 6}-->
+                <!--{template publish_store/step6}-->
+                <!--{/if}-->
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade crop-modal J-crop-modal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="image-box">
+                    <p><img></p>
+                </div>
+                <div class="preview-box" style="width:150px;">
+                    <img>
+                </div>
+                <canvas class="J-canvas" style="overflow:hidden; display:none"></canvas>
+            </div>
+            <div class="crop-btns">
+                <a href="javascript:void(0);" class="btn confirm-btn J-confirm-btn" onclick="imgCrop.confirm()">确定</a>
+                <a href="javascript:void(0);" class="btn cancel-btn"  onclick="imgCrop.cancel()">取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--{template inc/footer}-->
+<!--{static ../static/js/plugin/ueditor/ueditor.config.js js/plugin/ueditor/_ueditor.js}-->
+<!--{static ../static/js/plugin/ueditor/ueditor.all.min.js js/plugin/ueditor/_ueditor.js 0}-->
+<!--{static ../static/v2/js/jquery.validate.js ../static/v2/_publish_store.js}-->
+<!--{static ../static/v2/js/form.js ../static/v2/_publish_store.js}-->
+<!--{static ../static/v2/js/jquery.imgareaselect.pack.js ../static/v2/_publish_store.js}-->
+<!--{static ../static/v2/js/date.js ../static/v2/_publish_store.js}-->
+<!--{static ../static/v2/js/img-crop.js ../static/v2/_publish_store.js}-->
+<!--{static ../static/v2/js/publish.js ../static/v2/_publish_store.js}-->
+
+<!--{if $step == 4}-->
+<!--{static ../static/v2/js/publish-shop.js _publish_shop.js}-->
+<script>
+    $(function () {
+        window.shopComponent.init({json_encode($shop_list)});
+    });
+</Script>
+<!--{/if}-->

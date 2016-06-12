@@ -1,0 +1,41 @@
+<!--{if !core::R('ajax')}-->
+<!--{eval
+$pages['header_class'] = 'header-white';
+$pages['not_mobile'] = 1;
+}-->
+<!--{template inc/header}-->
+<!--{eval
+if($url == -1){
+    $url = 'javascript:window.history.back(-1);';
+}
+}-->
+<div class="container-box">
+    <div class="message-box">
+        <a href="{$url}">{$message}</a>
+    </div>
+</div>
+<!--{if $url}-->
+<script>setTimeout(function(){location.href='{$url}'}, 2000)</script>
+<!--{else}-->
+<script>setTimeout(function(){window.history.back(-1);}, 2000)</script>
+<!--{/if}-->
+<!--{template inc/footer}-->
+
+<!--{else}-->
+<div style="text-align: center; padding: 20px;">
+    {$message}
+</div>
+<script>
+$(function(){
+    var tradingModalObj = $('.J-trading-modal');
+    if(tradingModalObj.length){
+        setTimeout(function(){
+            tradingModalObj.modal('hide');
+        },2500)
+    }
+
+    initFooterPosition();
+})
+
+</script>
+<!--{/if}-->

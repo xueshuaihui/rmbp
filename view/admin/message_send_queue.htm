@@ -1,0 +1,78 @@
+<!--{template admin/header}-->
+<!--{eval
+    $select_rank = array($search['rank'] => ' selected');
+    $select_sort_order = array($search['sort_order'] => ' selected');
+    $select_search = array($search['search'] => ' selected');
+    $select_screen = array($search['screen'] => ' selected');
+    $issend = array('0' => '未发送', '1' => '已发送');
+}-->
+<div class="title">
+    发送队列
+</div>
+
+<div>
+    <form action="{DIR}{ADMIN_DIR}/message/send_queue/sendtype/{$sendtype}/" method="post">
+        <label>排序：</label>
+        <select name="search[rank]">
+            <option selected="" value="">选择排序方式</option>
+            <option value="dateline" {print_r($select_rank[dateline],1)}>时间</option>
+        </select>
+        <select name="search[sort_order]">
+            <option selected="" value="">排序方式</option>
+            <option value="ASC" {print_r($select_sort_order[ASC],1)}>升序</option>
+            <option value="DESC" {print_r($select_sort_order[DESC],1)}>降序</option>
+        </select>
+
+        <label>搜索：</label>
+        <select name="search[search]">
+            <option selected="" value="">选择搜索项</option>
+            <option value="user_id" {print_r($select_search[user_id],1)}>UID</option>
+            <option value="content" {print_r($select_search[content],1)}>内容</option>
+        </select>
+        <input type="text" name="search[search_value]" value="{$search['search_value']}">
+
+        <label>筛选：</label>
+        <select name="search[screen]">
+            <option selected="" value="">选择消息状态</option>
+            <option value="0" {print_r($select_screen[0],1)}>未发送</option>
+            <option value="1" {print_r($select_screen[1],1)}>已发送</option>
+        </select>
+        <label>日期筛选：</label>
+        <input type="text" name="search[start]" value="{$search['start']}" maxlength="10" placeholder="{date('Y-m-d')}" style="width: 100px;">
+        <input type="text" name="search[end]" value="{$search['end']}" maxlength="10" placeholder="{date('Y-m-d')}" style="width: 100px;">
+        <input type="submit" value="确定">
+    </form>
+</div>
+
+<div class="content login-overview">
+    <table class="table table-bordered">
+        <tr>
+            <td>短信发送ID</td>
+            <td>用户名</td>
+            <td>手机</td>
+            <td>分类</td>
+            <td>内容</td>
+            <td>创建时间</td>
+            <td>发送时间</td>
+            <td>发送状态</td>
+            <td>发送结果</td>
+            <td>操作</td>
+        </tr>
+        <!--{loop $send_list $list}-->
+        <tr>
+            <td>{$list['user_id']}</td>
+            <td>{$list['']}</td>
+            <td>{$list['']}</td>
+            <td>{$list['sendtype']}</td>
+            <td>{$list['content']}</td>
+            <td>{print_r(date('Y-m-d H:i:s',$list['dateline']),1)}</td>
+            <td>{print_r(date('Y-m-d H:i:s',$list['sendtime']),1)}</td>
+            <td>{print_r($issend[$list['issend']],1)}</td>
+            <td>{$list['']}</td>
+            <td><a href="{DIR}{ADMIN_DIR}/message/list_delete/" data-post="id/$list['id']/" data-reload="1">删除</a></td>
+        </tr>
+        <!--{/loop}-->
+    </table>
+    <div class="page-box">{$page_html}</div>
+</div>
+<!--{template admin/footer}-->

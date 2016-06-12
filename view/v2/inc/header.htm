@@ -1,0 +1,57 @@
+<!--{if !core::R('ajax')}-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"> <!--优先使用IE最新版和chrome-->
+    <meta http-equiv="Cache-Control" content="no-siteapp"> <!--百度禁止转码-->
+
+    <!--{if !$pages['not_mobile']}-->
+    <meta content="width=1024" name="viewport">  <!--非响应式-->
+    <!--{else}-->
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <!--{/if}-->
+
+    <title><!--{if $pages['title']}-->{$pages['title']}<!--{/if}--><!--{if strpos($pages['title'], $conf['app_name']) === false}--> - $conf['app_name']<!--{/if}--></title>
+    <!--{if $pages['keys']}-->
+    <meta content="{$pages['keys']}" name="keywords">
+    <!--{/if}-->
+    <!--{if $pages['desc']}-->
+    <meta content="{$pages['desc']}" name="description">
+    <!--{/if}-->
+    <link rel="icon" href="{$conf[static_url]}images/favicon.ico">
+    <!--{static ../static/v2/images/icon/* ../static/v2/_icon}-->
+    <!--{static ../static/v2/css/animate.scss ../static/v2/_common.css 0}-->
+    <!--{static ../static/v2/css/bootstrap.min.css ../static/v2/_common.css 0}-->
+    <!--{static ../static/v2/css/style2.0.scss ../static/v2/_common.css}-->
+
+    <!--[if IE]>
+        <script src="../../../static/js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <script>var FORM_HASH = '{misc::form_hash()}', DIR = '{DIR}'; STATIC_URL = '{$conf['static_url']}', globalEvents = [], publishGlobalEvents = [], accountEvents = [];
+    <!--{if !$pages['not_mobile']}-->
+    (function() {
+        var isMobile = (function () {
+            var mobile = /iphone|android|phone|mobile|wap|netfront|java|opera mobi|opera mini|ucweb|windows ce|symbian|series|webos|sony|blackberry|dopod|nokia|samsung|palmsource|xda|pieplus|meizu|midp|cldc|motorola|foma|docomo|up.browser|up.link|blazer|helio|hosin|huawei|novarra|coolpad|webos|techfaith|palmsource|alcatel|amoi|ktouch|nexian|ericsson|philips|sagem|wellcom|bunjalloo|maui|smartphone|iemobile|spice|bird|zte-|longcos|pantech|gionee|portalmmm|jig browser|hiptop|benq|haier|lct|320x320|240x320|176x220|windows phone/ig, ipad = /ipad/ig, ua = navigator.userAgent, isMo = ua.search(mobile) > -1 ? 1 : 0;
+            if (ua.search(ipad) > -1) {
+                return false
+            }
+            return isMo
+        })();
+        if(isMobile){
+            <!--{if $pages['mobile_url']}-->
+            location.href= '{$conf['mobile_url']}{$pages['mobile_url']}';
+            <!--{else}-->
+            location.href= '{$conf['mobile_url']}'+location.pathname.substr(1)+location.search+location.hash;
+            <!--{/if}-->
+        }
+    })();
+    <!--{/if}-->
+    </script>
+
+</head>
+<body>
+
+<!--{template inc/nav}-->
+<!--{/if}-->

@@ -1,0 +1,46 @@
+<!--{eval
+$titles = array(
+    'center' => '基本信息',
+    'invested' => '投资的项目',
+    'financing' => '融资的项目',
+    'message' => '消息通知',
+    'password' => '修改密码',
+);
+$pages['title'] = $titles[core::R('a')];
+
+$pages['mobile_url'] = 'user/center/';
+}-->
+<!--{template header}-->
+<!--{template inc/nav}-->
+<!--{static ../static/js/jquery.imgareaselect.pack.js _user_index.js}-->
+<!--{static ../static/js/account.js _user_index.js}-->
+<!--{static ../static/css/imgareaselect-default.css css/_imgareaselect.css}-->
+<!--{eval
+    $active_tab = array(core::R('a') => ' active');
+}-->
+<div class="container C-account">
+    <div class="nav-box J-tab-box">
+        <ul class="nav nav-tabs " data-target='{json_encode($active_tab)}'>
+            <li class="J-accountBasicInfo{$active_tab['center']}"><a href="{DIR}?c=user-center">个人信息</a></li>
+            <li class="J-accountInvestment{$active_tab['invested']}"><a href="{DIR}?c=user-invested">投资的项目</a></li>
+            <li class="J-accountFinancing{$active_tab['financing']}"><a href="{DIR}?c=user-financing">融资的项目</a></li>
+            <li class="J-accountNews{$active_tab['message']}"><a href="{DIR}?c=user-message">消息通知</a></li>
+            <li class="J-accountPassword{$active_tab['password']}"><a href="{DIR}?c=user-password">修改密码</a></li>
+        </ul>
+    </div>
+    <div class="tab-content">
+        <!--{if core::R('a') == 'center'}-->
+        <!--{template user/center}-->
+        <!--{elseif core::R('a') == 'invested'}-->
+        <!--{template user/invested}-->
+        <!--{elseif core::R('a') == 'financing'}-->
+        <!--{template user/financing}-->
+        <!--{elseif core::R('a') == 'message'}-->
+        <!--{template user/message}-->
+        <!--{elseif core::R('a') == 'password'}-->
+        <!--{template user/password}-->
+        <!--{/if}-->
+    </div>
+</div>
+<!--{template inc/modal_alert_info}-->
+<!--{template footer}-->

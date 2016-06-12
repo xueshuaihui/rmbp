@@ -1,0 +1,47 @@
+<!--{template admin/header}-->
+<!--{static ../static/admin/js/plugin/ueditor/ueditor.config.js admin/js/plugin/ueditor/_ueditor.js}-->
+<!--{static ../static/admin/js/plugin/ueditor/ueditor.all.min.js admin/js/plugin/ueditor/_ueditor.js 0}-->
+<!--{static ../static/admin/js/article.js admin/js/_article.js}-->
+<!--{eval
+}-->
+<div class="title">
+    领投人
+</div>
+<div class="content">
+<div class="article-list-edit-box">
+        <form id="form_sub" action="{DIR}{ADMIN_DIR}/project/project_lead/" method="post" enctype="multipart/form-data" >
+        <input type="hidden" name="lead[project_id]" value="{$project_id}">
+        <input type="hidden" name="lead[id]" value="{$id}">
+        <div class="form-group">
+            <label>领投人：</label>
+            <input type="text" class="form-control" name="lead[name]" value="{$lead_list['name']}">
+        </div>
+        <div class="form-group">
+            <label>头像：</label>
+            <input type="file" class="form-control" name="pic">
+            <input type="hidden" name="pics" value="{$lead_list['pic']}">
+        </div>
+        <div class="form-group">
+            <label>排序：</label>
+            <input type="text" class="form-control" name="lead[sortid]" value="{$lead_list['sortid']}">
+        </div>
+        <div>
+            <label>领投人介绍：</label>
+            <div>
+            <textarea class="form-control J-short-desc"  alt="100" name="lead[intro]" placeholder="请输入领投人介绍简介">{$lead_list['intro']}</textarea>
+            </div>
+        </div>
+        <div>
+            <label>领投人理由：</label>
+            <div>
+                <textarea class="form-control J-short-desc"  alt="100" name="lead[reason]" placeholder="请输入领投人理由">{$lead_list['reason']}</textarea>
+            </div>
+        </div>
+        <div class="btn-box">
+            <input type="submit" class="form-control confirm-btn" value="确定">
+            <a href="{DIR}{ADMIN_DIR}/project/lead/project_id/{$project_id}" class="form-control cancel-btn" >取消</a>
+        </div>
+    </form>
+</div>
+</div>
+<!--{template admin/footer}-->

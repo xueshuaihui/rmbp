@@ -1,0 +1,4 @@
+/*[tplStatic 1.0 - 1511]*/
+
+$(function(){initContentTab();$('.J-focus-num-btn').click(function(){$('.J-personal-modal').modal('show');})
+$(window).scroll(function(){var lists=$('.J-project-lists li');var canvas=$('.J-project-lists canvas');var scrollTop=$(document).scrollTop();var windowHeight=$(window).height();if(lists.length>canvas.length){for(var i=0;i<lists.length;i++){var list=lists.eq(i);var listTop=list.find('.J-status-line').offset().top;var listWindowTop=listTop-scrollTop+178;if(!list.find('.J-status-line canvas').length&&listWindowTop<windowHeight&&listWindowTop>0){var lineNum=parseInt(list.find('.J-project-list').data('status-line'))/100;var flag=list.find('.J-project-list').data('status-flag');setProjectLineCircle(list.find('.J-status-line'),lineNum,flag,'#e1e1e1');}}}});});function initContentTab(){$('.J-tab-box .nav-tabs li a').click(function(e){e.preventDefault();$(this).tab('show');})};

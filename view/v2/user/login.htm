@@ -1,0 +1,52 @@
+<!--{eval
+$pages['title'] = '用户登录';
+$pages['header_class'] = 'header-white';
+}-->
+<!--{if !core::R('ajax')}-->
+    <!--{template inc/header}-->
+    <div class="container-box">
+<!--{/if}-->
+    <div class="modal-body">
+        <div class="register-login-box login" id="login">
+            <p class="login-head">Welcome</p>
+
+            <div class="row">
+                <input type="text" class="form-control J-account" onchange="judgeLoginName(this)" placeholder="手机号或者邮箱">
+                <!--<input type="text" class="form-control J-account"  placeholder="手机号/邮箱">-->
+            </div>
+            <div class="row">
+                <input type="password" class="form-control J-pwd" onchange="judgeLoginPassword(this)" maxlength="16"
+                       placeholder="输入密码">
+                <div class="caps-lock-warning hide"></div>
+            </div>
+            <div class="row">
+                <input type="checkbox" class="checkbox">
+                一周内自动登录
+                <a href="{DIR}?c=user-forgot" onclick="return(dialog(this))" class="forgot-link"
+                   data-target="#forgotModal">忘记密码？</a>
+            </div>
+            <div class="error-box" {if $message} style="display:block"{/if}> {$message} </div>
+            <div class="row">
+                <button onclick="post_data(this)" class="btn J-btn">登录</button>
+            </div>
+            <div class="row bottom">
+                <p>没有账号？<a href="{DIR}?c=user-register" onclick="return(dialog(this))">立即注册</a></p>
+            </div>
+        </div>
+    </div>
+    <!--{if core::R('ajax')}-->
+        <script>
+            initloginEvent();
+        </script>
+    <!--{/if}-->
+
+<!--{if !core::R('ajax')}-->
+    </div>
+    <!--{template inc/footer}-->
+    <script>
+        globalEvents.push(function(){
+            initloginEvent();
+        });
+    </script>
+<!--{/if}-->
+

@@ -1,0 +1,142 @@
+﻿<!--{template mobile/header}-->
+<!--{eval
+    $gufen = $invest['price']/($project['valuation']*10000)*100;
+    $address = explode(' ',$region_list);
+}-->
+<div class="return-confirm-box J-return-confirm-box">
+    <form action="{DIR}mapi/order/" method="post">
+        <div class="title">{$project['title']}</div>
+        <div class="return-box">
+            <p class="label">每份投资金额</p>
+            <p class="per-money"><span class=" J-per-money">$invest['price']</span>  元</p>
+            <p class="label">投资份数</p>
+            <div class="am-g money-num">
+                <div class="am-u-sm-3">
+                    <a href="javascript:void(0);" class="desc-a desc-active J-desc"></a>
+                </div>
+                <div class="am-u-sm-6">
+                    <input type="text" class="money-num-input J-money-num-input" value="1" name="invest[num]" data-maxnum="{$invest['maxnum']}">
+                </div>
+                <div class="am-u-sm-3">
+                    <a href="javascript:void(0);" class="add-a add-active J-add"></a>
+                </div>
+            </div>
+            <p class="label">您的投资金额</p>
+            <p class="money"> <span class="num J-user-invest-money"></span> 元</p>
+            <p class="gufen-desc">约占本轮股份 <span class="J-gufen" data-pershare="{$gufen}"></span> %</p>
+        </div>
+        <!--{if $invest['returntime']}-->
+        <div class="return-box">
+            <p class="label">您的实物回报</p>
+            <p>
+                {$invest['message']}
+            </p>
+        </div>
+        <div class="return-box">
+            <p class="label">您的收货地址</p>
+            <p class="mini-label">（如不需要实物回报请勿填写收货地址）</p>
+            <div class="address-box">
+                <a href="javascript:void(0);" class="btn new-address-btn J-new-address <!--{if $address_list}-->hide <!--{/if}-->">新增收货地址</a>
+                <!--{loop $address_list $address}-->
+                <div class="address-show-box J-addr-info-box">
+                    <p class="fix-box">
+                        <a href="javascript:void(0);" class="fix-btn J-fix" data-id="{$address['id']}" data-region="{$address['province_id']},{$address['city_id']},{$address['county_id']}">修改</a>
+                    </p>
+                    <p>
+                        <span>收件人：</span>
+                        <span class="name J-name">{$address['name']}</span>
+                    </p>
+                    <p>
+                        <span>联系电话：</span>
+                        <span class="phone J-phone">{$address['phone']}</span>
+                    </p>
+                    <p>
+                        <span>收货地址：</span>
+                        <span class="address J-address">
+                            {print_r($region_list[$address['province_id']],1)}
+                            {print_r($region_list[$address['city_id']],1)}
+                            {print_r($region_list[$address['county_id']],1)}
+                            <span class="J-address-detail">{$address['address']}</span>
+                        </span>
+                    </p>
+                    <p class="fix-box">
+                        <a href="javascript:void(0);" class="delete-btn J-delete" data-id="{$address['id']}">删除</a>
+                    </p>
+                </div>
+                <!--{/loop}-->
+            </div>
+        </div>
+        <!--{/if}-->
+        <div class="return-box">
+            <p class="statement">为了保证项目筹款和发展的顺利进行，如您想法有变请在项目众筹结束之前申请退款，一旦项目众筹成功之后将无法申请退款。如果众筹失败，众筹的项目款项会退还到您的个人账户里。</p>
+            <p class="check-box">
+                <input class="checkbox J-checkbox" type="checkbox">我已阅读并同意 <a href="{DIR}?c=help-130">《投资人规则》</a>  <a href="{DIR}?c=help-131">《风险提示书》</a>
+            </p>
+            <div class="error-box"></div>
+            <div class="am-g bottom-btn-box">
+                <input type="hidden" name="invest[project_id]" value="{$invest['project_id']}" />
+                <input type="hidden" name="invest[invest_id]" value="{$invest['id']}" />
+                <input type="hidden" name="FORM_HASH" value="{misc::form_hash()}" />
+                <button type="submit" class="btn J-confirm">确定投资</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="addr-info-input-box J-addr-info-input hide" data-id="">
+    <div class="am-g">
+        <div class="am-u-sm-3 input-label">收货人姓名</div>
+        <div class="am-u-sm-9 input-box">
+            <input type="text" class="input J-name" name="address[name]" placeholder="请输入您的姓名">
+        </div>
+    </div>
+    <div class="am-g">
+        <div class="am-u-sm-4 input-label">所在省份</div>
+        <div class="am-u-sm-8 input-box">
+            <input type="button" value="北京市" data-id="1" class="input address-select J-address-select" name="address[province_id]" data-pid="0" data-target="select-city" data-source="J-province-options" id="select-province">
+        </div>
+    </div>
+    <div class="am-g">
+        <div class="am-u-sm-4 input-label">所在城市、区</div>
+        <div class="am-u-sm-8 input-box">
+            <input type="button" value="东城区" data-id="2" class="input address-select J-address-select" name="address[city_id]" data-pid="" id="select-city" data-target="select-county" data-source="J-city-options">
+        </div>
+    </div>
+    <div class="am-g J-county-box">
+        <div class="am-u-sm-4 input-label">所在城市、县</div>
+        <div class="am-u-sm-8 input-box">
+            <input type="button" value="未设置" class="input address-select J-address-select" name="address[county_id]" id="select-county" data-source="J-county-options">
+        </div>
+    </div>
+    <div class="am-g">
+        <div class="am-u-sm-3 input-label">详细地址</div>
+        <div class="am-u-sm-9 input-box">
+            <input type="text" class="input J-address-detail" name="address[address]" placeholder="请输入您能收到货的地址">
+        </div>
+    </div>
+    <div class="am-g">
+        <div class="am-u-sm-3 input-label">电话</div>
+        <div class="am-u-sm-9 input-box">
+            <input type="text" class="input J-phone" name="address[phone]" placeholder="手机或固定电话">
+        </div>
+    </div>
+    <div class="error-box"></div>
+    <div class="bottom-btn-box">
+        <div class="am-u-sm-6"><a href="javascript:void(0);" class="btn save-btn J-save-btn">保存</a>
+        </div>
+        <div class="am-u-sm-6"><a href="javascript:void(0);" class="btn cancel-btn J-cancel-btn" data-target="new">取消</a>
+        </div>
+    </div>
+</div>
+
+<div class="address-options J-address-options J-province-options" data-target="select-province">
+
+</div>
+<div class="address-options J-address-options J-city-options" data-target="select-city">
+</div>
+<div class="address-options J-address-options J-county-options" data-target="select-county">
+</div>
+
+
+<!--{template mobile/footer}-->
+<!--{static ../static/mobile/js/order.js _mobile_order.js}-->

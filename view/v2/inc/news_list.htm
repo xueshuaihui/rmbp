@@ -1,0 +1,14 @@
+<!--{eval
+    $sql = 'SELECT * FROM '.DB::table('article').' WHERE `type`= \'news\' AND disabled=0 ORDER BY dateline DESC LIMIT 50';
+    $news_list = DB::fetch_all($sql);
+}-->
+<!--{if $news_list}-->
+<ul class="index-news" id="index-news">
+    <!--{loop $news_list $news}-->
+    <li>[{date('Y-m-d', $news['dateline'])}]<a href="{article_url($news)}" target="_blank">{$news['title']}</a></li>
+    <!--{/loop}-->
+</ul>
+<script>
+    (function (obj,evt,func,eventobj){eventobj=!eventobj?obj:eventobj;if(obj.addEventListener){obj.addEventListener(evt,func,false)}else if(eventobj.attachEvent){obj.attachEvent('on'+evt,func)}})(window,'scroll',function(){var o = document.getElementById('index-news');if(o.style.display!='none')o.style.display='none'});
+</script>
+<!--{/if}-->

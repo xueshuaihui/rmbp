@@ -1,0 +1,179 @@
+<!--{eval
+    $_three_btn = 1
+}-->
+<p class="pre-warning">如有已开店铺，请填写相应的经营数据；如无已开店铺则跳过不填。</p>
+<div class="J-stores-box"></div>
+<div class="row add-box">
+    <a href="javascript:void(0);" data-action="add-shop" class="add-btn J-add-shop-btn">
+        <span>添加店铺</span>
+    </a>
+</div>
+<hr class="divider" />
+<div class="btn-box three-btns-box">
+    <a href="{DIR}publish/step3/" class="btn pre-btn">上一步</a>
+    <a href="{DIR}publish/step5/" class="btn mid-btn">跳过</a>
+    <input type="submit" value="保存，下一步" class="btn next-btn"/>
+</div>
+
+<script type="tpl" id="shopTpl">
+    <div class="block-box J-shop-box">
+        <a href="javascript:void(0);" data-index="<%=index-1%>" data-action="remove-shop" class="delete-btn J-delete-shop-btn" title="删除">&times;</a>
+        <div class="row">
+            <div class="col-xs-2 form-label">店铺名称</div>
+            <div class="col-xs-5">
+                <input type="hidden" name="shops[<%=index%>][id]" value="<%=id%>">
+                <input class="form-control J-name"
+                    name="shops[<%=index%>][name]"
+                    value="<%=name%>"
+                    type="text" >
+            </div>
+            <div class="col-xs-5 tip J-tip">
+                <div class="tip-box">
+                    <p class="J-tip-content"></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2 form-label">店铺地址</div>
+            <div class="col-xs-5">
+                <input class="form-control J-address"
+                 name="shops[<%=index%>][address]"
+                 value="<%=address%>"
+                 type="text" >
+            </div>
+            <div class="col-xs-5 tip J-tip">
+                <div class="tip-box">
+                    <p class="J-tip-content"></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2 form-label">店铺筹资总投资</div>
+            <div class="col-xs-5">
+                <input class="form-control has-unit J-totalfinancing"
+                    name="shops[<%=index%>][totalfinancing]"
+                    value="<%=totalfinancing%>"
+                    data-regtype="p_num"
+                    type="text"  >
+                <div class="unit">万元</div>
+            </div>
+            <div class="col-xs-5 tip J-tip ">
+                <div class="tip-box">
+                    <p class="J-tip-content"></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2 form-label">从筹备到开业周期</div>
+            <div class="col-xs-5">
+                <input class="form-control has-unit J-opcircle"
+                    name="shops[<%=index%>][opcircle]"
+                    value="<%=opcircle%>"
+                    data-regtype="p_int"
+                    type="text" name="" >
+                <div class="unit">天</div>
+            </div>
+            <div class="col-xs-5 tip J-tip">
+                <div class="tip-box">
+                    <p class="J-tip-content"></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2 form-label">从开业到盈利周期</div>
+            <div class="col-xs-5">
+                <input class="form-control has-unit J-payoffday"
+                    name="shops[<%=index%>][payoffday]"
+                    value="<%=payoffday%>"
+                    data-regtype="p_int"
+                    type="text" >
+                <div class="unit">天</div>
+            </div>
+            <div class="col-xs-5 tip J-tip ">
+                <div class="tip-box">
+                    <p class="J-tip-content"></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2 form-label">店铺营业面积</div>
+            <div class="col-xs-5">
+                <input class="form-control has-unit J-shopsize"
+                    name="shops[<%=index%>][shopsize]"
+                    value="<%=shopsize%>"
+                    data-regtype="p_num"
+                    type="text" >
+                <div class="unit">平米</div>
+            </div>
+            <div class="col-xs-5 tip J-tip ">
+                <div class="tip-box">
+                    <p class="J-tip-content"></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2 form-label">客流量</div>
+            <div class="col-xs-5">
+                <input class="form-control has-unit J-passengers"
+                    name="shops[<%=index%>][passengers]"
+                    value="<%=passengers%>"
+                    data-regtype="p_int"
+                    type="text" >
+                <div class="unit">人</div>
+            </div>
+            <div class="col-xs-5 tip J-tip">
+                <div class="tip-box">
+                    <p class="J-tip-content"></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2 form-label">人均消费</div>
+            <div class="col-xs-5">
+                <input class="form-control has-unit J-perconsumption"
+                    name="shops[<%=index%>][perconsumption]"
+                    value="<%=perconsumption%>"
+                    data-regtype="p_num"
+                    type="text" >
+                <div class="unit">元</div>
+            </div>
+            <div class="col-xs-5 tip J-tip">
+                <div class="tip-box">
+                    <p class="J-tip-content"></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2 form-label">月平均营业收入</div>
+            <div class="col-xs-5">
+                <input class="form-control has-unit J-permonth"
+                    name="shops[<%=index%>][permonth]"
+                    value="<%=permonth%>"
+                    data-regtype="p_num"
+                    type="text">
+                <div class="unit">万元</div>
+            </div>
+            <div class="col-xs-5 tip J-tip">
+                <div class="tip-box">
+                    <p class="J-tip-content"></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2 form-label">月平均净利润</div>
+            <div class="col-xs-5">
+                <input class="form-control has-unit J-perprofits"
+                    name="shops[<%=index%>][perprofits]"
+                    value="<%=perprofits%>"
+                    data-regtype="p_num"
+                    type="text" >
+                <div class="unit">万元</div>
+            </div>
+            <div class="col-xs-5 tip J-tip">
+                <div class="tip-box">
+                    <p class="J-tip-content"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

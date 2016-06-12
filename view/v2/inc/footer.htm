@@ -1,0 +1,73 @@
+<!--{if !core::R('ajax')}-->
+<div class="modal fade" id="alertImgModel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body ">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalDialogLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+<footer class="<!--{if $pages['name'] == 'index'}-->index-footer<!--{/if}-->">
+    <div id="back2top">
+        <a href="javascript:void(0);"></a>
+    </div>
+    <div class="footer-links">
+        <p>
+            <a href="{DIR}article/list/" class="link">众筹新闻</a>
+            <a href="{DIR}?c=help-index target="_blank" class="link">帮助中心</a>
+            <a href="{DIR}?c=help-127" target="_blank" class="link">商务合作</a>
+            <a href="{DIR}?c=help-131" target="_blank" class="link">免责声明</a>
+            <a href="{DIR}?c=help-127" target="_blank" class="link">关于我们</a>
+        </p>
+    </div>
+    <div class="contact">
+        <p>
+            <span class="contact-weixin">
+                <span class="contact-icon weixin-icon"></span>
+                微信
+                <img class="weixin-img" src="{$conf[static_url]}/v2/images/foooter-weixin-img.jpg" alt="">
+            </span>
+            <span class="contact-phone">
+                <span class="contact-icon phone-icon"></span>
+                010-57199511
+            </span>
+            <span class="contact-email">
+                <span class="contact-icon email-icon"></span>
+                service@rmbplus.com
+            </span>
+        </p>
+    </div>
+    <div class="copyright">
+        <p>Copyright &copy; 2015珠海横琴众心元创股权投资有限公司 版权所有 粤ICP备15087944号-1</p>
+    </div>
+</footer>
+
+<!--{static ../static/v2/js/jquery-1.11.3.min.js ../static/v2/_common.js 0}-->
+<!--{static ../static/js/jquery.lazyload.min.js ../static/v2/_common.js 0}-->
+<!--{static ../static/v2/js/circle-progress.js ../static/v2/_common.js}-->
+<!--{static ../static/v2/js/jquery.bxslider.min.js ../static/v2/_common.js 0}-->
+<!--{static ../static/v2/js/bootstrap.min.js ../static/v2/_common.js 0}-->
+<!--{static ../static/js/base.js ../static/v2/_common.js}-->
+
+<!--{if $pages['name'] == 'index'}-->
+    <div class="content-bottom">
+        <div class="content-bottom-desc">
+            <p>你与梦想之间，只差一次点击</p>
+            <div class="btn-box">
+                <a href="{DIR}?c=publish-index" class="btn">发布项目</a>
+            </div>
+        </div>
+        <video autoplay="" loop="" muted="" data-original="{$conf[static_url]}/v2/video/seawave.mp4"></video>
+    </div>
+<!--{/if}-->
+
+</body>
+</html>
+<!--{/if}-->

@@ -1,0 +1,172 @@
+<fieldset>
+    <div class="row name">
+        <div class="col-xs-2 lable">项目名称</div>
+        <div class="col-xs-5">
+            <input class="form-control J-name" type="text" maxlength="40" onchange="judgeProjectName(this)"
+                   name="project[title]" value="{$project['title']}"
+                   placeholder="请输入2-40个字符的名称">
+        </div>
+    </div>
+    <div class="row company">
+        <div class="col-xs-2 lable">公司名称</div>
+        <div class="col-xs-5">
+            <input class="form-control J-company-name" type="text" maxlength="40" onchange="judgeCompanyName(this)"
+                   value="{$project['company']}"
+                   name="project[company]" placeholder="请输入公司名称">
+        </div>
+    </div>
+    <div class="row short-desc">
+        <div class="col-xs-2 lable">项目简介</div>
+        <div class="col-xs-5">
+            <textarea class="form-control J-short-desc" onKeyUp="checkWordNum(this)" data-max="210"
+                      name="project[intro]"
+                      placeholder="请输入不超过210个字符的简介">{$project['intro']}</textarea>
+
+            <div class="C-word-num-show">
+                <span class="J-had-input">0</span>
+                <span>/</span>
+                <span class="J-max-input">210</span>
+            </div>
+        </div>
+        <div class="col-xs-5 sample J-short-desc-sample">
+            <img src="{$conf[static_url]}images/project-desc-sample.png" alt="">
+        </div>
+    </div>
+    <div class="row image">
+        <div class="col-xs-2 lable">项目图片</div>
+        <div class="col-xs-6">
+            <input style="display:none" type="file" id="projectBasicImgInput" onchange="cropBasicImg(this)"
+                   alt="projectBasicImgCropModal">
+            <input class="btn J-img-select" type="button" value="上传">
+            <span class="img-desc">支持小于2M，格式为jpg、png的图片，540*300像素</span>
+
+            <div id="projectBasicImgPrev">
+                <!--{if $project['banner']}-->
+                <img src="{$conf[static_url]}{$project['banner']['path']}">
+                <!--{else}-->
+                <img src="" style="display:none">
+                <!--{/if}-->
+            </div>
+            <input type="hidden" name="pics[project]" id="pics[project]" class="J-img">
+
+            <div class="modal fade C-J-crop-modal" id="projectBasicImgCropModal" data-backdrop="static">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="image-box">
+                                <p><img></p>
+                            </div>
+                            <!--banner 图 base64 字段请用 pics[project] -->
+                            <div class="preview-box" style="width:150px;height:83.3px">
+                                <img>
+                            </div>
+                            <canvas width="540" height="300" class="J-canvas"
+                                    style="overflow:hidden; display:none"></canvas>
+                        </div>
+                        <div class="C-crop-btns">
+                            <a href="javascript:void(0);" class="btn C-J-confirm">确定</a>
+                            <a href="javascript:void(0);" data-dismiss="modal" class="btn C-J-cancel">取消</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <h1 class="title step-1-title">项目现状</h1>
+<!--{eval
+    $status_selected = array( $project['status'] => ' selected');
+    $balance_selected = array( $project['balance'] => ' selected');
+    $stage_selected = array( $project['stage'] => ' selected');
+}-->
+    <div class="row">
+        <div class="col-xs-2 lable">产品阶段</div>
+        <div class="col-xs-3 selects-box">
+            <select class="form-control" name="project[status]" id="project-stage">
+                <option value="0"{$status_selected[0]}>概念阶段</option>
+                <option value="1"{$status_selected[1]}>研发阶段</option>
+                <option value="2"{$status_selected[2]}>正式发布</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2 lable">收入状况</div>
+        <div class="col-xs-3 selects-box">
+            <select class="form-control" name="project[balance]" id="income-situation">
+                <option value="0"{$balance_selected[0]}>暂无收入</option>
+                <option value="1"{$balance_selected[1]}>有收入未盈利</option>
+                <option value="2"{$balance_selected[2]}>收支平衡</option>
+                <option value="3"{$balance_selected[3]}>已盈利</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2 lable">融资阶段</div>
+        <div class="col-xs-3 selects-box">
+            <select class="form-control" name="project[stage]" id="financing-stage">
+                <option value="1"{$stage_selected[1]}>天使轮</option>
+                <option value="2"{$stage_selected[2]}>A轮</option>
+                <option value="3"{$stage_selected[3]}>B轮</option>
+                <option value="4"{$stage_selected[4]}>C轮</option>
+                <option value="5"{$stage_selected[5]}>C轮后</option>
+                <option value="1"{$stage_selected[6]}>实体店融资</option>
+            </select>
+        </div>
+    </div>
+    <div class="row city">
+        <div class="col-xs-2 lable">所在城市</div>
+        <div class="col-xs-2 city-input">
+            <input class="form-control J-city" type="text" name="project[region]"
+                   value="{$project[region]}"
+                   onchange="judgeCityInput(this)" placeholder="输入城市">
+            <!--如果有城市id的话-->
+            <input class="form-control J-city" type="hidden" name="project[region_id]"/>
+        </div>
+    </div>
+    <div class="row field">
+        <div class="col-xs-2 lable">所属领域</div>
+        <div class="col-xs-10 J-field">
+            <!--{loop $area_list $area}-->
+            <label><a href="javascript:void(0);" class="status-flag  <!--{if isset($area_ids[$area['id']])}-->select<!--{/if}-->" type="checkbox" data-id="{$area['id']}"></a>{$area['name']}</label>
+            <!--{/loop}-->
+            <input type="hidden" name="area_ids" id="area_ids">
+        </div>
+    </div>
+    <div class="row project-display">
+        <div class="col-xs-2 ">产品展示</div>
+        <div class="col-xs-5">
+            <div class="display-box">
+                <input class="form-control link J-website-link" onchange="judgeLinkUrl(this)" type="text"
+                       value="{$project_field[urls][site]}"
+                       name="project[urls][site]" placeholder="网址  例如http://www.18plus.com.cn (选填)">
+            </div>
+            <div class="display-box">
+                <input class="form-control link J-iOS-link" onchange="judgeLinkUrl(this)" type="text"
+                       value="{$project_field[urls][ios]}"
+                       name="project[urls][ios]" placeholder="iOS App地址 (选填)">
+            </div>
+            <div class="display-box">
+                <input class="form-control link J-Android-link" onchange="judgeLinkUrl(this)" type="text"
+                       value="{$project_field[urls][android]}"
+                       name="project[urls][android]" placeholder="Android App地址 (选填)">
+            </div>
+        </div>
+    </div>
+    <div class="row description-detail">
+        <div class="col-xs-2 ">详细介绍</div>
+        <div class="col-xs-10">
+            <!--表单名字：project_field[description]-->
+            <textarea name="project[description]" id="description" class="hide form-control J-description">{$project_field['description']}</textarea>
+            <script id="descDetailEditor" type="text/plain" style="width:100%; height:300px"></script>
+        </div>
+    </div>
+    <div class="row m-b-10">
+        <div class="col-xs-2 ">融资计划</div>
+        <div class="col-xs-10">
+            <!--表单名字：project_field[financingplan]-->
+            <textarea name="project[financingplan]" id="financingplan" class="hide form-control J-financingplan">{$project_field['financingplan']}</textarea>
+            <script id="financingPlanEditor" type="text/plain" style="width:100%; height:300px"></script>
+        </div>
+    </div>
+    <div class="error-box"></div>
+</fieldset>

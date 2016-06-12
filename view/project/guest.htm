@@ -1,0 +1,18 @@
+<div class="tab-pane active">
+    <div class="row description">
+        <div class="lable">
+
+            <!--{if $pro == 'invest'}-->
+            <p>{$project['title']}投资</p>
+            <!--{elseif $pro == 'plan'}-->
+            <p>{$project['title']}计划</p>
+            <!--{/if}-->
+        </div>
+        <div class="content">请先
+            <a href="{DIR}?c=user-login" class="login" onclick="return(dialog(this))">登录</a>
+            <span>/</span>
+            <a href="{DIR}?c=user-register" class="register" onclick="return(dialog(this))">注册</a>
+
+            后，才能查看完整内容。</div>
+    </div>
+</div>

@@ -1,0 +1,174 @@
+<!--{eval
+    $pages['title'] = 'Plus众筹平台 - 让价值变得更有价值';
+    $stage_array = array(
+        1 => '天使轮',
+        2 => 'A轮',
+        3 => 'B轮',
+        4 => 'C轮',
+        5 => 'C轮后',
+    );
+    $stage_class_array = array(
+        1 => 'wheel-angle',
+        2 => 'wheel-a',
+        3 => 'wheel-b',
+        4 => 'wheel-c',
+        5 => 'wheel-c-after',
+    );
+    $status_array = array(
+        0 => '概念阶段',
+        1 => '研发中',
+        2 => '已上线',
+    );
+    $balance_array = array(
+        0 => '无收入',
+        1 => '有收入未盈利',
+        2 => '收支平衡',
+        3 => '已盈利'
+    );
+}-->
+<!--{template vc/header}-->
+<div class="search-box">
+    <div class="search-nav J-search-nav">
+        <ul>
+            <li data-target="stage">
+                <span>融资阶段</span>
+            </li>
+            <li data-target="field">
+                <span>行业</span>
+            </li>
+            <li data-target="financing">
+                <span>融资金额</span>
+            </li>
+            <li data-target="search">
+                <span>筛选</span>
+            </li>
+        </ul>
+    </div>
+    <div class="search-content J-search-content" data-id="stage">
+        <div class="content">
+            <ul>
+                <li class="active" data-default="default" data-type="search"><p>融资阶段</p></li>
+                <li data-stage="1" data-type="search"><p>天使轮</p></li>
+                <li data-stage="2" data-type="search"><p>A轮</p></li>
+                <li data-stage="3" data-type="search"><p>B轮</p></li>
+                <li data-stage="4" data-type="search"><p>C轮</p></li>
+                <li data-stage="5" data-type="search"><p>C轮后</p></li>
+            </ul>
+        </div>
+    </div>
+    <div class="search-content J-search-content" data-id="field">
+        <div class="content">
+            <ul>
+                <li class="active" data-default="default" data-type="search"><p>行业</p></li>
+                <!--{loop $area_list $area}-->
+                <li data-areaids="$area['id']" data-type="search"><p>$area['name']（$area['count']）</p></li>
+                <!--{/loop}-->
+            </ul>
+        </div>
+    </div>
+    <div class="search-content J-search-content" data-id="financing">
+        <div class="content">
+            <ul>
+                <li class="active" data-default="default" data-type="search"><p>融资金额</p></li>
+                <li data-financing="0-5000000" data-type="search"><p><500万人民币</p></li>
+                <li data-financing="4999999-10000000" data-type="search"><p>500万-1000万人民币</p></li>
+                <li data-financing="9999999-50000000" data-type="search"><p>1000万-5000万人民币</p></li>
+                <li data-financing="49999999-100000000" data-type="search"><p>5000万-1亿人民币</p></li>
+                <li data-financing="99999999-200000000" data-type="search"><p>1亿-2亿人民币</p></li>
+                <li data-financing="199999999-" data-type="search"><p>2亿人民币</p></li>
+            </ul>
+        </div>
+    </div>
+    <div class="search-content J-search-content J-screening-box" data-id="search">
+        <div class="content">
+            <ul>
+                <li data-type="checkbox">
+                    <p>
+                        心元资本投资过的项目
+                        <a href="javascript:void(0);" class="select-box" data-verify="-3"></a>
+                    </p>
+                </li>
+                <li data-type="checkbox">
+                    <p>
+                        候选中的项目
+                        <a href="javascript:void(0);" class="select-box" data-verify="-4"></a>
+                    </p>
+                </li>
+                <li>
+                    <p class="no-b">
+                        项目所在地
+                    </p>
+                    <p class="no-b area-box J-region-box">
+                        <!--{loop $region_list $region_name $v}-->
+                        <a href="javascript:void(0);"
+                           class="<!--{if ($v-1) % 4 == 0}-->m-l-0<!--{elseif $v % 4 == 0}-->m-r-0<!--{/if}-->"
+                           data-region="{$region_name}">{$region_name}</a>
+                        <!--{/loop}-->
+                    </p>
+                </li>
+            </ul>
+            <div class="bottom-box">
+                <a href="javascript:void(0);" class="reset J-reset-btn">重置</a>
+                <a href="javascript:void(0);" class="confirm J-confirm-btn">完成</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="fade J-fade"></div>
+<div class="project-lists">
+    <!--{loop $project_list $project}-->
+    <!--{eval
+     $percent = get_percent($project['totalfinancing'],  $project['minfinancing']);
+     }-->
+    <div class="project-list"
+         data-stage="$project['stage']"
+         data-maxfinancing="{print_R($project['maxfinancing']*10000,1)}"
+         data-minfinancing="{print_R($project['minfinancing']*10000, 1)}"
+         data-region="{$project['region']}"
+         data-verify="{$project['isverify']}"
+         data-areids="{loop $project['area_ids'] $area_id}$area_id,{/loop}" >
+        <div class="img-box" data-verify="{$project['isverify']}">
+            <a href="{DIR}project/detail/{url_id($project['id'])}/">
+				<b class="mouse_cross_this"></b>
+                <!--{if $project['banner']['path']}-->
+                <img src="{$conf['static_url']}/mobile/images/project-default.png" data-src="{$conf[static_url]}{$project['banner']['path']} " alt="{$project['title']}">
+                <!--{/if}-->
+            </a>
+
+            <div class="status-flag {print_r($stage_class_array[$project['stage']],1)}">
+                {print_r($stage_array[$project['stage']],1)}
+            </div>
+
+            <div class="am-g title-box">
+                <div class="am-u-sm-12 title">
+                    <a href="{DIR}project/detail/{url_id($project['id'])}/">$project['title']</a>
+                </div>
+            </div>
+        </div>
+        <div class="status-box">
+            <div class="status-line-box"><div class="status-line" style="width:{$percent}%"></div>
+            </div>
+            <div class="am-g status-desc">
+                <div class="am-u-sm-3 desc">
+                    <p class="num">{$project['region']}</p>
+                    <p>所在城市</p>
+                </div>
+                <div class="am-u-sm-3 desc">
+                    <p class="num">{print_r($status_array[$project['status']],1)}</p>
+                    <p>产品阶段</p>
+                </div>
+                <div class="am-u-sm-3 desc">
+                    <p class="num">{print_r($balance_array[$project['balance']],1)}</p>
+                    <p>收入状况</p>
+                </div>
+                <div class="am-u-sm-3 desc">
+                    <p class="num">{human_money($project['minfinancing']*10000)}</p>
+                    <p>融资金额</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--{/loop}-->
+
+</div>
+<!--{template vc/footer}-->

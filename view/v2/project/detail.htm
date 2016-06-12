@@ -1,0 +1,35 @@
+<div class="tab-pane active">
+    <div class="row description">
+        <!--{if $project['projecttype'] == 'tmt'}-->
+        <!--{if $project['guys']}-->
+        <div class="table-box">
+            <div class="row title">
+                创始团队
+            </div>
+            <div class="content partner-list">
+                <!--{loop $project['guys'] $list}-->
+                <div class="row list">
+                    <div class="col-xs-2">
+                        <img src="{$conf[static_url]}/{$list['pic']}" alt="" class="icon">
+                    </div>
+                    <div class="col-xs-10">
+                        <p class="name-box">
+                            {$list['truename']}
+                            <span>|</span>
+                            {$list['job']}
+                        </p>
+                        <p class="desc">
+                            {$list['intro']}
+                        </p>
+                    </div>
+                </div>
+                <!--{/loop}-->
+            </div>
+        </div>
+        <!--{/if}-->
+        <!--{/if}-->
+
+        <div class="content J-content">{replace_content($project['description'])}
+        </div>
+    </div>
+</div>

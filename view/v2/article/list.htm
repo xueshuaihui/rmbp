@@ -1,0 +1,112 @@
+<!--{eval
+$pages['header_class'] = 'header-white';
+$pages['not_mobile'] = 1;
+$source_arr = array('1' => '原创','2' => '转载');
+
+$pages['title'] = '众筹新闻,股权新闻,项目众筹新闻';
+$pages['keys'] = '众筹新闻,股权新闻,项目众筹新闻';
+$pages['desc'] = $conf['app_name'].'为网友提供海量众筹新闻,股权新闻,项目众筹新闻等各种热门及最新新闻，关注时实众筹新闻。';
+if($labelname){
+    $pages['title'] = $labelname['category'].','.$pages['title'];
+    $pages['keys'] = $labelname['category'].','.$pages['keys'];
+    $pages['desc'] = $labelname['category'].'新闻,'.$category['category'];
+}else if($category){
+    $pages['title'] = $category['category'].','.$pages['title'];
+    $pages['keys'] = $category['category'].'新闻,'.$category['category'];
+    $pages['keys'] = $category['category'].'闻,'.$category['category'];
+}
+}-->
+<!--{template inc/header}-->
+<!--{static ../static/v2/css/article.scss ../static/v2/_article.css}-->
+
+<div class="article-box">
+    <div class="container">
+        <div class="left-box">
+            <div class="row metas">
+                <!--{if $labelname}-->
+                <div class="col-xs-4">
+                    <div class="labels-box">
+                        <span class="label-desc">所属标签：</span>
+                        <span class="label-box">{$labelname['category']}</span>
+                    </div>
+                </div>
+                <!--{elseif $category}-->
+                <div class="col-xs-4">
+                    <div class="labels-box">
+                        <span class="label-desc">所属分类：</span>
+                        <span class="label-box">{$category['category']}</span>
+                    </div>
+                </div>
+                <!--{else}-->
+                <div class="col-xs-4">
+                    <div class="labels-box">
+                        <span class="label-desc">所有列表</span>
+                    </div>
+                </div>
+                <!--{/if}-->
+                <div class="col-xs-8">
+                    <div class="labels-box hot-labels">
+                        <span class="label-desc">热门标签：</span>
+                        <!--{loop $hot_list $label}-->
+                        <!--{if $label['id'] != $labelname['id']}-->
+                        <a href="{DIR}article/list/label/{$label['id']}/"
+                           class="label-box">{$label['category']}</a>
+                        <!--{/if}-->
+                        <!--{/loop}-->
+                    </div>
+                </div>
+            </div>
+            <div class="article-list">
+                <ul>
+                    <!--{loop $article_list $article}-->
+                    <!--{eval
+                        preg_match_all('/src="(.*)"/iUs', $article['content'], $out);
+                    }-->
+                    <a href="{article_url($article)}">
+                        <li>
+                            <div class="article-logo">
+                                <!--{if $article['path']}-->
+                                <!--{eval
+                                    if(strpos($article['path'], $conf['static_url']) === false){
+                                        $article['path'] = $conf[static_url].'/'.$article['path'];
+                                    }
+                                }-->
+                                <img src="{$article['path']}" alt="" onerror="imgError(this)">
+                                <!--{elseif $out[1][0]}-->
+                                <img src="{$out[1][0]}" alt="" onerror="imgError(this)">
+                                <!--{/if}-->
+                            </div>
+                            <div class="content">
+                                <div class="title-box">
+                                    <p class="title">{$article['title']}</p>
+
+                                    <p class="desc">
+                                        <span class="time">{date('Y-m-d H:i:s',$article['dateline'])}</span>
+                                        <span class="author">{$article['sourcename']}</span>
+                                        <span class="type">{print_r($source_arr[$article['source']],1)}</span>
+                                    </p>
+                                </div>
+                                <div class="short-desc">
+                                    {article_desc($article['content'])}
+                                </div>
+                            </div>
+                        </li>
+                    </a>
+                    <!--{/loop}-->
+                </ul>
+            </div>
+            <div class="pages-box">
+                {$page_html}
+            </div>
+        </div>
+<script>
+    function imgError(o){
+        $(o).parent().hide();
+        $(o).parent().parent().find('.content').css('margin','0')
+    }
+</script>
+        <!--{template article/right}-->
+    </div>
+</div>
+
+<!--{template inc/footer}-->

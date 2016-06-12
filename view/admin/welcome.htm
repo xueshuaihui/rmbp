@@ -1,0 +1,36 @@
+<!--{template admin/header}-->
+<div class="title">
+    登录概况
+</div>
+<div class="content login-overview">
+    <div class="row odd">
+        <div class="col-xs-4">当前版本</div>
+        <div class="col-xs-8"></div>
+    </div>
+    <div class="row even">
+        <div class="col-xs-4">当前时间</div>
+        <div class="col-xs-8">{date('Y-m-d H:i:s')}</div>
+    </div>
+    <div class="row odd">
+        <div class="col-xs-4">今日注册用户数</div>
+        <div class="col-xs-8">{$data['user_register_num']} 个</div>
+    </div>
+    <div class="row even">
+        <div class="col-xs-4">投资人待审核</div>
+        <div class="col-xs-8"><a href="{DIR}{ADMIN_DIR}/user/index/isauth/1/">{$data['invest_audit_num']} 个</a> </div>
+    </div>
+    <div class="row odd">
+        <div class="col-xs-4">项目待审核</div>
+        <div class="col-xs-8"><a href="{DIR}{ADMIN_DIR}/project/index/verify/1/">{$data['project_audit_num']} 个</a> </div>
+    </div>
+    <div class="row even">
+        <div class="col-xs-4">今日投资订单数</div>
+        <div class="col-xs-8">{$data['invest_order_num']} 个 </div>
+    </div>
+    <div class="row odd">
+        <div class="col-xs-4">今日投资额</div>
+        <div class="col-xs-8">{$data['invest_money']} 元</div>
+    </div>
+
+</div>
+<!--{template admin/footer}-->

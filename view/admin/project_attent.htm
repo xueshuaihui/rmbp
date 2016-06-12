@@ -1,0 +1,35 @@
+<!--{template admin/header}-->
+<!--{template admin/project_header}-->
+<div class="title">
+    关注列表
+</div>
+<div class="content">
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>姓名</th>
+            <th>用户ID</th>
+            <th>是否投资人</th>
+            <th>是否投资该项目</th>
+            <th>关注时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--{loop $feed_list $list}-->
+        <!--{eval
+            $isauth = $list['user_field']['isauth']==2?'是':'不是';
+            $isinvest = $list['project_invest']?'是':'不是';
+        }-->
+        <tr>
+            <td><a href="{DIR}{ADMIN_DIR}/user/field_project/user_id/{url_id($list['user_id'])}/">{$list['truename']}</a></td>
+            <td>{$list['user_id']}</td>
+            <td>{$isauth}</td>
+            <td>{$isinvest}</td>
+            <td>{date('Y-m-d H:i:s',$list['dateline'])}</td>
+        </tr>
+        <!--{/loop}-->
+        </tbody>
+    </table>
+</div>
+<div class="page-box">{$page_html}</div>
+<!--{template admin/footer}-->

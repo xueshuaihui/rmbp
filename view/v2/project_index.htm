@@ -1,0 +1,505 @@
+<!--{if !core::R('ajax')}-->
+<!--{eval
+$title_array = array(
+    'detail' => '',
+    'timeline' => '动态',
+    'plan' => '融资计划',
+    'qa' => '问答',
+    'financial' => '经营状况',
+    'return' => '投资回报',
+    'invest' => '投资列表',
+);
+$project_id = url_id($project['id']);
+!$pages['title'] && $pages['title'] = $project['title'] . ($title_array[$pro]? ' - '.$title_array[$pro] : '');
+!$pages['keys'] && $pages['keys'] = $project['title'] . ($title_array[$pro]? ','.$title_array[$pro] : '');
+!$pages['desc'] && $pages['desc'] = $project['intro'] . ($title_array[$pro]? ','.$title_array[$pro] : '');
+$pages['mobile_url'] = 'project/detail/'.$project_id.'/';
+}-->
+<!--{template inc/header}-->
+<!--{static ../static/v2/images/project_icon/* ../static/v2/_project_icon}-->
+<!--{static ../static/v2/css/project.scss ../static/v2/_project.css}-->
+
+<!--{eval
+    $status_array = array(
+        0 => '概念阶段',
+        1 => '研发中',
+        2 => '已上线',
+    );
+    $balance_array = array(
+        0 => '无收入',
+        1 => '有收入未盈利',
+        2 => '收支平衡',
+        3 => '已盈利'
+    );
+    $stage_array = array(
+        1 => '天使轮',
+        2 => 'A轮',
+        3 => 'B轮',
+        4 => 'C轮',
+        5 => 'C轮后',
+        6 => '实体店融资',
+    );
+
+    $degree = min(($project['totalfinancing']/($project['maxfinancing']*10000))*100, 100);
+    $sell_percent = round($project['minfinancing'] *100 / $project['valuation'], 2);
+
+    $tab_active = array(
+        $pro => 'active',
+    );
+
+    $remain_time = $project['expiretime']?floor(( $project['expiretime']-time())/86400):0;
+    $title = "$project[title] - Plus众筹平台";
+    $text = mb_substr(strip_tags($project['intro']),0,140);
+
+    if($project['projecttype'] == 'store'){
+        $leftnum = $project['invest']['returnnum'] - $project['invest']['buy_num'];
+    }else{
+        $leftnum_min = (($project['minfinancing'] * 10000)/$project['invest']['price'])-$project['invest']['buy_num'];
+        $leftnum_max = (($project['maxfinancing'] * 10000)/$project['invest']['price'])-$project['invest']['buy_num'];
+    }
+
+    $raised_amount = $project['valuation']-$project['existfinancing'];
+}-->
+
+<!--{eval
+    $status_flag = '';
+    $status_desc = '未知';
+}-->
+<!--{if $project['isverify'] == 3}-->
+    <!--{eval
+        if($project['super_raise'] == 1){
+            $status_flag = 'super-raise';
+            $status_desc = '超募中';
+            $status_text = '超募中';
+        }else if($project['remaintime'] == 0){
+            $status_flag = 'raise-end';
+            $status_desc = '众筹完';
+            $status_text = '已结束';
+        }else{
+            $status_flag = 'raising';
+            $status_desc = '众筹中';
+            $status_text = '众筹中';
+        }
+    }-->
+<!--{elseif $project['isverify'] == 5}-->
+    <!--{eval
+        $status_flag = 'raise-end';
+        $status_desc = '众筹结束'
+    }-->
+<!--{elseif $project['isverify'] == 4}-->
+    <!--{eval
+        $status_flag = 'raise-success';
+        $status_desc = '众筹成功'
+    }-->
+<!--{elseif $project['isverify'] == 2}-->
+    <!--{eval
+        $status_flag = 'preheating';
+        $status_desc = '预热中'
+    }-->
+<!--{/if}-->
+<div class="detail-content-top J-project {$status_flag}" data-flag="{$status_flag}"
+     data-status-line="{round($project['degree'])}%" data-target="{$project['id']}">
+    <div class="container">
+        <div class="left-box">
+            <div class="title-box">
+                <span class="title">{$project['title']}</span>
+                <span class="status-flag">{$status_desc}</span>
+            </div>
+            <div class="desc">{$project['intro']}</div>
+            <div class="label-box">
+                <!--{if $project['projecttype'] == 'store'}-->
+                    <!--{if $project['region']}-->
+                        <div class="meta address">
+                            <!--{eval
+                            if($project['regions'][$project['province_id']]){
+                                echo $project['regions'][$project['province_id']]['name'];
+                            }
+                            if($project['regions'][$project['city_id']]){
+                                echo $project['regions'][$project['city_id']]['name'];
+                            }
+                            }-->
+                        </div>
+                    <!--{/if}-->
+
+                    <!--{if $project['areas']}-->
+                    <div class="meta classify">
+                        <!--{loop $project['areas'] $area}-->
+                        <span>{$area['name']}</span>
+                        <!--{/loop}-->
+                    </div>
+                    <!--{/if}-->
+                    <!--{if $project['3ndinfo']['website'] || $project['qr_code']['path'] || $project['3ndinfo']['weibo']}-->
+                    <div class="meta links">
+                        <!--{if $project['3ndinfo']['website']}-->
+                        <a href="{$project['3ndinfo']['website']}" class="website" target="_blank"></a>
+                        <!--{/if}-->
+                        <!--{if $project['qr_code']['path']}-->
+                        <a href="javascript:void(0);" class="weixin">
+                            <img src="{$conf[static_url]}/{$project['qr_code']['path']}" alt="" class="weixin-img">
+                        </a>
+                        <!--{/if}-->
+                        <!--{if $project['3ndinfo']['weibo']}-->
+                        <a href="{$project['3ndinfo']['weibo']}" class="weibo" target="_blank"></a>
+                        <!--{/if}-->
+                    </div>
+                    <!--{/if}-->
+                <!--{/if}-->
+
+                <!--{if $project['projecttype'] == 'tmt'}-->
+                    <div class="meta status">{print_r($status_array[$project['status']],1)}</div>
+                    <div class="meta income">{print_r($balance_array[$project['balance']],1)}</div>
+                    <div class="meta stage">{print_r($stage_array[$project['stage']],1)}</div>
+                    <div class="meta address">$project['region']</div>
+                    <!--{if $project['areas']}-->
+                    <div class="meta classify">
+                        <!--{loop $project['areas'] $area}-->
+                        <span>{$area['name']}</span>
+                        <!--{/loop}-->
+                    </div>
+                    <!--{/if}-->
+                    <!--{if $project['3ndinfo']['website'] || $project['qr_code']['path'] || $project['3ndinfo']['weibo'] }-->
+                    <div class="meta links">
+                        <!--{if $project['3ndinfo']['website']}-->
+                        <a href="{$project['3ndinfo']['website']}" class="website" target="_blank"></a>
+                        <!--{/if}-->
+                        <!--{if $project['qr_code']['path']}-->
+                        <a href="javascript:void(0);" class="weixin">
+                            <img src="{$conf[static_url]}/{$project['qr_code']['path']}" alt="" class="weixin-img">
+                        </a>
+                        <!--{/if}-->
+                        <!--{if $project['3ndinfo']['weibo']}-->
+                        <a href="{$project['3ndinfo']['weibo']}" class="weibo" target="_blank"></a>
+                        <!--{/if}-->
+                    </div>
+                    <!--{/if}-->
+
+                    <!--{if  $project['urls']['ios'] || $project['urls']['android'] }-->
+                    <div class="meta app-links">
+                        <!--{if $project['urls']['ios']}-->
+                        <a href="{$project['urls']['ios']}" class="iso" target="_blank"></a>
+                        <!--{/if}-->
+                        <!--{if $project['urls']['android']}-->
+                        <a href="{$project['urls']['android']}" class="android" target="_blank"></a>
+                        <!--{/if}-->
+                    </div>
+                    <!--{/if}-->
+                <!--{/if}-->
+
+            </div>
+        </div>
+        <div class="right-box">
+            <div class="status-box">
+                <div class="status-line-box">
+                    <div class="J-status-line">
+                        <p class="line-desc">
+                            <span class="num"></span>%
+                        </p>
+                    </div>
+                </div>
+                <div class="money-box">
+                    <div class="money">
+                        <span>￥</span><span class="num">{human_money($project['totalfinancing'], '%.2f</span><span>%s')}</span>
+                    </div>
+                    <div class="desc-label-big">已投资金额</div>
+                </div>
+            </div>
+            <div class="desc-box">
+                <div class="target">
+                    <span class="desc-label">目标金额</span>
+                    <!--{if $project['projecttype'] == 'store'}-->
+                    <span class="money">￥<span class="num">{human_money($raised_amount * 10000, '%.2f</span>%s')}</span>
+                    <!--{else}-->
+                    <span class="money">￥<span class="num">{human_money($project['valuation'] * 10000, '%.2f</span>%s')}</span>
+                    <!--{/if}-->
+                </div>
+                <div class="target-span"></div>
+                <div class="target">
+                    <span class="desc-label">已投人数</span>
+                    <span class="money">
+                        <span class="num">{print_r($invest_list[0]['returnnum']- $invest_list[0]['leftnum'], 1)}</span>人
+                    </span>
+                </div>
+            </div>
+            <div class="share-box">
+                <a href="javascript:void(0);" class="like-box unlike J-focus animated">
+                    <div class="like-block" id="like-block"></div>
+                </a>
+                <span class="desc-label">分享到</span>
+
+                <div class="share">
+                    <div class="bdsharebuttonbox">
+
+                        <a href="javascript:void(0);" class="bds_weixin J-weixin">
+                            <div id="qrcode" class="qrcode"></div>
+                            <!--<img src="{$conf[static_url]}/v2/images/foooter-weixin-img.jpg"-->
+                            <!--data-src="{DIR}qr/index/article_id/{$article['id']}/" class="weixin-img"/>-->
+                        </a>
+                        <a href="#" class="bds_tsina" data-cmd="tsina" herf="http://share.baidu.com/code#"></a>
+                        <a href="#" class="bds_sqq" data-cmd="sqq" herf="http://share.baidu.com/code#"></a>
+                    </div>
+                    <script>
+                        window._bd_share_config = {
+                            "common": {
+                                "bdSnsKey": {},
+
+                                "bdText": '$title \n$text',
+                                "bdMini": "2",
+                                "bdMiniList": false,
+                                "bdPic": "",
+                                "bdStyle": "1",
+                                "bdSize": "32"
+                            }, "share": {}
+                        };
+                        with (document)0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+                    </script>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="tab-box detail-tab-box J-detail-tab-box">
+    <div class="container">
+        <ul class="nav nav-tabs">
+            <li class="{$tab_active[detail]}"><a href="{DIR}project/detail/{$project_id}/" data-target="tab-content" data-ajax="1" data-type="tab-link" data-id="detail">项目介绍</a></li>
+            <!--{if $project['projecttype'] == 'tmt'}-->
+                <li class="J-qa-li {$tab_active[qa]}" ><a href="{DIR}project/qa/{$project_id}/" data-target="tab-content" data-ajax="1" data-type="tab-link" data-id="qa">项目问答</a></li>
+            <!--{/if}-->
+            <!--{if $project['projecttype'] == 'store'}-->
+                <li class="{$tab_active[financial]}"><a href="{DIR}project/financial/{$project_id}/" data-target="tab-content" data-ajax="1" data-type="tab-link" data-id="financial">经营状况</a></li>
+                <li class="{$tab_active[return]}"><a href="{DIR}project/return/{$project_id}/" data-target="tab-content" data-ajax="1" data-type="tab-link" data-id="return">投资回报</a></li>
+            <!--{/if}-->
+            <li class="{$tab_active[invest]}" ><a href="{DIR}project/invest/{$project_id}/" data-target="tab-content" data-ajax="1" data-type="tab-link" data-id="invest">投资列表</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="detail-content J-detail-content">
+    <div class="container">
+        <div class="left-box" id="tab-content">
+            <div class="tab-content" data-id="$pro">
+<!--{/if}-->
+                <!--{if $pro == 'detail'}-->
+                    <!--项目介绍-->
+                    <!--{template project/detail}-->
+                <!--{elseif $pro == 'financial'}-->
+                    <!--经营状况-->
+                    <!--{template project/financial}-->
+                <!--{elseif $pro == 'return'}-->
+                    <!--投资回报-->
+                    <!--{template project/return}-->
+                <!--{elseif $pro == 'invest'}-->
+                    <!--投资列表-->
+                    <!--{template project/invest}-->
+                <!--{elseif $pro == 'qa'}-->
+                    <!--项目问答-->
+                    <!--{template project/qa}-->
+                <!--{/if}-->
+<!--{if !core::R('ajax')}-->
+            </div>
+        </div>
+        <div class="right-box">
+
+            <div class="row info-box">
+                <div class="lable">
+                    <span>认购信息</span>
+                </div>
+                <div class="row info-detail">
+                    <div class="col-xs-6">
+                        <p class="num-box">￥<span class="num big-num">{human_money($project['invest']['price'], '%.2f</span>%s')}</p>
+
+                        <p class="desc-label-big">每份投资额</p>
+                    </div>
+                    <div class="col-xs-6">
+                        <p>
+                            <span class="desc-label">剩余时间</span>
+                            <span class="num-box">
+                                <!--{if $project['isverify'] != 3}-->
+                                    <span class="num">{$status_desc}</span>
+                                <!--{else}-->
+                                    <!--{if $project['remaintime'] > 0}-->
+                                        <span class="num">{$project['remaintime']}</span>天
+                                    <!--{else}-->
+                                        <span class="num">0</span>天                                    <!--{/if}-->
+                                <!--{/if}-->
+                            </span>
+                        </p>
+                        <p>
+                            <span class="desc-label">剩余份数</span>
+                                <span class="num-box">
+                                    <span class="num">
+                                        <!--{if $project['projecttype'] =='store'}-->{$leftnum}<!--{else}-->{$leftnum_min}<!--{/if}--></span>份
+                                </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="btn-box J-support-btn-box">
+                    <a href="javascript:void(0);" data-status="{$project['isverify']}" data-isauth="{$isauth}"
+                       data-href="{DIR}order/index/{url_id($project['invest']['id'])}/" class="btn support-btn J-support-btn"><span
+                            class="desc">我要投资</span></a>
+                </div>
+            </div>
+
+            <div class="row info-box issue-box">
+                <div class="lable">
+                    <span>项目发布方</span>
+                </div>
+                <div class="info-detail">
+                    <div class="title-box">
+                        {$project['company']}
+                    </div>
+                </div>
+                <!--{if $project['projecttype'] =='tmt'}-->
+                <div class="btn-box">
+                    <a href="javascript:void(0);" class="btn C-J-dialog">我要约见</a>
+                </div>
+                <div class="modal fade" id="myDialogModel">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body ">
+                                <textarea name="dialog-editor" onkeyup="checkWordNum(this)" placeholder="请您简要归纳一下想要约谈的内容" data-max="200"></textarea>
+                                <div class="word-num-show">
+                                    <span class="J-had-input">0</span>
+                                    <span>/</span>
+                                    <span class="J-max-input">200</span>
+                                </div>
+                                <div class="error-box"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="javascript:void(0);" class="btn C-J-confirm">确定</a>
+                                <a href="javascript:void(0);" class="btn C-J-cancel" data-dismiss="modal">取消</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--{/if}-->
+                <!--{if $project['projecttype'] =='store'}-->
+                <div class="status-box">
+                    <span>合格资质认证通过</span>
+                    <span>风险评估通过</span>
+                </div>
+                <!--{/if}-->
+            </div>
+
+            <div class="row info-box dynamic-box J-dynamic-box">
+                <div class="lable">
+                    <span>项目动态</span>
+                </div>
+                <!--{if !$project['timelines'] && $project[user_id]!=$user->user_id}-->
+                <div class="no-content">
+                    <p>
+                        团队小伙伴们正在创业的路上飞奔，还没来得及添加动态
+                    </p>
+                </div>
+                <!--{/if}-->
+                <div class="box-line">
+                    <!--{loop $project['timelines'] $timeline}-->
+                    <div class="line-block">
+                        <div class="line-point"></div>
+                        <div class="line-content">
+                            <div class="dynamic-title">
+                                <span class="time J-dynamic-time">{date('Y-m-d' ,  $timeline['dateline'])}</span>
+                                <span class="J-dynamic-title">{$timeline['title']}</span>
+                            </div>
+                            <div class="dynamic-content J-dynamic-content">{$timeline['message']}</div>
+                        </div>
+
+                        <!--{if $project[user_id]==$user->user_id}-->
+                        <div class="edit-box">
+                            <a href="javascript:void(0)" class="edit-btn J-edit-btn" data-id="{$timeline['id']}"></a>
+                            <a href="javascript:void(0)" class="delete-btn J-delete-btn"
+                               data-id="{$timeline['id']}">刪除</a>
+                        </div>
+                        <!--{/if}-->
+                    </div>
+                    <!--{/loop}-->
+                </div>
+
+                <!--{if $project[user_id]==$user->user_id || $project['timelines'][0]}-->
+                <div class="btn-box">
+                    <a href="javascript:void(0);" class="btn new-dynamic-btn J-new-dynamic-btn">新增动态</a>
+                </div>
+                <div class="dynamic-edit-box J-dynamic-edit-box">
+                    <input type="text" maxlength="15" placeholder="标题（15个字以内）"
+                           class="form-control dynamic-edit-title J-dynamic-edit-title">
+                    <textarea class="form-control dynamic-edit-content J-dynamic-edit-content"
+                              onKeyUp="checkWordNum(this)" data-max="280" placeholder="动态详情"
+                              name="dynamic-content"></textarea>
+
+                    <div class="word-num-show">
+                        <span class="J-had-input">0</span>
+                        <span>/</span>
+                        <span class="J-max-input">280</span>
+                    </div>
+                    <div class="edit-box-btn">
+                        <a href="javascript:void(0);" class="btn save J-save-new-dynamic-btn">保存</a>
+                        <a href="javascript:void(0);" class="btn cancel J-cancel-new-dynamic-btn">取消</a>
+                    </div>
+                </div>
+                <script type="tpl" id="projectDynamicLine">
+                <div class="line-block">
+                    <div class="line-point"></div>
+                    <div class="line-content">
+                        <div class="dynamic-title">
+                            <span class="time J-dynamic-time"><%=date%></span>
+                            <span class="J-dynamic-title"><%=title%></span>
+                        </div>
+                        <div class="dynamic-content J-dynamic-content"><%=content%></div>
+                    </div>
+                    <div class="edit-box">
+                        <a href="javascript:void(0)" class="edit-btn J-edit-btn" data-id="<%=timeline_id%>"></a>
+                        <a href="javascript:void(0)" class="delete-btn J-delete-btn" data-id="<%=timeline_id%>">刪除</a>
+                    </div>
+                </div>
+                </script>
+                <!--{/if}-->
+
+            </div>
+
+            <div class="row info-box qa-box">
+                <div class="lable">
+                    <span>快速问答</span>
+                </div>
+                <div class="box-line">
+                    $setting['fast_qa']
+                </div>
+            </div>
+
+            <!--{template inc/news_list}-->
+
+        </div>
+    </div>
+</div>
+
+<!--{template inc/footer}-->
+<!--{static ../static/v2/js/project.js ../static/v2/_project.js}-->
+<!--{static ../static/js/jquery.qrcode.min.js ../static/v2/_qrcode.js 0}-->
+<script>
+    globalEvents.push(function () {
+        $('.J-weixin').on('mouseover', function () {
+            if (!$(this).data('init')) {
+                $("#qrcode").qrcode({
+                    render: "canvans",
+                    width: 180,
+                    height: 180,
+                    text: location.href
+                });
+                $(this).data('init', 1);
+            }
+        });
+
+        API.ajax('',function(){
+            initDiscussBtn();
+            $('.J-content img').attr('title','');
+        });
+
+        $('.J-detail-tab-box li a').click(function(){
+            $('.J-detail-tab-box li').removeClass('active');
+            $(this).parent().addClass('active');
+        });
+    });
+</script>
+<!--{/if}-->

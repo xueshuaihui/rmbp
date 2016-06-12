@@ -1,0 +1,17 @@
+<!--{template vc/header}-->
+<!--{eval
+if($url == -1){
+    $url = 'javascript:window.history.back(-1);';
+}
+}-->
+<div class="am-g">
+    <div class="message-box">
+        <a href="{$url}">{$message}</a>
+    </div>
+</div>
+<!--{if $url}-->
+<script>
+    setTimeout(function(){location.href='{$url}'}, 2000);
+</script>
+<!--{/if}-->
+<!--{template vc/footer}-->

@@ -1,0 +1,21 @@
+<!--{eval
+$header_active = array(
+    core::R('c') => ' class="active"',
+);
+}-->
+<div class="header {if $pages['header_class']}{$pages['header_class']}{else}header-black{/if}">
+    <div class="container">
+        <nav class="navbar" role="navigation">
+            <div class="navbar-header">
+                <a class="logo" href="{DIR}"><img src="{$conf[static_url]}v2/images/logo.png"></a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li {$header_active['index']}><a href="{DIR}">首页</a></li>
+                <li {$header_active['publish']}><a href="{DIR}?c=publish-index">项目发布</a></li>
+                <li {$header_active['help']}><a href="{DIR}?c=help-index">新手问答</a></li>
+                <!--li {$header_active['trade']}><a href="{DIR}?c=trade-index">股权交易</a></li-->
+            </ul>
+            <div id="user-panel"></div>
+        </nav>
+    </div>
+</div>

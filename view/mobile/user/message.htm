@@ -1,0 +1,66 @@
+<div class="user-box">
+    <div class="am-g navs">
+        <a href="{DIR}?c=user-invested">
+            <div class="am-u-sm-6 nav">
+                支持的项目
+            </div>
+        </a>
+
+        <div class="am-u-sm-6 nav active">
+            消息
+        </div>
+    </div>
+    <div class="message-lists-box J-message-box" data-count="{$count}" data-page="1">
+        <!--{if !$list}-->
+        <div class="no-message-box"></div>
+        <!--{/if}-->
+        <ul>
+            <!--{loop $list $message}-->
+            <li class="message-list <!--{if !$message['isread']}--> unread-li  J-unread<!--{/if}-->" data-id="{$message['id']}">
+                <!--{if !$message['isread']}-->
+                <div class="unread"></div>
+                <!--{/if}-->
+                <div class="content">
+                    {$message['message']}
+                </div>
+                <p class="time">
+                    {date('Y-m-d H:i:s',$message['dateline'])}
+                </p>
+            </li>
+            <!--{/loop}-->
+        </ul>
+    </div>
+
+    <div class="btn-box">
+        <a href="javascript:void(0);" class="btn mark-all J-mark-all-news">全部标记为已读</a>
+
+        <div class="more-btn J-more-btn hide">
+            <img src="$conf['static_url']mobile/images/loading.gif">
+        </div>
+        <!--{if count($list)== $perpage}-->
+            <!--a href="javascript:void(0);" class="more-btn J-more-btn">加载更多</a-->
+        <!--{/if}-->
+    </div>
+
+
+</div>
+<div class="am-g footer user-footer">
+    <div class="am-u-sm-8 am-u-sm-centered nickname">
+        {print_r($user->username,1)}
+    </div>
+    <div class="am-u-sm-2 right-box">
+        <a href="{DIR}?c=user-logout&FORM_HASH={misc::form_hash()}" class="logout">退出</a>
+    </div>
+</div>
+
+<script type="tpl" id="messageModal">
+    <li class="message-list <%=messageFlagClass%>" data-id="<%=id%>">
+        <%=messageFlag%>
+        <div class="content">
+            <%=messageContent%>
+        </div>
+        <p class="time">
+            <%=messageDate%>
+        </p>
+    </li>
+</script>

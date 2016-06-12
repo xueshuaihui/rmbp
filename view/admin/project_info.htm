@@ -1,0 +1,222 @@
+<!--{template admin/header}-->
+<!--{template admin/project_header}-->
+<!--{static ../static/admin/js/plugin/ueditor/ueditor.config.js admin/js/plugin/ueditor/_ueditor.js}-->
+<!--{static ../static/admin/js/plugin/ueditor/ueditor.all.min.js admin/js/plugin/ueditor/_ueditor.js 0}-->
+<!--{static ../static/admin/js/article.js admin/js/_article.js}-->
+<!--{eval
+    $status_array = array(
+        0 => '概念阶段',
+        1 => '研发中',
+        2 => '已上线',
+    );
+    $balance_array = array(
+        0 => '无收入',
+        1 => '有收入未盈利',
+        2 => '收支平衡',
+        3 => '已盈利'
+    );
+    $stage_array = array(
+        1 => '天使轮',
+        2 => 'A轮',
+        3 => 'B轮',
+        4 => 'C轮',
+        5 => 'C轮后',
+        6 => '实体店融资',
+    );
+    $verify_array = array(
+        -1 => '未通过',
+        0 => '提交中',
+        1 => '待审核',
+        2 => '预热中',
+        3 => '众筹中',
+        4 => '众筹成功',
+        5 => '众筹失败',
+    );
+}-->
+<div class="title">
+
+    <a href="{DIR}publish/step1/?project_id={url_id($project['id'])}" target="_blank" class="a-btn-l"><i
+            class="icon-magic"></i>项目信息</a>
+</div>
+<div class="title">
+    <label>基本信息</label>
+
+    <div>
+        <div>项目名称：{$project['title']}</div>
+    </div>
+    <div>
+        <div>项目简介：{$project['intro']}</div>
+    </div>
+    <!--{if $project['banner']['path']}-->
+    <div>
+        <div>项目logo：
+            <img src="{$conf[static_url]}{$project['banner']['path']}">
+        </div>
+    </div>
+    <!--{/if}-->
+</div>
+
+<div class="title">
+    <label>项目现状</label>
+    <!--{if $project['projecttype'] == 'tmt'}-->
+    <div>
+        <div>产品阶段：{print_r($status_array[$project['status']],1)}</div>
+    </div>
+    <div>
+        <div>收入状况：{print_r($balance_array[$project['balance']],1)}</div>
+    </div>
+    <div>
+        <div>融资阶段：{print_r($stage_array[$project['stage']],1)}</div>
+    </div>
+    <!--{/if}-->
+    <div>
+        <div>所在城市：{$project['region']}</div>
+    </div>
+    <div>
+        <div>所属领域：
+            <!--{loop $project['areas'] $area}-->
+            <span>{$area['name']}</span>
+            <!--{/loop}-->
+        </div>
+    </div>
+    <div>
+        <div>产品展示：
+            <!--{if $project['urls']['site'] || $project['urls']['ios'] || $project['urls']['android']}-->
+            <span>
+                <!--{if $project['urls']['ios']}-->
+                            <span class="C-link"><a href="$project['urls']['ios']" target="_blank"
+                                                    rel="nofollow">iOS</a></span>
+                <!--{/if}-->
+                <!--{if $project['urls']['android']}-->
+                <span class="C-link"><a href="$project['urls']['android']" target="_blank"
+                                        rel="nofollow">Android</a></span>
+                <!--{/if}-->
+            </span>
+            <!--{/if}-->
+
+            <!--{if !$project['urls']['ios'] && !$project['urls']['android']}-->
+            <span class="no-display">暂无产品展示</span>
+            <!--{/if}-->
+        </div>
+    </div>
+</div>
+
+<div class="title">
+    <label>详细介绍</label>
+
+    <div>
+        <div>本轮估值：{$project['valuation']}</div>
+    </div>
+    <div>
+        <div>最低融资：{$project['minfinancing']}万元 最高融资:{$project['maxfinancing']}万元</div>
+    </div>
+    <div>
+        <div>截止日期：{date('Y-m-d H:i:s',$project['expiretime'])}</div>
+    </div>
+</div>
+
+<!--{if $project['projecttype'] == 'tmt'}-->
+<div class="title">
+    <label>团队成员</label>
+    <!--{loop $project['guys'] $list}-->
+    <div>
+        <div>姓名：{$list['truename']}</div>
+    </div>
+    <div>
+        <div>职位：{$list['job']}</div>
+    </div>
+    <div>
+        <div>简介：{$list['intro']}</div>
+    </div>
+    <div>
+        <div>头像：
+            <!--{if $list['pic']}-->
+            <img src="{$conf[static_url]}{$list['pic']}"></div>
+        <!--{/if}-->
+    </div>
+    <!--{/loop}-->
+</div>
+<!--{/if}-->
+
+<!--{if $project['projecttype'] == 'store'}-->
+<div class="title">
+    <label>经营状况</label>
+    <!--{loop $project['shops'] $list}-->
+    <div>
+        <div>店铺地址：{$list['address']}</div>
+    </div>
+    <div>
+        <div>店铺筹资总投资：{$list['totalfinancing']}万元</div>
+    </div>
+    <div>
+        <div>从投资到开业周期：{$list['opcircle']}天</div>
+    </div>
+    <div>
+        <div>从开业到盈利周期：{$list['payoffday']}天</div>
+    </div>
+    <div>
+        <div>店铺营业面积：{$list['shopsize']}㎡</div>
+    </div>
+    <div>
+        <div>客流量：{$list['passengers']}人</div>
+    </div>
+    <div>
+        <div>人均消费：{$list['perconsumption']}万元</div>
+    </div>
+    <div>
+        <div>月平均营业收入：{$list['permonth']}万元</div>
+    </div>
+    <div>
+        <div>月平均净利润：{$list['perprofits']}万元</div>
+    </div>
+    <br>
+    <!--{/loop}-->
+</div>
+<!--{/if}-->
+
+<div class="title">
+    <label>项目发布方</label>
+
+    <form action="{DIR}{ADMIN_DIR}/project/project_publisher/" method="post" enctype="multipart/form-data"
+          data-post="form"
+          data-callback="closeModal">
+        <input type="hidden" name="id" value="$project['id']">
+
+        <div>
+            <div>发布方：<input type="text" name="publisher" value="$project['field']['publisher']"></div>
+        </div>
+        <div>
+            <div>
+                Logo：
+                <!--{if $project['field']['publishlogo']}-->
+                <img src="{$conf[static_url]}{$project['field']['publishlogo']}" class="img" name="img">
+                <!--{else}-->
+                <img src="" class="img" name="img">
+                <!--{/if}-->
+                <input type="file" name="pic" onchange="Img_show(this)">
+                <input type="hidden" name="path" value="" id="path">
+                <input type="hidden" name="paths" value="{$project['field']['publishlogo']}">
+            </div>
+        </div>
+        <div>
+            <br><input type="submit" value="确定">
+        </div>
+    </form>
+</div>
+
+<div class="title">
+    <label>项目排序</label>
+
+    <form action="{DIR}{ADMIN_DIR}/project/project_sortid/" method="post" data-post="form"
+          data-callback="closeModal">
+        <input type="hidden" name="project[id]" value="$project['id']">
+
+        <div>
+            <div>排序id：<input type="text" name="project[sortid]" value="$project['sortid']"></div>
+        </div>
+        <div>
+            <input type="submit" value="确定">
+        </div>
+    </form>
+</div>
+<!--{template admin/footer}-->

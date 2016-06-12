@@ -1,0 +1,185 @@
+@import '../_home_icon.scss';
+.personal-top{
+    background: url(images/personal-top-bg.jpg) 50% 50% no-repeat;
+    height: 315px;
+    padding-top: 65px;
+    .icon-box{
+        width: 120px;
+        img{
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+        }
+        .verified-box{
+            width: 100px;
+            margin: 20px auto;
+            border: 1px solid #2da3dc;
+            border-radius: 5px;
+            color: #2da3dc;
+            text-align: center;
+            line-height: 25px;
+            span:before{
+                content:'';
+                @extend .icon-model-png;
+                padding: 1px 7px;
+                margin-right: 10px;
+            }
+        }
+    }
+    .metas{
+        .row{
+            line-height: 40px;
+            margin: 10px;
+            font-size: 16px;
+        }
+        .mul-span-row{
+            padding-left: 35px;
+            a:before{
+                position: absolute;
+            }
+        }
+        a{
+            color: #fff;
+            margin-right: 20px;
+            text-decoration: none;
+            cursor: default;
+            span{
+                padding: 3.5px 10px;
+                border: 1px solid #2da3dc;
+                border-radius: 5px;
+                margin-right: 10px;
+                white-space: nowrap;
+            }
+        }
+        a:before{
+            content:'';
+            padding: 1px 7px;
+            margin-right: 10px;
+        }
+        a.user:before{
+            padding: 2px 12px;
+            @extend .icon-user-png;
+        }
+        a.city:before{
+            padding: 2px 9px;
+            @extend .icon-city-png;
+        }
+        a.id:before{
+            padding: 2px 12px;
+            @extend .id-icon-png;
+        }
+        a.area:before{
+            padding: 2px 10px;
+            @extend .icon-area-png;
+            margin: 7px 0 0 -35px;
+        }
+        a.field:before{
+            padding: 2px 12px;
+            @extend .icon-field-png;
+            margin: 10px 0 0 -38px;
+        }
+        a.id span{
+            padding:0 5px;
+            border: none;
+            margin: 0;
+        }
+    }
+    .fans-box{
+        width: 235px;
+        float: right;
+        text-align: center;
+        padding-top: 24px;
+        font-size: 16px;
+        .btn span:before{
+            content: '';
+            padding: 0 17px;
+            margin-right: 10px;
+            @extend .icon-eye-png;
+        }
+        .f-l, .f-r{
+            width: 80px;
+            color: #fff;
+        }
+        .col-xs-6:first-child{
+            border-right: 1px solid #999;
+        }
+        .btn-box{
+            padding: 26px 20px 0;
+        }
+        .num{
+            font-size: 33px;
+            font-weight: bold;
+            color: #2da3dc;
+            margin-bottom: 10px;
+            line-height: 26px;
+            width: 120px;
+            margin-left: -20px;
+        }
+    }
+}
+.personal-modal{
+    .modal-dialog{
+        width: 650px;
+        margin-top: 200px;
+    }
+    .focus-lists{
+        p{
+            padding: 0;
+        }
+        .row:nth-child(even){
+            background-color: #fff;
+        }
+        .row:nth-child(odd){
+            background-color: #f6f6f6;
+        }
+        .col-xs-6{
+            padding:30px;
+        }
+        .icon{
+            float: left;
+        }
+        img{
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+        .desc{
+            padding-left: 130px;
+        }
+        .name{
+            color: #2da3dc;
+            font-size: 16px;
+            margin: 5px 0 10px;
+        }
+        .btn-box{
+            text-align: center;
+        }
+        .btn{
+            margin-top: 10px;
+            background-color: #fff;
+            border: 1px solid #2da3dc;
+            color: #2da3dc;
+            line-height: 35px;
+            height: 35px;
+            font-size: 14px;
+            width: 110px;
+        }
+    }
+}
+
+.detail-content{
+    padding-bottom: 10px;
+}
+.tab-content .tab-pane{
+    margin-top: 30px;
+}
+.tab-content .pages-box{
+    padding: 20px 0;
+    margin: 0;
+}
+.project-lists{
+    padding: 0;
+}
+.pages-box{
+    margin-top: 30px;
+}

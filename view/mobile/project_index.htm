@@ -1,0 +1,149 @@
+<!--{eval
+    $title_array = array(
+        'detail' => '',
+        'timeline' => '动态',
+        'plan' => '融资计划',
+        'qa' => '问答',
+        'invest' => '投资列表',
+    );
+    $project_id = url_id($project['id']);
+    !$pages['title'] && $pages['title'] = $project['title'] . ($title_array[$pro]? ' - '.$title_array[$pro] : '');
+    !$pages['keys'] && $pages['keys'] = $project['title'] . ($title_array[$pro]? ','.$title_array[$pro] : '');
+    !$pages['desc'] && $pages['desc'] = $project['intro'] . ($title_array[$pro]? ','.$title_array[$pro] : '');
+
+    $isverify = array(
+        -2 => '下线',
+        -1 => '未通过',
+        0 => '草稿',
+        1 => '待审核',
+        2 => '预热中',
+        3 => '融资中',
+        4 => '融资成功',
+        5 => '融资失败'
+    );
+
+    $degree = min($project['totalfinancing']/$project['maxfinancing']*100, 100);
+    $remain_time = $project['expiretime']?floor(( $project['expiretime']-time())/86400):0;
+    $sell = $project['maxfinancing']/$project['valuation']*100;
+
+    $surplus_num = $project['invest_list'][0]['invest_num']>$project['invest_list'][0]['returnnum']?'0':$project['invest_list'][0]['returnnum']-$project['invest_list'][0]['invest_num'];
+
+    $pages['pc_url'] = 'project/detail/'.$project_id.'/';
+}-->
+<!--{template mobile/header}-->
+<div class="container project-detail J-project" data-target="{$project['id']}">
+    <div class="title-box">
+        <p class="title">{$project['title']}</p>
+
+        <div class="status-flag-box">
+            <!--{if $project['isverify']=='-1'}-->
+            <div class="am-fl status-flag unpass">未通过</div>
+            <!--{elseif $project['isverify']=='0'}-->
+            <div class="am-fl status-flag draft">草稿</div>
+            <!--{elseif $project['isverify']=='1'}-->
+            <div class="am-fl status-flag check-pending">待审核</div>
+            <!--{elseif $project['isverify']=='2'}-->
+            <div class="am-fl status-flag preheating">预热中</div>
+            <!--{elseif $project['isverify']=='3'}-->
+
+            <!--{if $project['superraise']=='1'}-->
+            <div class="am-fl status-flag super-raise">已超募</div>
+            <!--{else}-->
+            <div class="am-fl status-flag financing">融资中</div>
+            <!--{/if}-->
+
+            <!--{elseif $project['isverify']=='4'}-->
+            <div class="am-fl status-flag raise-success">融资成功</div>
+            <!--{elseif $project['isverify']=='5'}-->
+            <div class="am-fl status-flag failed">融资失败</div>
+            <!--{/if}-->
+
+            <div class="am-fr like-box">
+                    <span class="like-label">
+                        <img src="{$conf['static_url']}/mobile/images/heart_line.png" alt="">
+                    </span>
+                <span class="J-feednum">{$project['feednum']}</span>
+            </div>
+        </div>
+        <p class="short-desc">
+            {$project['intro']}
+        </p>
+
+        <div class="top-line">
+            <div class="status-title">已筹集：<span class="am-fr raising-hasing"> ￥{$project['totalfinancing']}万</span>
+            </div>
+            <div class="status-line-box">
+                <div class="status-line" style="width: {$project['degree']}%"></div>
+            </div>
+        </div>
+        <div class="status-metas">
+            <div class="am-g">
+                <div class="am-u-sm-6 label">完成度</div>
+                <div class="am-u-sm-6 desc">{round($project['degree'])}%</div>
+            </div>
+            <div class="am-g">
+                <div class="am-u-sm-6 label">融资目标</div>
+                <div class="am-u-sm-6 desc"><span class="blue ">{$project['minfinancing']}万</span></div>
+            </div>
+            <div class="am-g">
+                <div class="am-u-sm-6 label">出让股份</div>
+                <div class="am-u-sm-6 desc">{$project['sellpercent']}%</div>
+            </div>
+            <div class="am-g">
+                <div class="am-u-sm-6 label">剩余时间</div>
+                <div class="am-u-sm-6 desc">{$project['remaintime']}天</div>
+            </div>
+            <div class="am-g">
+                <div class="am-u-sm-6 label">每份投资额</div>
+                <div class="am-u-sm-6 desc">￥{$project['invest_list'][0]['price']}元</div>
+            </div>
+        </div>
+    </div>
+    <div class="info-box project-intro-box">
+        <div class="box-title">项目介绍</div>
+        <div
+                class="box-content">
+            <p>{replace_content($project['description'])}</p>
+        </div>
+    </div>
+
+</div>
+<div class="footer">
+    <ul>
+        <a href="javascript:void(0);" class="J-focus">
+            <li class="left-nav like-text">
+                <span class="focus-flag J-focus-flag unliked"></span>
+                <span class="J-focus-desc">关注我们</span>
+            </li>
+        </a>
+        <!--{if $project['isverify'] == 2}-->
+        <a href="javascript:void 0">
+            <li class="right-nav un-disabled-btn">稍后开放</li>
+        </a>
+        <!--{elseif $project['isverify'] > 3}-->
+        <a href="javascript:void 0">
+            <li class="right-nav un-disabled-btn">众筹结束</li>
+        </a>
+        <!--{elseif $project['isverify'] == 3 }-->
+            <!--{if $surplus_num == 0}-->
+            <a href="javascript:void(0);">
+                <li class="right-nav un-disabled-btn">抢光光啦</li>
+            </a>
+            <!--{else}-->
+            <a href="{DIR}order/index/{url_id($project['invest_list'][0]['id'])}/">
+                <li class="right-nav">我要支持</li>
+            </a>
+            <!--{/if}-->
+        <!--{/if}-->
+
+
+        <!--<a href="{DIR}project/intro/{url_id($project['id'])}/">-->
+            <!--<li class="right-nav">-->
+                <!--<span>我们的故事</span>-->
+            <!--</li>-->
+        <!--</a>-->
+
+    </ul>
+</div>
+<!--{template mobile/footer}-->
+<!--{static ../static/mobile/js/project.js _mobile_project.js}-->

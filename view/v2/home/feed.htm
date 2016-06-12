@@ -1,0 +1,126 @@
+<div class="tab-pane active">
+    <!--{if $project_list}-->
+    <div class="project-lists J-project-lists">
+        <ul>
+            <!--{loop $project_list $key $list}-->
+            <!--{eval
+                $raised_amount = $list['project']['valuation']-$list['project']['existfinancing'];
+
+                if($list['project']['isverify'] == 3){
+                    if($list['project']['super_raise'] == 1){
+                        $status_flag = 'super-raise';
+                        $status_desc = '超募中';
+                        $status_text = '超募中';
+                    }else if($list['project']['remaintime'] == 0){
+                        $status_flag = 'raise-end';
+                        $status_desc = '众筹完';
+                        $status_text = '已结束';
+                    }else{
+                        $status_flag = 'raising';
+                        $status_desc = '众筹中';
+                        $status_text = '众筹中';
+                    }
+                }else if($list['project']['isverify'] == 5){
+                    $status_flag = 'raise-end';
+                    $status_desc = '众筹完';
+                    $status_text = '已结束';
+                }else if($list['project']['isverify'] == 4){
+                    $status_flag = 'raise-success';
+                    $status_desc = '众筹成功';
+                    $status_text = '已结束';
+                }else if($list['project']['isverify'] == 2){
+                    $status_flag = 'preheating';
+                    $status_desc = '预热中';
+                    $status_text = '等待开始';
+                }else if($list['project']['isverify']=='-1'){
+                    $status_flag = 'unpass';
+                    $status_desc = '未通过';
+                    $status_text = '未通过';
+                }else if($list['project']['isverify']=='0'){
+                    $status_flag = 'draft';
+                    $status_desc = '草稿';
+                    $status_text = '草稿';
+                }else if($list['project']['isverify']=='1'){
+                    $status_flag = 'check-pending';
+                    $status_desc = '待审核';
+                    $status_text = '待审核';
+                }
+            }-->
+            <a href="{DIR}project/detail/{url_id($list['project']['id'])}" target="_blank" title="{$list['project']['title']}">
+                <li <!--{if ($key+1)%3==0}-->class="third"<!--{/if}-->>
+                <img data-src="{$conf[static_url]}{$list['banner']['path']}" alt="">
+                <div class="desc-box {$status_flag} J-project-list" data-status-line="{$list['project']['degree']}" data-status-flag="{$status_flag}">
+                    <div class="status-flag-box">
+                        <div class="status-flag">
+                            <span class="flag-desc">{$status_desc}</span>
+                        </div>
+                    </div>
+                    <div class="status-line-box">
+                        <div class="status-line J-status-line">
+                            <p class="line-desc">
+                                <span class="num"></span>%
+                            </p>
+                        </div>
+                    </div>
+                    <div class="title">
+                        {$list['project']['title']}
+                    </div>
+                    <p class="company">{$list['project']['company']}</p>
+                    <div class="desc">
+                        {$list['project']['intro']}
+                    </div>
+                    <div class="row metas">
+                        <div class="col-xs-4">
+                            <p class="num">
+                                <span class="num-label">￥</span>{human_money($LIST['project']['totalfinancing']*10000, '<span
+                                    class="num-content">%.2f</span><span class="num-label">%s')}</span>
+                            </p>
+                            <p class="meta-desc">
+                                已筹集
+                            </p>
+                        </div>
+                        <div class="col-xs-4">
+                            <p class="num">
+                                <!--{if $list['project']['projecttype'] == 'store'}-->
+                                <span class="num-label">￥</span>{human_money($raised_amount*10000, '<span
+                                    class="num-content">%.2f</span><span class="num-label">%s')}</span>
+                                <!--{else}-->
+                                <span class="num-label">￥</span>{human_money($list['project']['valuation']*10000, '<span
+                                    class="num-content">%.2f</span><span class="num-label">%s')}</span>
+                                <!--{/if}-->
+                            </p>
+                            <p class="meta-desc">
+                                融资目标
+                            </p>
+                        </div>
+                        <div class="col-xs-4">
+                            <!--{if $list['project']['isverify'] != 3}-->
+                            <span class="num-content" style="margin-top:5px;line-height: 2.5;">{$status_text}</span>
+                            <!--{else}-->
+                            <p class="num">
+                                <span class="num-content">{get_left_time($list['project']['expiretime'])}</span><span class="num-label">天</span>
+                            </p>
+                            <p class="meta-desc">
+                                剩余时间
+                            </p>
+                            <!--{/if}-->
+                        </div>
+                    </div>
+                </div>
+
+                </li>
+            </a>
+            <!--{/loop}-->
+        </ul>
+    </div>
+    <!--{if $page_html}-->
+    <div class="pages-box">
+        {$page_html}
+    </div>
+    <!--{/if}-->
+    <!--{else}-->
+    <div class="no-content">
+        <p>您当前无关注的项目。</p>
+    </div>
+    <!--{/if}-->
+</div>

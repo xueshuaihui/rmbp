@@ -1,0 +1,32 @@
+<!--{template admin/header}-->
+<!--{eval
+$qa = strtr($setting['fast_qa'], array("\r"=>'\r', "\n"=>'\n'));
+}-->
+<div class="title">
+    网站设置
+    <!--{if $_SERVER['REQUEST_METHOD']=='POST'}-->
+    <Strong style="color:red">修改成功</Strong>
+    <!--{/if}-->
+</div>
+<div class="content login-overview">
+    <form method="post">
+        <table class="table table-bordered">
+            <Tr>
+                <td width="80">快速问答</td>
+                <Td>
+                    <textarea name="setting[fast_qa]" id="fast_qa"  style="width:90%;height:250px;"></textarea>
+                </td>
+            </Tr>
+            <Tr>
+                <td></td>
+                <Td><input type="submit" value="提交"/></td>
+            </Tr>
+        </table>
+    </form>
+</div>
+<script>
+    $(function(){
+       $('#fast_qa').val('$qa');
+    });
+</script>
+<!--{template admin/footer}-->

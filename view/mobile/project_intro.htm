@@ -1,0 +1,141 @@
+<!--{eval
+    $pages['title'] = 'Plus众筹平台 - 让价值变得更有价值';
+    $status_array = array(
+        0 => '概念阶段',
+        1 => '研发中',
+        2 => '已上线',
+    );
+    $balance_array = array(
+        0 => '无收入',
+        1 => '有收入未盈利',
+        2 => '收支平衡',
+        3 => '已盈利'
+    );
+    $stage_array = array(
+        1 => '天使轮',
+        2 => 'A轮',
+        3 => 'B轮',
+        4 => 'C轮',
+        5 => 'C轮后',
+        6 => '实体店融资',
+    );
+
+    $isverify = array(
+        -2 => '下线',
+        -1 => '未通过',
+        0 => '草稿',
+        1 => '待审核',
+        2 => '预热中',
+        3 => '融资中',
+        4 => '融资成功',
+        5 => '融资失败'
+    );
+    $project_id = url_id($project['id']);
+    $pages['pc_url'] = 'project/detail/'.$project_id.'/';
+
+}-->
+<!--{template mobile/header}-->
+<div class="project-detail J-project" data-target="{$project['id']}">
+    <!--div class="info-box project-partner-box">
+
+        <div class="box-title">创始团队</div>
+        <div class="box-content">
+            <ul>
+                <!--{loop $project['guys'] $list}-->
+                <li class="am-g">
+                    <div class="am-u-sm-3 icon-box">
+                        <img src="{$conf['static_url']}{$list['pic']}" alt="">
+                    </div>
+                    <div class="am-u-sm-9 partner-content">
+                        <p class="name">{$list['truename']} <span class="position">{$list['job']}</span></p>
+                        <p class="intro">{$list['intro']}</p>
+                    </div>
+
+                </li>
+                <!--{/loop}-->
+            </ul>
+        </div>
+    </div>
+
+    <div-- class="info-box status-box">
+        <div class="box-title">项目现状</div>
+        <div class="box-content">
+            <ul>
+                <li class="top-oringe">
+                    <p><span>{print_r($status_array[$project['status']],1)}</span></p>
+
+                    <p class="desc">产品阶段</p>
+                </li>
+                <li class="top-green">
+                    <p><span>{print_r($balance_array[$project['balance']],1)}</span></p>
+                    <p class="desc">收入状况</p>
+                </li>
+                <li class="top-blue">
+                    <p><span>{$project['region']}</span></p>
+                    <p class="desc">所在城市</p>
+                </li>
+                <li class="top-oringe">
+                    <p><span>{print_r($stage_array[$project['stage']],1)}</span></p>
+                    <p class="desc">融资阶段</p>
+                </li>
+                <li class="top-green mul-status J-mul-status">
+                    <p>
+                        <!--{loop $project['areas'] $area}-->
+                        <span>{$area['name']}</span>
+                        <!--{/loop}-->
+                    </p>
+                    <p class="desc">所属领域</p>
+                </li>
+                <li class="top-blue mul-status J-mul-status">
+
+                    <!--{if $project['urls']['site'] || $project['urls']['ios'] || $project['urls']['android']}-->
+                    <p>
+                        <!--{if $project['urls']['site']}-->
+                            <span class="C-link"><a href="$project['urls']['site']" target="_blank" rel="nofollow">网站</a></span>
+                        <!--{/if}-->
+                        <!--{if $project['urls']['ios']}-->
+                            <span class="C-link"><a href="$project['urls']['ios']" target="_blank" rel="nofollow">iOS</a></span>
+                        <!--{/if}-->
+                        <!--{if $project['urls']['android']}-->
+                        <span class="C-link"><a href="$project['urls']['android']" target="_blank" rel="nofollow">Android</a></span>
+                        <!--{/if}-->
+                    </p>
+                    <!--{/if}-->
+
+                    <!--{if !$project['urls']['site'] && !$project['urls']['ios'] && !$project['urls']['android']}-->
+                    <p class="no-display">暂无产品展示</p>
+                    <!--{/if}-->
+                    <p class="desc">产品展示</p>
+                </li>
+            </ul>
+            <div class="clear"></div>
+        </div>
+    </div-->
+
+    <div class="info-box project-intro-box">
+        <div class="box-title">项目介绍</div>
+        <div class="box-content">
+            <p>{$project['description']}</p>
+        </div>
+    </div>
+
+</div>
+<div class="footer">
+    <ul>
+        <a href="javascript:void(0);" class="J-focus">
+            <li class="left-nav like-text">
+                <span class="focus-flag J-focus-flag unliked"></span>
+                <span class="J-focus-desc">关注我们</span>
+            </li>
+        </a>
+        <a href="{DIR}project/detail/{url_id($project['id'])}/">
+            <li class="right-nav">
+                <span>我要支持</span>
+            </li>
+        </a>
+
+    </ul>
+</div>
+
+<!--{template mobile/footer}-->
+<!--{static ../static/mobile/js/project.js _mobile_project.js}-->

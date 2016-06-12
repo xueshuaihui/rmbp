@@ -1,0 +1,159 @@
+<!--{eval
+$pages['title'] =  $project['title'];
+$gufen = $invest['price']/($project['valuation']*10000)*100;
+}-->
+<!--{template header}-->
+<!--{static ../static/js/address-input.js _return_confirm.js}-->
+<!--{static ../static/js/return-confirm.js _return_confirm.js}-->
+<!--{template inc/nav}-->
+<div class="container">
+    <form class="C-return-confirm-box" action="{DIR}api/order/" method="post">
+        <div class="title">
+            $project['title']
+        </div>
+        <div class="return-box">
+            <p class="label">每份投资金额</p>
+            <p class="per-money"><span class=" J-per-money">$invest['price']</span>  元</p>
+
+            <p class="label">投资份数</p>
+            <div class="row money-num">
+                <div class="col-xs-3">
+                    <a href="javascript:void(0);" class="desc-a desc-active J-desc"></a>
+                </div>
+                <div class="col-xs-6">
+                    <input type="text" class="money-num-input J-money-num-input" value="1" name="invest[num]" data-maxnum="{$invest['maxnum']}">
+                </div>
+                <div class="col-xs-3">
+                    <a href="javascript:void(0);" class="add-a add-active J-add"></a>
+                </div>
+            </div>
+
+            <p class="label">
+                您的投资金额
+            </p>
+
+            <div class="box money">
+                <span class="J-user-invest-money"></span> 元
+            </div>
+            <p class="mini-label">
+                约占本轮股份 <span class="J-gufen" data-pershare="{$gufen}"></span>%
+            </p>
+        </div>
+
+        <!--{if $invest['returntime']}-->
+            <div class="return-box">
+                <p class="label">
+                    您的实物回报
+                </p>
+
+                <div class="box">
+                    {$invest['message']}
+                </div>
+            </div>
+            <div class="return-box">
+            <p class="label">
+                您的收货地址
+            </p>
+
+            <p class="mini-label">
+                （如不需要实物回报请勿填写收货地址）
+            </p>
+
+            <div class="address-box J-address-box">
+                    <a href="javascript:void(0);" class="btn J-new-address <!--{if $address_list}-->hide_address_input <!--{/if}-->">新增收货地址</a>
+
+                    <div class="J-addr-info-input hide_address_input" data-id="">
+                        <div class="row">
+                            <div class="col-xs-2 input-label">
+                                收货人姓名
+                            </div>
+                            <div class="col-xs-9">
+                                <input type="text" class="form-control J-name" name="address[name]" placeholder="请输入您的姓名">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2 input-label">
+                                所在区域
+                            </div>
+                            <div class="col-xs-10 select-box">
+                                <select class="form-control address-select J-address-select" name="address[province_id]" data-pid="0"
+                                        data-target="select-city" id="select-province">
+                                </select>
+                                <select class="form-control address-select J-address-select" name="address[city_id]" data-pid=""
+                                        id="select-city" data-target="select-county">
+                                </select>
+                                <select class="form-control address-select J-address-select" name="address[county_id]" id="select-county">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2 input-label">
+                                详细地址
+                            </div>
+                            <div class="col-xs-9">
+                                <input type="text" class="form-control J-address-detail" name="address[address]" placeholder="请输入您能收到货的地址">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2 input-label">
+                                电话
+                            </div>
+                            <div class="col-xs-9">
+                                <input type="text" class="form-control J-phone" name="address[phone]" placeholder="手机或固定电话">
+                            </div>
+                        </div>
+                        <div class="error-box"></div>
+                        <div class="row btn-box">
+                            <div class="col-xs-3"><input type="button" class="btn C-J-save-btn" value="保存"></div>
+                            <div class="col-xs-3"><a href="javascript:void(0);" class="btn C-J-cancel-btn" data-target="new">取消</a></div>
+                        </div>
+                    </div>
+
+                <!--{loop $address_list $address}-->
+                <div class="box J-addr-info-box">
+                    <p>
+                        <span class="name J-name">$address['name']</span>
+                        <span class="phone J-phone">$address['phone']</span>
+                    </p>
+
+                    <p>
+                        <span class="address J-address">
+                            {print_r($region_list[$address['province_id']],1)}
+                            {print_r($region_list[$address['city_id']],1)}
+                            {print_r($region_list[$address['county_id']],1)}
+                            <span class="J-address-detail">{$address['address']}</span>
+                        </span>
+                    </p>
+
+                    <p class="fix-box">
+                        <a href="javascript:void(0);" class="J-fix" data-id="{$address['id']}"
+                           data-region="{$address['province_id']},{$address['city_id']},{$address['county_id']}">修改</a>
+                        <a href="javascript:void(0);" class="J-delete" data-id="{$address['id']}">删除</a>
+                    </p>
+
+                </div>
+                <!--{/loop}-->
+            </div>
+        </div>
+        <!--{/if}-->
+
+        <div class="return-box">
+            <p class="statement">为了保证项目筹款和发展的顺利进行，如您想法有变请在项目众筹结束之前申请退款，一旦项目众筹成功之后将无法申请退款。如果众筹失败，众筹的项目款项会退还到您的个人账户里。</p>
+
+            <p class="check-box">
+                <input type="checkbox">
+                我已阅读并同意
+                <a href="{DIR}?c=help-130" target="_blank">《投资人规则》</a>
+                <a href="{DIR}?c=help-131" target="_blank">《风险提示书》</a>
+            </p>
+
+            <div class="error-box"></div>
+            <input type="hidden" name="invest[project_id]" value="{$invest['project_id']}" />
+            <input type="hidden" name="invest[invest_id]" value="{$invest['id']}" />
+            <input type="hidden" name="FORM_HASH" value="{misc::form_hash()}" />
+            <button class="btn J-confirm" type="submit">确定投资</button>
+        </div>
+
+    </form>
+</div>
+<!--{template footer}-->

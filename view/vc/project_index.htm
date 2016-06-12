@@ -1,0 +1,99 @@
+<!--{eval
+    $project_id = url_id($project['id']);
+    !$pages['title'] && $pages['title'] = $project['title'] . ($title_array[$pro]? ' - '.$title_array[$pro] : '');
+    !$pages['keys'] && $pages['keys'] = $project['title'] . ($title_array[$pro]? ','.$title_array[$pro] : '');
+    !$pages['desc'] && $pages['desc'] = $project['intro'] . ($title_array[$pro]? ','.$title_array[$pro] : '');
+    $pages['pc_url'] = 'project/detail/'.$project_id.'/';
+
+    $_android = $project['urls']['android'];
+    $_ios = $project['urls']['ios'];
+
+}-->
+<!--{if !$_android}-->
+    <!--{eval
+        $_android_disabled = 'disabled';
+        $_android = 'javascript:void(0);';
+        $_no_android = 1;
+     }-->
+<!--{/if}-->
+<!--{if !$_ios}-->
+    <!--{eval
+        $_ios_disabled = 'disabled';
+        $_ios = 'javascript:void(0);';
+        $_no_ios = 1;
+     }-->
+<!--{/if}-->
+<!--{template vc/header}-->
+<div class="container project-detail J-project" data-target="{$project['id']}">
+    <div class="title-box">
+        <p class="title">{$project['title']}</p>
+        <p class="link-icons">
+            <!--{if $project['3ndinfo']['website']}-->
+            <a href="{$project['3ndinfo']['website']}" class="link-icon website"></a>
+            <!--{/if}-->
+            <!--{if $project['qr_code']['path']}-->
+            <a href="javascript:void(0);" class="link-icon weixin J-weixin">
+                <img src="{$conf[static_url]}/{$project['qr_code']['path']}" alt="" class="weixin-img">
+            </a>
+            <!--{/if}-->
+            <!--{if $project['3ndinfo']['weibo']}-->
+            <a href="{$project['3ndinfo']['weibo']}" class="link-icon weibo"></a>
+            <!--{/if}-->
+        </p>
+        <p class="short-desc">
+            {$project['intro']}
+        </p>
+    </div>
+    <div class="am-g links-box">
+        <div class="am-u-sm-6">
+            <a href="{$_ios}" class="apple {$_ios_disabled}">
+                <img src="{$conf[static_url]}vc/images/apple.png" alt="">
+                <p>iPhone 版</p>
+            </a>
+            <!--{if $_no_ios == 1}-->
+                <p class="no-link-desc">暂未添加</p>
+            <!--{/if}-->
+        </div>
+        <div class="am-u-sm-6">
+            <a href="{$_android}" class="android {$_android_disabled}">
+                <img src="{$conf[static_url]}vc/images/android.png" alt="">
+                <p>Android 版</p>
+            </a>
+            <!--{if $_no_android == 1}-->
+            <p class="no-link-desc">暂未添加</p>
+            <!--{/if}-->
+        </div>
+    </div>
+    <div class="info-box project-intro-box">
+        <div class="box-title">项目介绍</div>
+        <div class="box-content">
+            <p>{replace_content($project['description'])}</p>
+        </div>
+    </div>
+    <div class="footer">
+        <ul>
+            <a href="javascript:void(0);" class="btn invest-btn J-invest-btn ">
+                <span>发送投资意向</span>
+            </a>
+        </ul>
+    </div>
+
+</div>
+
+<div class="container send-modal J-send-modal">
+    <div class="modal-body">
+        <textarea class="am-form-field" onkeyup="checkWordNum(this)" data-max="200" name="dialog-editor" placeholder="请您简要归纳一下想要投资的内容"></textarea>
+        <div class="word-num-show">
+            <span class="J-had-input">0</span>
+            <span>/</span>
+            <span class="J-max-input">200</span>
+        </div>
+        <div class="error-box"></div>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0);" class="btn confirm-btn  J-confirm-btn">确定</a>
+        <a href="javascript:void(0);" class="btn cancel-btn J-cancel-btn">取消</a>
+    </div>
+</div>
+<!--{template vc/footer}-->
+<!--{static ../static/vc/js/project.js _vc_project.js}-->

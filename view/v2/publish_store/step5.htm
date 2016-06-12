@@ -1,0 +1,91 @@
+<!--{eval
+    $bonusrate_selected = array( $invest_list['bonusrate'] => ' selected');
+}-->
+<div class="row">
+    <div class="col-xs-2 form-label">分红条件</div>
+    <div class="col-xs-5">
+        <input type="hidden" name="invests[id]" value="{$invest_list[id]}">
+        <textarea class="form-control" name="invests[bonuscondition]">{$invest_list[bonuscondition]}</textarea>
+    </div>
+    <div class="col-xs-5 tip tip-h J-tip">
+        <div class="tip-box">
+            <p class="J-tip-content"></p>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-2 form-label">分红周期</div>
+    <div class="col-xs-5">
+        <input class="form-control has-unit" type="text" name="invests[bonuscircle]" value="{$invest_list[bonuscircle]}" >
+        <div class="unit">年</div>
+    </div>
+    <div class="col-xs-5 tip J-tip">
+        <div class="tip-box">
+            <p class="J-tip-content"></p>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-2 form-label">分红频率</div>
+    <div class="col-xs-5">
+        <select class="form-control" name="invests[bonusrate]" >
+            <option value="-1">请选择</option>
+            <option value="1" {$bonusrate_selected[1]}>按月分红</option>
+            <option value="2" {$bonusrate_selected[2]}>按季分红</option>
+            <option value="3" {$bonusrate_selected[3]}>按年分红</option>
+        </select>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-2 form-label">预期每月分红额</div>
+    <div class="col-xs-5">
+        <input class="form-control has-unit" type="text" name="invests[bonusexpect]" value="{floatval(round($invest_list[bonusexpect]*10000,2))}" >
+        <div class="unit">元</div>
+    </div>
+    <div class="col-xs-5 tip J-tip">
+        <div class="tip-box">
+            <p class="J-tip-content"></p>
+        </div>
+    </div>
+</div>
+<hr class="divider" />
+<div class="row">
+    <div class="col-xs-2 form-label">其他回报</div>
+    <div class="col-xs-10">
+        <textarea name="invests[message]" id="description" class="hide form-control J-description">{$invest_list[message]}</textarea>
+        <script id="detailEditor" type="text/plain" style="width:100%; height:400px"></script>
+    </div>
+</div>
+<hr class="divider" />
+<div class="btn-box three-btns-box">
+    <a href="{DIR}publish/step4/" class="btn pre-btn">上一步</a>
+    <input type="submit" onclick="$('.J-submit-confirm').val(0)" value="保存草稿" class="btn mid-btn">
+    <input class="btn next-btn" type="submit" onclick="$('.J-submit-confirm').val(1)" value="提交审核">
+    <input class="btn next-btn hide J-submit-confirm" data-status="" type="submit" onclick="$('.J-submit-confirm').val(0)">
+</div>
+<div class="modal fade" id="myProjectReleaseModel" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body ">
+                <p>
+                    项目发布是一件很严肃的事情，一旦审核通过将很难更改
+                </p>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0);" class="btn C-J-confirm">确定</a>
+                <a href="javascript:void(0);" class="btn C-J-cancel" data-dismiss="modal">再想想</a>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" class="J-isverify" name="project[isverify]" value="">
+<script>
+    publishGlobalEvents.push(function(){
+        setTimeout(function(){
+            var descDetaiUE = UE.getEditor('detailEditor');
+            setTimeout(function(){
+                descDetaiUE.setContent($('#description').val());
+            },500);
+        },0);
+    })
+</script>

@@ -1,0 +1,56 @@
+<!--{template admin/header}-->
+<!--{template admin/user_header}-->
+<div class="title">
+    约见列表
+</div>
+<div class="content">
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>项目名称</th>
+            <th>项目ID</th>
+            <th>创建用户</th>
+            <th>融资目标</th>
+            <th>已融资金额</th>
+            <th>融资进度</th>
+            <th>截止日期</th>
+            <th>项目状态</th>
+            <th>约见目的</th>
+            <th>提交时间</th>
+            <th>约见处理</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--{loop $invest_list $list}-->
+        <!--{eval
+            $isverify = array(
+                '-2' => '下线',
+                '-1' => '未通过',
+                '0' => '提交中',
+                '1' => '待审核',
+                '2' => '预热中',
+                '3' => '众筹中',
+                '4' => '众筹成功',
+                '5' => '众筹失败'
+            );
+            $plan = $list['totalfinancing']/$list['valuation']*100;
+        }-->
+        <tr>
+            <td><a href="{DIR}{ADMIN_DIR}/project/project_info/project_id/{url_id($list['id'])}/">{$list['title']}</a></td>
+            <td>{$list['id']}</td>
+            <td>{$list[user_field]['truename']}</td>
+            <td>{$list['valuation']}</td>
+            <td>{$list['totalfinancing']}</td>
+            <td>{$plan}%</td>
+            <td>{date('Y-m-d H:i:s',$list['expiretime'])}</td>
+            <td>{print_r($isverify[$list['isverify']],1)}</td>
+            <td>{$list['t1_message']}</td>
+            <td>{date('Y-m-d H:i:s',$list['t1_dateline'])}</td>
+            <td>已忽略</td>
+        </tr>
+        <!--{/loop}-->
+        </tbody>
+    </table>
+</div>
+<div class="page-box">{$page_html}</div>
+<!--{template admin/footer}-->

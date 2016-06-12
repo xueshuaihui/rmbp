@@ -1,0 +1,115 @@
+<div class="tab-pane active">
+    <!--{if $project_list}-->
+    <ul class="no-padding-margin">
+        <!--{loop $project_list $project}-->
+        <!--{eval
+            if($project['isverify'] == 0 && !$project['title']){
+                continue;
+            }
+            $ratio = sprintf('%.2f', ($list['price']*100)/($list['project']['valuation']*10000));
+            if($ratio == 0){
+                $ratio = sprintf('%.4f', ($list['price']*100)/($list['project']['valuation']*10000));
+            }
+            $degree = $project['totalfinancing']/$project['maxfinancing']*100;
+        }-->
+        <li>
+            <div class="title-box">
+                <a href="{DIR}project/detail/{url_id($project['id'])}/" target="_blank">
+                    <h1 class="title">
+                        {$project['title']}
+                    </h1>
+                </a>
+                <!--{if $project['isverify']=='-1'}-->
+                <div class="status unpass">未通过</div>
+                <!--未通过-->
+                <!--{elseif $project['isverify']=='0'}-->
+                <div class="status draft">草稿</div>
+                <!--草稿-->
+                <!--{elseif $project['isverify']=='1'}-->
+                <div class="status check-pending">待审核</div>
+                <!--待审核-->
+                <!--{elseif $project['isverify']=='2'}-->
+                <div class="status preheating">预热中</div>
+                <!--预热中-->
+                <!--{elseif $project['isverify']=='3'}-->
+                <!--{if $list['project']['superraise']=='1'}-->
+                <div class="status super-raise">已超募</div>
+                <!--已超募-->
+                <!--{else}-->
+                <div class="status financing">融资中</div>
+                <!--融资中-->
+                <!--{/if}-->
+                <!--{elseif $project['isverify']=='4'}-->
+                <div class="status succeed">融资成功</div>
+                <!--融资成功-->
+                <!--{elseif $project['isverify']=='5'}-->
+                <div class="status failed">融资失败</div>
+                <!--融资失败-->
+                <!--{/if}-->
+            </div>
+            <div class="status-box">
+                <div class="state-line-box">
+                    <div class="state-line" style="width: {$degree}%"></div>
+                </div>
+                <div class="state-desc">
+                    <ul>
+                        <li>
+                            <p class="num">{human_money($project['totalfinancing'],'%.2f %s')}</p>
+
+                            <p class="desc">已筹集</p>
+                        </li>
+                        <li>
+                            <p class="num">{$ratio}%</p>
+
+                            <p class="desc">占股</p>
+                        </li>
+                        <li>
+                            <p class="num"><!--{if $project['expiretime']=='0'}-->0<!--{else}-->{floor((
+                                $project['expiretime']-time())/86400)}<!--{/if}--> 天</p>
+
+                            <p class="desc">剩余时间</p>
+                        </li>
+                        <li>
+                            <p class="num">{human_money($project['minfinancing']*10000, '%.2f %s')}</p>
+
+                            <p class="desc">融资目标</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="button-box">
+                <a href="javascript:void(0);" class="btn btn-1 J-cancel-feed-btn" target="_blank" data-target="$project['id']">取消关注</a>
+            </div>
+        </li>
+        <!--{/loop}-->
+    </ul>
+    <!--{else}-->
+    <div class="no-content">
+        <p>您当前无关注的项目。</p>
+    </div>
+    <!--{/if}-->
+</div>
+<script>
+    accountEvents = [];
+    accountEvents.push(function(){
+        $('.J-cancel-feed-btn').click(function(){
+            if(confirm('确定取消对该项目的关注吗？')){
+                var target = $(this).data('target');
+                var post = {
+                    id : target,
+                    type : 'project',
+                    unfeed : 1
+                };
+                var that = this;
+                API.post('user_feed', post, function (result) {
+                    if (result.error == 0) {
+                        $(that).parent().parent().remove();
+                        alertImg('成功取消关注');
+                    } else {
+                        alertImg(result.message);
+                    }
+                });
+            }
+        })
+    })
+</script>

@@ -1,0 +1,18 @@
+<div class="publish-confirm-box">
+    <p>
+        项目保存成功，可以在
+        <a href="{DIR}?c=user-financing">个人中心-融资的项目</a>
+        中查看已保存的项目
+    </p>
+    <p>
+        <span class="J-time-box"></span> 秒后自动跳转到个人中心-融资的项目
+    </p>
+    <div class="btn-box">
+        <a href="{DIR}?c=user-financing" class="btn C-J-confirm">确定</a>
+    </div>
+</div>
+<script>
+    publishGlobalEvents.push(function(){
+        setTimeDown($('.J-time-box'),'/user/financing/');
+    })
+</script>

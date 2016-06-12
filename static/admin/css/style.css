@@ -1,0 +1,157 @@
+a:hover{
+    text-decoration:none;
+}
+.content-box {
+    margin: 20px;
+}
+
+.content-box .title {
+    font-size: 18px;
+    padding: 0 0 10px 0;
+    border-bottom: 1px #aaa solid;
+    margin-bottom: 10px;
+}
+
+.content .row {
+    padding: 0;
+    text-align: center;
+    margin: 0;
+    line-height: 40px;
+}
+
+.content .col-xs-4 {
+    width: 30%;
+    float: left;
+    border-right: #ccc solid 1px;
+}
+
+.content .col-xs-8 {
+    width: 70%;
+}
+
+.login-overview .odd {
+    background: #ccc;
+}
+
+.login-overview .even {
+    background: #eee;
+}
+
+.table th, .table td{
+    text-align: center;
+}
+.a-btn{
+    padding: 0 10px;
+}
+.a-btn-l{
+    padding: 0 20px 0 0;
+}
+.a-btn-r{
+    padding: 0 0 0 20px;
+}
+.select-mini{
+    width: 100px;
+}
+.new-btn:hover, .confirm-btn:hover, .cancel-btn:hover{
+    color: #fff;
+    text-decoration: none !important;
+}
+.new-btn, .confirm-btn{
+    width: 100px;
+    text-align: center;
+    background: #2da3dc;
+    color: #fff;
+    margin: 10px 0;
+}
+.confirm-btn{
+    margin-right: 10px;
+}
+.cancel-btn{
+    width: 100px;
+    text-align: center;
+    background: #6d6d6d;
+    color: #fff;
+    margin: 10px 0;
+    text-decoration: none !important;
+}
+.home-seting .nav-tabs{
+    margin-bottom: 10px;
+}
+.cancel-btn, .confirm-btn{
+    float: left;
+}
+.btn-box{
+    width: 210px;
+    margin: 0 auto;
+    height: 54px;
+}
+.select-box .checkbox{
+    float: left;
+    margin-right: 7px;
+}
+.select-box .form-group{
+    margin-left: 20px;
+}
+.help-edit-box, .article-list-edit-box, .article-edit-box{
+    width: 700px;
+    margin: 20px auto 10px;
+    padding: 20px 50px;
+    border: #ddd solid 1px;
+    border-radius: 5px;
+    box-shadow: 0 0 3px #ccc;
+}
+.edit-btn{
+    padding: 0 10px;
+    background: #2DA3DC;
+    color: #fff;
+    margin-right: 10px;
+    opacity: .8;
+}
+.delete-btn{
+    padding: 0 10px;
+    background: #999;
+    color: #fff;
+    opacity: .8;
+}
+.edit-btn:hover, .delete-btn:hover{
+    opacity: 1;
+    color: #fff;
+}
+.page-box{
+    text-align: right;
+}
+
+.alert-box{
+    display: none;
+    position: absolute;
+    top: 40%;
+    width: 200px;
+    left: 50%;
+    margin-left: -100px;
+    text-align: center;
+    background: #333;
+    padding: 10px;
+    color: #fff;
+}
+.page-box{
+    margin: 0 0 30px;
+    text-align: center;
+    line-height: 33px;
+}
+.page-box a{
+    padding: 5px 12px;
+    color: #2da3dc;
+    background-color: #fff;
+    border: 1px solid #2da3dc;
+    margin: 0 5px;
+}
+.page-box a:hover, a.current{
+    color: #fff;
+    background-color: #2da3dc;
+    text-decoration: none;
+}
+.page-box a.total{
+    color: #2da3dc;
+    background-color: #fff;
+    border: 1px solid #fff;
+}

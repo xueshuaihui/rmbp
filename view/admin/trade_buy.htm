@@ -1,0 +1,278 @@
+<!--{template admin/header}-->
+<!--{eval
+    $title_array = array(
+        '' => '待审核购买',
+        0 => '待审核购买',
+        -2 => '未通过购买',
+        1 => '进行中交易',
+        -1 => '未成功交易',
+        2 => '已完成交易',
+    );
+    $title = $title_array[$status];
+    $select_rank = array($search['rank'] => ' selected');
+    $select_sort_order = array($search['sort_order'] => ' selected');
+    $select_search = array($search['search'] => ' selected');
+    $select_screen = array($search['screen'] => ' selected');
+}-->
+<div class="title">
+    {$title}
+</div>
+
+<div>
+    <form action="{$action}" method="post">
+        <label>排序：</label>
+        <select name="search[rank]">
+            <option selected="" value="">选择排序项目</option>
+            <option value="id" {print_r($select_rank[id],1)}>交易id</option>
+            <!--<option value="sellnum" {print_r($select_rank[sellnum],1)}>购买份数</option>-->
+            <!--<option value="sellprice" {print_r($select_rank[sellprice],1)}>购买价格</option>-->
+            <option value="dateline" {print_r($select_rank[dateline],1)}>时间</option>
+        </select>
+        <select name="search[sort_order]">
+            <option selected="" value="">排序方式</option>
+            <option value="ASC" {print_r($select_sort_order[ASC],1)}>升序</option>
+            <option value="DESC" {print_r($select_sort_order[DESC],1)}>降序</option>
+        </select>
+
+        <label>搜索：</label>
+        <select name="search[search]">
+            <option selected="" value="">选择搜索项</option>
+            <option value="id" {print_r($select_search[id],1)}>交易id</option>
+            <option value="title" {print_r($select_search[title],1)}>项目名称</option>
+            <option value="truename2" {print_r($select_search[truename2],1)}>转让用户</option>
+            <!--<option value="id" {print_r($select_search[id],1)}>转让电话</option>-->
+            <option value="truename" {print_r($select_search[truename],1)}>购买用户</option>
+            <!--<option value="id" {print_r($select_search[id],1)}>购买电话</option>-->
+        </select>
+        <input type="text" name="search[search_value]" value="{$search['search_value']}">
+
+        <label>日期筛选：</label>
+        <input type="text" name="search[start]" value="{$search['start']}" maxlength="10" placeholder="{date('Y-m-d')}"
+               style="width: 100px;">
+        <input type="text" name="search[end]" value="{$search['end']}" maxlength="10" placeholder="{date('Y-m-d')}"
+               style="width: 100px;">
+        <input type="submit" value="确定">
+    </form>
+</div>
+
+<div class="content">
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>交易ID</th>
+            <th>项目名称</th>
+            <th>购买用户</th>
+            <th>联系电话</th>
+            <th>购买份数</th>
+            <th>购买价格</th>
+            <th>转让用户</th>
+            <th>购买时间</th>
+            <!--{if $status==0 || $status==1 || $status==2}-->
+            <th>状态</th>
+            <!--{else}-->
+            <th>未通过原因</th>
+            <!--{/if}-->
+            <!--{if $status==0 || $status==1 || $status==-2}-->
+            <th>操作</th>
+            <!--{/if}-->
+        </tr>
+        </thead>
+        <tbody>
+        <!--{loop $user_trade $list}-->
+        <!--{eval
+            $istrade_array = array(0 => '关闭交易', 1 => '开启交易');
+            $status_array = array(-2 => '未通过', -1 => '交易失败',0 => '待审核', 1 => '交易中',2 => '交易成功');
+            $select_status = array($list['status'] => ' selected');
+        }-->
+        <tr>
+            <td>{$list['id2']}</td>
+            <td><a href="{DIR}{ADMIN_DIR}/project/project_info/project_id/{url_id($list['id'])}/">$list['project']['title']</a>
+            </td>
+            <td>
+                <a href="{DIR}{ADMIN_DIR}/user/field_project/user_id/{url_id($list['user_field']['user_id'])}/">$list['user_field']['truename']</a>
+            </td>
+            <td>{$list['user']['phone']}</td>
+            <td>{$list['sellnum']}</td>
+            <td>{$list['sellprice']}</td>
+            <td>
+                <a href="{DIR}{ADMIN_DIR}/user/field_project/user_id/{url_id($list['user_id'])}/">{print_r($user_list[$list['user_id']],1)}</a>
+            </td>
+            <td>{date('Y-m-d H:i:s',$list['dateline2'])}</td>
+            <!--{if $status== 0 || $status== 1 || $status== 2}-->
+            <td>{print_r($status_array[$list['status2']],1)}</td>
+            <!--{else}-->
+            <td><a href="javascript:void(0);" onclick="showModal(this)" data-id="{$list['notifymessage2']}">查看</a></td>
+            <!--{/if}-->
+            <!--{if $status== 0 || $status== -2}-->
+            <td>
+                <input type="hidden" name="status2" class="status2" value="{$status}">
+                <select name="user_trade[status]" onchange="show1Modal(this)" data-id="{$list['id2']}"
+                        data-id2="{$list['user_invest_id']}" data-post="value"
+                        data-url="{DIR}{ADMIN_DIR}/trade/update_buy/">
+                    <option value="{$list['status']}">请选择</option>
+                    <option value="user_trade[id]/{$list['id2']}/user_trade[status]/1/">通过</option>
+                    <option value="-2">不通过</option>
+                </Select>
+            </td>
+            <!--{/if}-->
+            <!--{if $status== 1}-->
+            <td>
+                <select name="user_trade[status]" onchange="show2Modal(this)"
+                        data-id="{$list['id2']}" data-id2="{$list['user_invest_id']}"
+                        data-id3="$list['project']['title']">
+                    <option value="{$list['status']}">请选择</option>
+                    <option value="2">成功</option>
+                    <option value="-1">未成功</option>
+                </Select>
+            </td>
+            <!--{/if}-->
+        </tr>
+        <!--{/loop}-->
+        </tbody>
+    </table>
+    <div class="page-box">{$page_html}</div>
+</div>
+<div class="modal fade" id="Modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                未通过原因
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <textarea name="notifymessage" class="form-control"></textarea>
+                </div>
+                <div class="btn-box">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="show1_Modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                转让申请未通过原因
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form action="{DIR}{ADMIN_DIR}/trade/update_buy/" method="post" data-post="form"
+                      data-callback="closeModal">
+                    <input type="hidden" value="" name="user_trade[id]">
+                    <input type="hidden" value="" name="user_trade[status]">
+                    <input type="hidden" name="status" value="{$status}">
+                    交易ID：<input type="text" name="user_invest_id" value="">
+
+                    <div>
+                        <textarea name="user_trade[notifymessage]" class="form-control"></textarea>
+                    </div>
+                    <div class="btn-box">
+                        <input type="submit" class="form-control confirm-btn" value="确定">
+                        <input type="button" class="form-control cancel-btn" data-dismiss="modal"
+                               value="取消">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="show2_Modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                确认交易成功
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form action="{DIR}{ADMIN_DIR}/trade/update_buy/" method="post" data-post="form"
+                      data-callback="closeModal">
+                    <input type="hidden" value="" name="user_trade[id]">
+                    <input type="hidden" value="" name="user_trade[status]">
+                    <input type="hidden" name="status" value="{$status}">
+
+                    <div>
+                        请确认 {<span class="title_id"></span>}已完成交易，交易款项已交付到转让人账户中。
+                    </div>
+                    <div class="btn-box">
+                        <input type="button" class="form-control cancel-btn" data-dismiss="modal" value="取消">
+                        <input type="submit" class="form-control confirm-btn" value="确定">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="show3_Modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                交易未成功原因
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form action="{DIR}{ADMIN_DIR}/trade/update_buy/" method="post" data-post="form"
+                      data-callback="closeModal">
+                    <input type="hidden" value="" name="user_trade[id]">
+                    <input type="hidden" value="" name="user_trade[status]">
+                    <input type="hidden" name="status" value="{$status}">
+                    交易ID：<input type="text" name="user_invest_id" value="">
+
+                    <div>
+                        <textarea name="user_trade[notifymessage]" class="form-control"></textarea>
+                    </div>
+                    <div class="btn-box">
+                        <input type="button" class="form-control cancel-btn" data-dismiss="modal" value="取消">
+                        <input type="submit" class="form-control confirm-btn" value="确定">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--{static ../static/js/admin_message.js _admin_message.js}-->
+<script>
+    function showModal(o) {
+        var id = $(o).data('id');
+        $('#Modal *[name=notifymessage]').val(id);
+        $('#Modal').modal('show');
+    }
+
+    function show1Modal(o) {
+        var id = $(o).data('id'), status = $(o).val(), invest_id = $(o).data('id2');
+        if (status == '-2') {
+            $('#show1_Modal *[name="user_trade[id]"]').val(id);
+            $('#show1_Modal *[name="user_trade[status]"]').val(status);
+            $('#show1_Modal *[name="user_invest_id"]').val(invest_id);
+            $('#show1_Modal').modal('show');
+        }
+    }
+
+    function show2Modal(o) {
+        var id = $(o).data('id'), status = $(o).val(), invest_id = $(o).data('id2');
+        if (status == '-1') {
+            $('#show3_Modal *[name="user_trade[id]"]').val(id);
+            $('#show3_Modal *[name="user_trade[status]"]').val(status);
+            $('#show3_Modal *[name="user_invest_id"]').val(invest_id);
+            $('#show3_Modal').modal('show');
+        }
+        if (status == '2') {
+            var title = $(o).data('id3');
+            $('#show2_Modal *[name="user_trade[id]"]').val(id);
+            $('#show2_Modal *[name="user_trade[status]"]').val(status);
+            $('.title_id').html(title + '-' + invest_id);
+            $('#show2_Modal').modal('show');
+        }
+    }
+
+    window.closeModal = function (success) {
+        $('#show1_Modal').modal('hide');
+        $('#show2_Modal').modal('hide');
+        $('#show3_Modal').modal('hide');
+    }
+</script>
+<!--{template admin/footer}-->

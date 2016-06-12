@@ -1,0 +1,46 @@
+<!--{eval
+$pages['title'] = '用户注册';
+}-->
+<!--{template mobile/header}-->
+<div class="box">
+    <div class="am-g title-box">
+        <p>Welcome</p>
+    </div>
+    <div class="am-form form-box" id="register">
+        <!--<p>-->
+            <!--<input type="text" class="am-form-field J-name" onchange="judgeRegisterUsername(this)" placeholder="用户名" />-->
+        <!--</p>-->
+        <p>
+            <input type="text" maxlength="11" class="am-form-field J-phone" onchange="judgeRegisterPhoneNum(this)" placeholder="请输入手机号" id="phoneInput" >
+        </p>
+
+        <div class="am-g check-code-box">
+            <div class="am-u-sm-8 check-code">
+                <input type="text" class="am-form-field J-check-code" placeholder="输入验证码"/>
+            </div>
+            <div class="am-u-sm-4 check-btn">
+                <input type="button" class="am-form-field J-check-code-btn" value="获取验证码" data-page="phone-register" data-target="phoneInput" data-type="phone">
+            </div>
+        </div>
+        <p>
+            <input type="password" class="am-form-field J-password" onchange="judgePassword(this)" placeholder="请至少输入6位密码"/>
+        </p>
+        <p>
+            <input type="password" class="am-form-field J-password-confirm" onchange="judgePasswordConfirm(this)" placeholder="请确认密码"/>
+        </p>
+        <p>
+            <input type="checkbox" class="checkbox">
+            <span>我已阅读并同意</span>
+            <a href="{DIR}?c=help-128">《用户服务协议》</a>
+        </p>
+        <div class="error-box"></div>
+        <p>
+            <input type="button" class="am-form-field blue-btn J-register-submit" value="注册"/>
+        </p>
+        <p>
+            <a href="{DIR}?c=user-login" class="am-form-field white-btn">已有账号？直接登录</a>
+        </p>
+    </div>
+</div>
+
+<!--{template mobile/footer}-->

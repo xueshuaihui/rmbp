@@ -1,0 +1,5 @@
+/data/tmp/*
+/.idea/
+nginx_*
+/tools/nginx/*
+/static/upload/image/*

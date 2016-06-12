@@ -1,0 +1,55 @@
+<!--{if $field['user_id']}-->
+<div class="navbar-right logined J-logined" data-isauth="{$field['isauth']}">
+    <ul class="user-box">
+        <li class="J-drop-taggle news-li">
+            <a href="{DIR}?c=user-message" class="news-taggle">
+                <!--{if $field['messagenum']}-->
+                <span class="news-num J-news-num">
+                    $field['messagenum']
+                </span>
+                <!--{/if}-->
+                <span class="news-label">消息</span>
+
+                <div class="drop-menu news-drop-menu J-drop-menu">
+                    <!--{if !$message_list}-->
+                    <p class="no-news-tip J-no-news-tip">暂无新消息</p>
+                    <!--{else}-->
+                    <div class="J-news-tip-box">
+                        <!--{loop $message_list $message}-->
+                        <a href="{DIR}?c=user-message">
+                            <p>{$message['message']}</p>
+                        </a>
+                        <!--{/loop}-->
+                    </div>
+                    <!--{/if}-->
+                    <div class="more">
+                        <a href="{DIR}?c=user-message" class="C-news-more"><span>查看全部</span></a>
+                    </div>
+                </div>
+            </a>
+
+
+        </li>
+        <li class="J-drop-taggle user-icon-li">
+            <a href="{DIR}?c=user-center">
+                {avatar($field['user_id'], 'class="user-head"')}
+            </a>
+
+            <div class="drop-menu account-drop-menu J-drop-menu">
+                <a href="{DIR}?c=user-center"><p>个人信息</p></a>
+                <a href="{DIR}?c=user-invested"><p>投资的项目</p></a>
+                <a href="{DIR}?c=user-financing"><p>融资的项目</p></a>
+                <a href="{DIR}?c=user-message"><p>消息通知</p></a>
+                <a href="{DIR}?c=user-password"><p>修改密码</p></a>
+                <a href="{DIR}?c=user-logout&FORM_HASH={misc::form_hash()}" class="J-logout"><p>退出</p></a>
+            </div>
+        </li>
+    </ul>
+</div>
+<!--{else}-->
+<div class="navbar-right unlogin J-unlogin">
+    <a href="{DIR}?c=user-register" class="register" onclick="return(dialog(this))">注册</a>
+    <span>|</span>
+    <a href="{DIR}?c=user-login" class="login" onclick="return(dialog(this))">登录</a>
+</div>
+<!--{/if}-->

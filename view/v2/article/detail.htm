@@ -1,0 +1,123 @@
+<!--{eval
+$pages['title'] = $article['title'];
+$pages['keys'] = ($article['keys'] ? $article['keys'].',' : '').implode(',', array_values($article['label']));
+$pages['desc'] = $article['title'].':'.article_desc($article['content']).'...';
+$pages['header_class'] = 'header-white';
+$pages['not_mobile'] = 1;
+$source_arr = array('1' => '原创','2' => '转载');
+
+$title = "$article[title] - Plus众筹平台";
+$text = mb_substr(strip_tags($article[content]),0,140);
+}-->
+<!--{template inc/header}-->
+<!--{static ../static/v2/css/article.scss ../static/v2/_article.css}-->
+
+<div class="article-box">
+    <div class="container">
+        <div class="left-box">
+            <div class="title-box">
+                <h2 class="title">{$article['title']}</h2>
+
+                <p class="desc">
+                    <span class="time">{date('Y-m-d H:i:s',$article['dateline'])}</span>
+                    <span class="author"><A href="{DIR}article/list/cid/{$article['category_id']}/">{$article['category']}</A></span>
+                    <span class="author">{$article['sourcename']}</span>
+                    <span class="type">{print_r($source_arr[$article['source']],1)}</span>
+                </p>
+
+                <div class="row metas">
+                    <div class="col-xs-8">
+                        <div class="labels-box">
+                            <span class="label-desc">标签：</span>
+                            <!--{loop $article['label'] $category_id $label}-->
+                            <a href="{DIR}article/list/label/{$category_id}/" class="label-box">{$label}</a>
+                            <!--{/loop}-->
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="share-box">
+                            <a href="javascript:void(0);" class="like-box unlike J-focus"></a>
+                            <span class="desc-label">分享到</span>
+
+                            <div class="share">
+                                <div class="bdsharebuttonbox">
+                                    <a href="javascript:void(0);" title="分享到微信" class="bds_weixin J-weixin">
+                                        <div id="qrcode" class="qrcode" style="background: #FFF;"></div>
+                                        <!--<img src="{$conf[static_url]}/v2/images/foooter-weixin-img.jpg"-->
+                                        <!--data-src="{DIR}qr/index/article_id/{$article['id']}/" class="weixin-img"/>-->
+                                    </a>
+                                    <a href="#" class="bds_tsina" data-cmd="tsina"
+                                       herf="http://share.baidu.com/code#"></a>
+                                    <a href="#" class="bds_sqq" data-cmd="sqq"
+                                       herf="http://share.baidu.com/code#"></a>
+                                </div>
+                                <script>
+                                    window._bd_share_config = {
+                                        "common": {
+                                            "bdSnsKey": {},
+                                            "bdText": '$title \n$text',
+                                            "bdMini": "2",
+                                            "bdMiniList": false,
+                                            "bdPic": "",
+                                            "bdStyle": "1",
+                                            "bdSize": "32"
+                                        }, "share": {}
+                                    };
+                                    with (document)0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="article-detail">
+                {$article['content']}
+                <!--{if !$article['keys']}-->
+                <!--{eval
+                    $article['keys'] = $article['title'];
+                }-->
+                <!--{/if}-->
+                <blockquote style="color:gray;font-size: 1rem; margin: 0 0 0;">{$conf['app_name']}提供：
+                    <B>$article['keys']</B>等{$article['category']}新闻由机器整理于互联网，
+                    登于本站并不意味着本站赞同其观点或证实其内容的真实性。如对稿件内容有疑议，请及时与我们联系。
+                </blockquote>
+            </div>
+            <div class="article-page">$page_html</div>
+            <!--{if $related_list}-->
+            <div class="info-box">
+                <div class="lable">
+                    <span>行业相关新闻</span>
+                </div>
+                <ul class="related-list">
+                    <!--{loop $related_list $val}-->
+                    <li><a href="{article_url($val)}">$val['title']</a></li>
+                    <!--{/loop}-->
+                    <div class="clear"></div>
+                </ul>
+            </div>
+            <!--{/if}-->
+        </div>
+        <!--{template article/right}-->
+    </div>
+</div>
+
+<!--{template inc/footer}-->
+<!--{static ../static/js/jquery.qrcode.min.js ../static/v2/_qrcode.js 0}-->
+<script>
+    globalEvents.push(function () {
+        $('.J-weixin').on('mouseover', function () {
+            if (!$(this).data('init')) {
+                $("#qrcode").qrcode({
+                    render: "table",
+                    width: 200,
+                    height: 200,
+                    text: location.href
+                });
+                $(this).data('init', 1);
+            }
+        });
+    });
+</script>
+

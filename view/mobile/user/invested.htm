@@ -1,0 +1,122 @@
+<!--{eval
+    $isverify = array(
+    -2 => '下线',
+    -1 => '未通过',
+    0 => '草稿',
+    1 => '待审核',
+    2 => '预热中',
+    3 => '融资中',
+    4 => '融资成功',
+    5 => '融资失败'
+    );
+}-->
+<div class="user-box">
+    <div class="am-g navs">
+        <div class="am-u-sm-6 nav active">
+            支持的项目
+        </div>
+
+        <a href="{DIR}?c=user-message">
+            <div class="am-u-sm-6 nav">
+                消息
+            </div>
+        </a>
+    </div>
+
+    <div class="invested-lists-box">
+    <!--{loop $user_invest $list}-->
+        <!--{eval
+            $degree = $list['project']['totalfinancing']/$list['project']['maxfinancing']*100;
+            $remain_time = $list['project']['expiretime']?floor(( $list['project']['expiretime']-time())/86400):0;
+        }-->
+    <div class="invested-list">
+        <div class="am-g list-title-box">
+            <a href="{DIR}project/detail/{url_id($list['project']['id'])}/">
+                <div class="am-u-sm-8 t-l list-title">
+                    {$list['project']['title']}
+                </div>
+            </a>
+            <!--{if $list['project']['isverify']=='-1'}-->
+            <div class="am-u-sm-4 t-r status-desc unpass">未通过</div><!--未通过-->
+            <!--{elseif $list['project']['isverify']=='0'}-->
+            <div class="am-u-sm-4 t-r status-desc draft">草稿</div><!--草稿-->
+            <!--{elseif $list['project']['isverify']=='1'}-->
+            <div class="am-u-sm-4 t-r status-desc check-pending">待审核</div><!--待审核-->
+            <!--{elseif $list['project']['isverify']=='2'}-->
+            <div class="am-u-sm-4 t-r status-desc preheating">预热中</div><!--预热中-->
+            <!--{elseif $list['project']['isverify']=='3'}-->
+
+            <!--{if $list['project']['superraise']=='1'}-->
+            <div class="am-u-sm-4 t-r status-desc super-raise">已超募</div><!--已超募-->
+            <!--{else}-->
+            <div class="am-u-sm-4 t-r status-desc financing">融资中</div><!--融资中-->
+            <!--{/if}-->
+
+            <!--{elseif $list['project']['isverify']=='4'}-->
+            <div class="am-u-sm-4 t-r status-desc succeed">融资成功</div><!--融资成功-->
+            <!--{elseif $list['project']['isverify']=='5'}-->
+            <div class="am-u-sm-4 t-r status-desc failed">融资失败</div><!--融资失败-->
+            <!--{/if}-->
+        </div>
+        <div class="status-box">
+            <div class="status-line-box">
+                <div class="status-line" style="width: {$degree}%"></div>
+            </div>
+            <div class="am-g status-desc">
+                <div class="am-u-sm-3 desc">
+                    <p class="num">{$list['project']['totalfinancing']} 万</p>
+
+                    <p>已筹集</p>
+                </div>
+                <div class="am-u-sm-3 desc">
+                    <p class="num">{round($degree)}%</p>
+
+                    <p>完成度</p>
+                </div>
+                <div class="am-u-sm-3 desc">
+                    <p class="num">{$remain_time} 天</p>
+
+                    <p>剩余时间</p>
+                </div>
+                <div class="am-u-sm-3 desc">
+                    <p class="num">{$list['project']['maxfinancing']} 万</p>
+
+                    <p>融资目标</p>
+                </div>
+            </div>
+        </div>
+        <div class="btn-box">
+            <!--{if $list[isrefund]==1}-->
+            <a href="javascript:void(0);" class="btn f-r regret-btn">已撤资，待审核</a>
+            <!--{elseif $list[isrefund]==-1}-->
+            <a href="javascript:void(0);" class="btn f-r C-J-static-waiting-btn">撤资审核失败</a>
+            <!--{elseif $list[isrefund]==2}-->
+            <a href="javascript:void(0);" class="btn f-r regret-btn">已撤资</a>
+            <!--{elseif $list[ispaied]}-->
+            <a href="javascript:void(0);" class="btn f-r regret-btn J-refund-order" data-id="{$list['id']}">后悔了，撤资</a>
+            <!--{elseif $list[iscancel]}-->
+            <a href="javascript:void(0);" class="btn f-r C-pray-btn C-J-static-waiting-btn">已取消支付</a>
+            <!--{elseif !$list[ispaied]}-->
+            <a href="{DIR}mapi/order_continue/id/{$list['id']}/FORM_HASH/{misc::form_hash()}/" class="btn f-r J-continue-{$list['id']}">继续付款</a>
+            <a href="javascript:void(0);" class="btn f-r regret-btn J-cancel-order J-cancel-{$list['id']}" data-id="{$list['id']}">取消支付</a>
+            <!--{else}-->
+            <a href="javascript:void(0);" class="btn f-r regret-btn">静待交割</a>
+            <!--{/if}-->
+
+            <!--<div class="btn f-r regret-btn">-->
+
+            <!--</div>-->
+        </div>
+    </div>
+    <!--{/loop}-->
+    </div>
+</div>
+
+<div class="am-g footer user-footer">
+    <div class="am-u-sm-8 am-u-sm-centered nickname">
+        {print_r($user->username,1)}
+    </div>
+    <div class="am-u-sm-2 right-box">
+        <a href="{DIR}?c=user-logout&FORM_HASH={misc::form_hash()}" class="logout">退出</a>
+    </div>
+</div>

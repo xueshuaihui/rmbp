@@ -1,0 +1,14 @@
+<!--{eval
+echo '<'.'?xml version="1.0" encoding="UTF-8"?'.'>';
+}-->
+<urlset xmlns="http://www.google.com/schemas/sitemap/0.84">
+    <!--{loop $list $val}-->
+    <url>
+        <loc>$val['url']</loc>
+        <lastmod>{date('Y-m-d',$val['dateline'])}</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <br>
+    <!--{/loop}-->
+</urlset>

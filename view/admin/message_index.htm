@@ -1,0 +1,76 @@
+<!--{template admin/header}-->
+<!--{eval
+    $select_rank = array($search['rank'] => ' selected');
+    $select_sort_order = array($search['sort_order'] => ' selected');
+    $select_search = array($search['search'] => ' selected');
+    $select_screen = array($search['screen'] => ' selected');
+}-->
+<div class="title">
+    消息列表
+</div>
+
+<div>
+    <form action="{DIR}{ADMIN_DIR}/message/index/" method="post">
+        <label>排序：</label>
+        <select name="search[rank]">
+            <option selected="" value="">选择排序方式</option>
+            <option value="dateline" {print_r($select_rank[dateline],1)}>时间</option>
+        </select>
+        <select name="search[sort_order]">
+            <option selected="" value="">排序方式</option>
+            <option value="ASC" {print_r($select_sort_order[ASC],1)}>升序</option>
+            <option value="DESC" {print_r($select_sort_order[DESC],1)}>降序</option>
+        </select>
+
+        <label>搜索：</label>
+        <select name="search[search]">
+            <option selected="" value="">选择搜索项</option>
+            <option value="fuser_id" {print_r($select_search[fuser_id],1)}>UID</option>
+            <option value="truename" {print_r($select_search[truename],1)}>接收者</option>
+        </select>
+        <input type="text" name="search[search_value]" value="{$search['search_value']}">
+
+        <label>筛选：</label>
+        <select name="search[screen]">
+            <option selected="" value="">选择消息状态</option>
+            <option value="2" {print_r($select_screen[2],1)}>未读</option>
+            <option value="1" {print_r($select_screen[1],1)}>已读</option>
+        </select>
+        <label>日期筛选：</label>
+        <input type="text" name="search[start]" value="{$search['start']}" maxlength="10" placeholder="{date('Y-m-d')}" style="width: 100px;">
+        <input type="text" name="search[end]" value="{$search['end']}" maxlength="10" placeholder="{date('Y-m-d')}" style="width: 100px;">
+
+        <input type="submit" value="确定">
+    </form>
+</div>
+
+<div class="content login-overview">
+    <table class="table table-bordered">
+        <Tr>
+            <Td>uid</Td>
+            <td>接收者</td>
+            <td>时间</td>
+            <td>内容</td>
+            <td width="30">已读</td>
+        </Tr>
+    <!--{loop $message_list $message}-->
+            <Tr>
+                <td width="80">$message['fuser_id']</td>
+                <td width="80">$message['truename']</td>
+                <td width="80">{date('y-m-d', $message['dateline'])}</td>
+                <Td align="left">
+                    $message['message']
+                </td>
+                <Td>
+                    <!--{if $message['isread']}-->
+                        是
+                    <!--{else}-->
+                        否
+                    <!--{/if}-->
+                </td>
+            </Tr>
+    <!--{/loop}-->
+    </table>
+    <div class="page-box">{$page_html}</div>
+</div>
+<!--{template admin/footer}-->

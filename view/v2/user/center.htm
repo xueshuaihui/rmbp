@@ -1,0 +1,263 @@
+<div class="tab-pane active" id="accountBasicInfo">
+<!--{if $user_data['isauth']!=2}-->
+<div class="J-not-invested">
+    <div class="show-box">
+        <div class="head-icon-box">
+            {avatar($user_data['uid'], 'class="J-head-icon" alt=""')}
+        </div>
+        <div class="content-show-box">
+            <div class="row">
+                <div class="col-xs-10">
+                    <!--{if $user_data['isauth']}-->
+                    <span class="status uncertified">认证中</span>
+                    <!--{else}-->
+                    <span class="status uncertified">未认证</span>
+                    <!--{/if}-->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2 label" name="user[phone]">手机</div>
+                <div class="col-xs-8 J-phone-num">
+                    {$user_data['phone']}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2 label">邮箱</div>
+                <div class="col-xs-8 J-email">
+                    {$user_data['email']}
+                </div>
+            </div>
+            <div class="row C-J-certify-investor">
+                <a href="{DIR}?c=user-certificate" class="btn">认证投资人</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--{else}-->
+<div class="J-is-invested">
+    <div class="show-box">
+        <div class="head-icon-box">
+            {avatar($user_data['uid'], 'class="J-head-icon" alt=""')}
+        </div>
+        <div class="content-show-box">
+            <div class="row">
+                <div class="col-xs-10">
+                    <span class="status certified">已认证</span>
+                </div>
+                <div class="col-xs-2">
+                    <div href="javascript:void(0);" class="edit-btn J-edit-btn"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2 label">真实姓名</div>
+                <div class="col-xs-8 J-real-name">
+                    {$user_data['truename']}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2 label">手机</div>
+                <div class="col-xs-8 J-phone-num">
+                    {$user_data['phone']}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2 label">邮箱</div>
+                <div class="col-xs-8 J-email">
+                    {$user_data['email']}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2 label">所在城市</div>
+                <div class="col-xs-8 J-city">
+                    {$user_data['region']}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2 label">公司</div>
+                <div class="col-xs-8 J-company">
+                    {$user_data['company']}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2 label">职位</div>
+                <div class="col-xs-8 J-position">
+                    {$user_data['job']}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2 label">微信</div>
+                <div class="col-xs-8 J-position">
+                    {$user_data['account3nd']['weixin']}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2 label">关注城市</div>
+
+                <div class="col-xs-8 J-focus-city"
+                     data-ids="<!--{loop $user_region $region}-->$region['id'],<!--{/loop}-->">
+                    <!--{loop $user_region $region}-->
+                    <span>{$region['name']}</span>
+                    <!--{/loop}-->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2 label">关注领域</div>
+                <div class="col-xs-8 J-focus-fields">
+                    <!--{loop $user_area $area}-->
+                    <span>{$area['name']}</span>
+                    <!--{/loop}-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="edit-box">
+        <form id="investorEditorBox">
+            <div class="head-icon-box">
+                <input type="file" style="display:none" id="userImgInput" onchange="imgCrop.change(this)" data-width="200" data-height="200" data-previd="userImgPrev">
+                <a href="javascript:void(0);" class="image-show J-upload-logo" id="userImgPrev" data-target="userImgInput">
+                    {avatar($user_data['uid'], 'class="J-head-icon" alt=""')}
+                </a>
+                <input type="button" value="上传图片" class="btn upload-logo-desc J-upload-logo" data-target="userImgInput">
+                <input id="userAvatarInput" type="hidden" name="user[avatar]"/>
+            </div>
+            <div class="content-edit-box">
+                <div class="row">
+                    <div class="col-xs-2 label">真实姓名</div>
+                    <div class="col-xs-8">
+                        <input type="text" maxlength="16" class="form-control J-real-name"
+                               value="{$user_data['truename']}" name="user[truename]">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 label">手机</div>
+                    <div class="col-xs-8">
+                        <input type="text" maxlength="11" class="form-control J-phone-num" name="user[phone]"
+                               value="{$user_data['phone']}" disabled="disabled">
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 label">邮箱</div>
+                    <div class="col-xs-8">
+                        <input type="email" class="form-control J-email" value="{$user_data['email']}" disabled="disabled">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 label">所在城市</div>
+                    <div class="col-xs-8">
+                        <input type="text" class="form-control J-region" name="user[region]"
+                               value="{$user_data['region']}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 label">公司</div>
+                    <div class="col-xs-8">
+                        <input type="text" class="form-control J-company" name="user[company]"
+                               value="{$user_data['company']}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 label">职位</div>
+                    <div class="col-xs-8">
+                        <input type="text" class="form-control J-position" name="user[job]"
+                               value="{$user_data['job']}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 label">微信</div>
+                    <div class="col-xs-8">
+                        <input class="form-control J-position" type="text" name="user[account3nd][weixin]" value="{$user_data['account3nd']['weixin']}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 label">关注城市</div>
+                    <div class="col-xs-10 C-focus-city J-focus-city">
+                        <input class="form-control city-input-btn" type="button" id="city-input" value="选择"
+                               data-ids="<!--{loop $user_region $region}-->$region['id'],<!--{/loop}-->">
+                    </div>
+                </div>
+                <div class="row m-b-10">
+                    <div class="col-xs-2 label">关注领域</div>
+                    <div class="col-xs-10 J-focus-fields">
+                        <!--{loop $area_list $area}-->
+                        <div class="field-box">
+                            <a href="javascript:void(0);"
+                               class="status-flag<!--{if isset($user_area[$area['id']])}--> select<!--{/if}-->"
+                               alt="$area['name']" data-id="{$area['id']}"></a>
+                            <span>$area['name']</span>
+
+                        </div>
+                        <!--{/loop}-->
+                        <!--input type="hidden" name="feeds[are]" value="" id="are" /-->
+                    </div>
+                </div>
+                <div class="error-box"></div>
+                <div class="row btn-box">
+                    <div class="col-xs-3"><a href="javascript:void(0);" class="btn C-J-save-btn">保存</a></div>
+                    <div class="col-xs-3"><a href="javascript:void(0);" class="btn C-J-cancel-btn">取消</a></div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div class="modal fade" id="citySelectModal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content city-select-modal-content J-select-city-box">
+            <div class="modal-header">
+                选择城市（可多选）
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body ">
+                <div class="city J-city">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0);" class="btn J-confirm">确定</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="tpl" id="cityShowModal">
+    <div class="C-city J-city">
+        <input class="form-control city-btn select" type="button" value="<%=val%>"  data-id="<%=id%>">
+        <div class="close" data-id="<%=id%>">&times;</div>
+    </div>
+</script>
+<script type="tpl" id="hotCityModal">
+    <input type="button"  data-id="<%=id%>" value="<%=name%>"/>
+</script>
+<!--{/if}-->
+    <div class="modal fade crop-modal J-crop-modal" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="image-box">
+                        <p><img></p>
+                    </div>
+                    <div class="preview-box" style="width:150px;">
+                        <img>
+                    </div>
+                    <canvas class="J-canvas" style="overflow:hidden; display:none"></canvas>
+                </div>
+                <div class="crop-btns">
+                    <a href="javascript:void(0);" class="btn confirm-btn J-confirm-btn" onclick="imgCrop.confirm()">确定</a>
+                    <a href="javascript:void(0);" class="btn cancel-btn"  onclick="imgCrop.cancel()">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    accountEvents = [];
+    accountEvents.push(function(){
+        initBasicInfo();
+        initCropImage();
+        initCityInput();
+        initHotCity();
+        initFieldSelect();
+    })
+</script>

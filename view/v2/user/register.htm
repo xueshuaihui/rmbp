@@ -1,0 +1,117 @@
+<!--{eval
+$pages['title'] = '用户注册';
+$pages['header_class'] = 'header-white';
+}-->
+<!--{if !core::R('ajax')}-->
+    <!--{template inc/header}-->
+    <div class="container-box">
+<!--{/if}-->
+    <div class="modal-body ">
+        <div class="register-login-box">
+            <ul class="nav nav-tabs" id="myRegisterTab">
+                <li class="active"><a href="#phone">手机注册</a></li>
+                <li><a href="#email">邮箱注册</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="phone">
+                    <!--<div class="row">-->
+                        <!--<input class="form-control J-name" type="text" maxlength="16" placeholder="用户名"-->
+                               <!--onchange="judgeRegisterUsername(this)">-->
+                    <!--</div>-->
+                    <div class="row">
+                        <input class="form-control J-phone" type="num" maxlength="11" id="phoneInput" placeholder="请输入手机号"
+                               onchange="judgeRegisterPhoneNum(this)">
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-8 check-input">
+                            <input class="form-control J-check-code" type="text" placeholder="输入验证码">
+                        </div>
+                        <div class="col-xs-4 check-btn">
+                            <input class="btn J-check-code-btn" type="button" value="获取验证码" data-page="phone-register" data-type="phone"
+                                   data-target="phoneInput">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input class="form-control J-pwd" maxlength="16" type="password" placeholder="请输入至少6位密码"
+                               onchange="judgePassword(this)" >
+                        <div class="caps-lock-warning hide"></div>
+                    </div>
+                    <div class="row">
+                        <input class="form-control J-pwd-confir" maxlength="16" type="password"
+                               placeholder="请确认密码" onchange="judgePasswordConfirm(this)" >
+                        <div class="caps-lock-warning hide"></div>
+                    </div>
+                    <div class="row">
+                        <input type="checkbox" class="checkbox">
+                        我已阅读并同意
+                        <a href="{DIR}?c=help-128" target="_blank">《用户服务协议》</a>
+                    </div>
+                    <div class="error-box">
+                        请将信息填写完整
+                    </div>
+                    <div class="row">
+                        <button onclick="post_data(this)" class="btn ">注册</button>
+                    </div>
+                    <div class="row bottom">
+                        <p>已有账号？<a href="{DIR}?c=user-login" onclick="return(dialog(this))">直接登录</a></p>
+                    </div>
+                </div>
+                <div class="tab-pane" id="email">
+                    <!--<div class="row">-->
+                        <!--<input class="form-control J-name" type="text" maxlength="16" placeholder="用户名"-->
+                               <!--onchange="judgeRegisterUsername(this)">-->
+                    <!--</div>-->
+                    <div class="row">
+                        <input class="form-control J-email" type="email" onchange="judgeRegisterEmail(this)"
+                               placeholder="请输入邮箱地址"  id="emailInput">
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-8 check-input">
+                            <input class="form-control J-check-code" type="text" placeholder="输入验证码">
+                        </div>
+                        <div class="col-xs-4 check-btn">
+                            <input class="btn J-check-code-btn" type="button" value="获取验证码" data-page="email-register" data-type="email"
+                                   data-target="emailInput">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input class="form-control J-pwd" type="password" maxlength="16"
+                               onchange="judgePassword(this)"  placeholder="请输入至少6位密码">
+                        <div class="caps-lock-warning hide"></div>
+                    </div>
+                    <div class="row">
+                        <input class="form-control J-pwd-confir" type="password" maxlength="16"
+                               onchange="judgePasswordConfirm(this)"  placeholder="请确认密码">
+                        <div class="caps-lock-warning hide"></div>
+                    </div>
+                    <div class="row">
+                        <input type="checkbox" class="checkbox">
+                        我已阅读并同意
+                        <a href="{DIR}?c=help-128" target="_blank">《用户服务协议》</a>
+                    </div>
+                    <div class="error-box"></div>
+                    <div class="row">
+                        <button onclick="post_data(this)" class="btn ">注册</button>
+                    </div>
+                    <div class="row bottom">
+                        <p>已有账号？<a href="{DIR}?c=user-login" onclick="return(dialog(this))">直接登录</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="alert-box J-alert"></div>
+    </div>
+    <!--{if core::R('ajax')}-->
+        <script>
+            initRegisterEvent();
+        </script>
+    <!--{/if}-->
+<!--{if !core::R('ajax')}-->
+    </div>
+    <!--{template inc/footer}-->
+<script>
+    globalEvents.push(function(){
+        initRegisterEvent();
+    })
+</script>
+<!--{/if}-->

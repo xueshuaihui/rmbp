@@ -1,0 +1,297 @@
+<!--{template admin/header}-->
+<!--{static ../static/admin/js/article.js admin/js/_article.js}-->
+<!--{eval
+    $operation_title = array(
+        1 => '首页设置',
+        2 => '文章分类',
+        3 => '文章列表',
+        4 => '帮助分类',
+        5 => '帮助列表',
+    );
+    $title = $operation_title[$type];
+
+    $disabled = array(
+        '0' => '启用',
+        '1' => '禁用'
+    );
+
+}-->
+<div class="title">
+    {$title}
+</div>
+<div class="content">
+    <!--{if $type == 1}-->
+        <div class="home-setting">
+        <ul class="nav nav-tabs" id="bannerQuickTab">
+            <li class="active"><a href="#banner">banner图</a></li>
+            <li><a href="#quick">快速入口</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="banner">
+                <a class="form-control new-btn" onclick="showBannerModal()" href="javascript:void(0);">新增Banner</a>
+                <div class="modal fade" id="bannerModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                新增banner
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body ">
+                                <form action="">
+                                    <div class="form-group">
+                                        <label for="title">标题</label>
+                                        <input type="text" class="form-control" id="title"
+                                               placeholder="请输入标题">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="img">图片</label>
+                                        <input type="file" class="form-control" id="img">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="order">排序</label>
+                                        <input type="text" class="form-control" id="order" >
+                                    </div>
+                                    <div class="select-box">
+                                        <input type="checkbox" class="checkbox J-checkbox" onclick="setTargetStatus('projectID')">项目推广
+                                        <div class="form-group">
+                                            <label for="projectID">项目ID</label>
+                                            <input type="text" class="form-control" disabled id="projectID" >
+                                        </div>
+                                    </div>
+                                    <div class="select-box">
+                                        <input type="checkbox" class="checkbox J-checkbox" onclick="setTargetStatus('activityURL')">活动推广
+                                        <div class="form-group">
+                                            <label for="activityURL">活动URL</label>
+                                            <input type="text" class="form-control" disabled id="activityURL" >
+                                        </div>
+                                    </div>
+                                    <div class="btn-box">
+                                        <input type="submit" class="form-control confirm-btn" value="确定">
+                                        <input type="button" class="form-control cancel-btn" data-dismiss="modal" value="取消">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>banner类型</th>
+                        <th>标题</th>
+                        <th>项目ID/URL</th>
+                        <th>banner图</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>活动推广</td>
+                        <td></td>
+                        <td><a href="javascript:void(0);">rmplus.cn</a></td>
+                        <td><a href="javascript:void(0);" target="_blank" class="a-btn-l">查看</a></td>
+                        <td>
+                            <input type="button" value="编辑"> <input type="button" value="删除">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane" id="quick">
+                <a class="form-control new-btn" href="javascript:void(0);" onclick="showQuickModal()">新增入口</a>
+                <div class="modal fade" id="quickModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                新增快速入口
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="">
+                                    <div class="form-group">
+                                        <label for="icon">icon图</label>
+                                        <input type="file" class="form-control" id="icon">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="num">序号</label>
+                                        <input type="text" class="form-control" id="num" >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="desc">文案</label>
+                                        <input type="text" class="form-control" id="desc" >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="popURL">跳转URL</label>
+                                        <input type="text" class="form-control" id="popURL" >
+                                    </div>
+                                    <div class="btn-box">
+                                        <input type="submit" class="form-control confirm-btn" value="确定">
+                                        <input type="button" class="form-control cancel-btn" data-dismiss="modal" value="取消">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>文案</th>
+                        <th>跳转url</th>
+                        <th>图标</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td></td>
+                        <td><a href="javascript:void(0);">rmplus.cn</a></td>
+                        <td><a href="javascript:void(0);" target="_blank" class="a-btn-l">查看</a></td>
+                        <td>
+                            <a href="{DIR}{ADMIN_DIR}/article/edit/id/xxx/"><input type="button" value="编辑"></a>
+                            <input type="button" value="删除">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--{/if}-->
+
+    <!--{if $type ==2}-->
+        <div class="article-cat-box">
+        <a class="form-control new-btn" href="{DIR}{ADMIN_DIR}/article/edit/type/2/article_type/news/">新建</a>
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>分类ID</th>
+                <th>分类名称</th>
+                <th>目录排序</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--{loop $result $list}-->
+            <tr>
+                <td>{$list['id']}</td>
+                <td>{$list['category']}</td>
+                <td>{$list['sortid']}</td>
+                <td>{print_r($disabled[$list['disabled']],1)}</td>
+                <td>
+                    <a href="{DIR}{ADMIN_DIR}/article/edit/type/2/id/{$list['id']}/" class="btn edit-btn">编辑</a>
+                    <a href="javascript:void(0);" class="btn delete-btn" onclick="deleteItem('delete_article_category',{$list['id']});">删除</a>
+                </td>
+            </tr>
+            <!--{/loop}-->
+            </tbody>
+        </table>
+    </div>
+    <!--{/if}-->
+
+    <!--{if $type ==3}-->
+        <div class="article-list-box">
+            <a class="form-control new-btn" href="{DIR}{ADMIN_DIR}/article/edit/type/3/article_type/news/">新建</a>
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>文章ID</th>
+                    <th>文章标题</th>
+                    <th>分类</th>
+                    <th>状态</th>
+                    <th>创建时间</th>
+                    <th>更新时间</th>
+                    <th>排序</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--{loop $result $list}-->
+                <tr>
+                    <td>{$list['id']}</td>
+                    <td>{$list['title']}</td>
+                    <td>{$list['category']}</td>
+                    <td>{print_r($disabled[$list[disabled]],1)}</td>
+                    <td>{date('Y-m-d H:i:s' , $list['dateline'])}</td>
+                    <td><!--{if $list['updatetime']!=0}-->{date('Y-m-d H:i:s' , $list['updatetime'])}<!--{/if}--></td>
+                    <td>{$list['sortid']}</td>
+                    <td>
+                        <a href="{DIR}{ADMIN_DIR}/article/edit/type/3/id/{$list['id']}/" class="btn edit-btn">编辑</a>
+                        <a href="javascript:void(0);" class="btn delete-btn" onclick="deleteItem('delete_article',{$list['id']})">删除</a>
+                    </td>
+                </tr>
+                <!--{/loop}-->
+                </tbody>
+            </table>
+        </div>
+    <!--{/if}-->
+
+    <!--{if $type ==4}-->
+        <div class="help-cat-box">
+            <a class="form-control new-btn" href="{DIR}{ADMIN_DIR}/article/edit/type/4/article_type/help/">新建</a>
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>目录ID</th>
+                    <th>目录名</th>
+                    <th>目录排序</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--{loop $result $list}-->
+                <tr>
+                    <td>{$list['id']}</td>
+                    <td>{$list['category']}</td>
+                    <td>{print_r($disabled[$list['disabled']],1)}</td>
+                    <td>
+                        <a href="{DIR}{ADMIN_DIR}/article/edit/type/4/id/{$list['id']}/" class="btn edit-btn">编辑</a>
+                        <a href="javascript:void(0);" class="btn delete-btn" onclick="deleteItem('delete_article_category',{$list['id']})">删除</a>
+                    </td>
+                </tr>
+                <!--{/loop}-->
+                </tbody>
+            </table>
+        </div>
+    <!--{/if}-->
+
+    <!--{if $type ==5}-->
+        <div class="help-list-box">
+            <a class="form-control new-btn" href="{DIR}{ADMIN_DIR}/article/edit/type/5/article_type/help/">新建</a>
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>问题ID</th>
+                    <th>问题</th>
+                    <th>解答</th>
+                    <th>排序</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--{loop $result $list}-->
+                <!--{eval
+                   // $content = strlen($list['content'])>21?mb_substr($list['content'],0,20).'......':$list['content'];
+                }-->
+                <tr>
+                    <td>{$list['id']}</td>
+                    <td>{$list['title']}</td>
+                    <td>{$content}</td>
+                    <td>{$list['sortid']}</td>
+                    <td>
+                        <a href="{DIR}{ADMIN_DIR}/article/edit/type/5/id/{$list['id']}/" class="btn edit-btn">编辑</a>
+                        <a href="javascript:void(0);" class="btn delete-btn" onclick="deleteItem('delete_article',{$list['id']})">删除</a>
+                    </td>
+                </tr>
+                <!--{/loop}-->
+                </tbody>
+            </table>
+        </div>
+    <!--{/if}-->
+</div>
+<!--{template admin/footer}-->

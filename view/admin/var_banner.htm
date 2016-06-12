@@ -1,0 +1,33 @@
+<!--{template admin/header}-->
+<div class="title">
+    首页设置
+</div>
+<div class="content login-overview">
+    <a class="form-control new-btn" href="{DIR}{ADMIN_DIR}/var/banner_edit/">新建</a>
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>图片</th>
+            <th>URl</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--{loop $banner_list $key $list}-->
+        <tr>
+            <form action="{DIR}{ADMIN_DIR}/var/update_banner/" method="post" enctype="multipart/form-data">
+                <td>{$list[type]}</td>
+                <td><a href="{$conf['static_url']}{$list[path]}" target="_blank">{$conf['static_url']}{$list[path]}</a></td>
+                <td>{$list[description]}</td>
+                <td>
+                    <a href="{DIR}{ADMIN_DIR}/var/banner_edit/id/$list['id']/">编辑</a>
+                    <a href="{DIR}{ADMIN_DIR}/var/delete_banner/" data-post="id/$list['id']/" data-reload="1">删除</a>
+                </td>
+            </form>
+        </tr>
+        <!--{/loop}-->
+        </tbody>
+    </table>
+</div>
+<!--{template admin/footer}-->

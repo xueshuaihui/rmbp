@@ -1,0 +1,67 @@
+<!--{template admin/header}-->
+<!--{template admin/project_header}-->
+<!--{eval
+    $select_rank = array($search['rank'] => ' selected');
+    $select_sort_order = array($search['sort_order'] => ' selected');
+    $select_search = array($search['search'] => ' selected');
+    $select_screen = array($search['screen'] => ' selected');
+}-->
+<div class="title">
+    约见列表
+</div>
+<!--{if !$project_id}-->
+<div>
+    <form action="{DIR}{ADMIN_DIR}/project/meet/" method="post">
+        <label>排序：</label>
+        <select name="search[rank]">
+            <option selected="" value="">选择排序方式</option>
+            <option value="dateline" {print_r($select_rank[dateline],1)}>提交时间</option>
+        </select>
+        <select name="search[sort_order]">
+            <option selected="" value="">排序方式</option>
+            <option value="ASC" {print_r($select_sort_order[ASC],1)}>升序</option>
+            <option value="DESC" {print_r($select_sort_order[DESC],1)}>降序</option>
+        </select>
+
+        <label>搜索：</label>
+        <select name="search[search]">
+            <option selected="" value="">选择搜索项</option>
+            <option value="title" {print_r($select_search[title],1)}>项目名</option>
+            <option value="truename" {print_r($select_search[truename],1)}>用户</option>
+            <option value="message" {print_r($select_search[message],1)}>约见内容</option>
+        </select>
+        <input type="text" name="search[search_value]" value="{$search['search_value']}">
+        <label>日期筛选：</label>
+        <input type="text" name="search[start]" value="{$search['start']}" maxlength="10" placeholder="{date('Y-m-d')}" style="width: 100px;">
+        <input type="text" name="search[end]" value="{$search['end']}" maxlength="10" placeholder="{date('Y-m-d')}" style="width: 100px;">
+        <input type="submit" value="确定">
+    </form>
+</div>
+<!--{/if}-->
+<div class="content">
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>项目名称</th>
+            <th>创建用户</th>
+            <th>约见内容</th>
+            <th>时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--{loop $meet_list $list}-->
+        <!--{eval
+            $message = strlen($list['message'])<='100'?$list['message']:mb_substr($list['message'],0,100).'......';
+        }-->
+        <tr>
+            <td><a href="{DIR}{ADMIN_DIR}/project/project_info/project_id/{url_id($list['project_id'])}/">{$list['title']}</a></td>
+            <td><a href="{DIR}{ADMIN_DIR}/user/field_project/user_id/{url_id($list['user_id'])}/">{$list['truename']}</a></td>
+            <td title="{$list['message']}">$message</td>
+            <td>{date('Y-m-d H:i:s',$list['dateline'])}</td>
+        </tr>
+        <!--{/loop}-->
+        </tbody>
+    </table>
+</div>
+<div class="page-box">{$page_html}</div>
+<!--{template admin/footer}-->

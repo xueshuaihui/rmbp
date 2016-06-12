@@ -1,0 +1,10 @@
+Options
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d 
+RewriteCond %{REQUEST_FILENAME} !.*\.(gif|jpe?g|png|js|css|swf|php|ico|txt|pdf|xml)$
+
+
+RewriteRule ^rmb/(\w+)/(?:(\w+)/)?(.*?)/*?$  backend.php\?c=$1-$2&rewrite=$3 [L]
+RewriteRule ^(index|publish|user|api|mapi|vcapi|project|order|help|qr|article|trade|home)(?:[/\-_\|\.\,])(\w+)(?:[/\-_\|\.\,])(.*)$ index.php\?c=$1-$2&rewrite=$3 [L]

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>18plus后台管理系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>var DIR="{DIR}{ADMIN_DIR}";</script>
+    <!-- styles -->
+    <link href="{$conf['static_url']}admin/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{$conf['static_url']}admin/css/backend_index.css" rel="stylesheet">
+    <link href="{$conf['static_url']}admin/icon/font-awesome.css" rel="stylesheet">
+    <!--js -->
+    <script src="{$conf['static_url']}admin/js/jquery-1.11.3.min.js"></script>
+    <script src="{$conf['static_url']}admin/js/bootstrap.min.js"></script>
+    <script src="{$conf['static_url']}admin/js/library/jquery.collapsible.min.js"></script>
+    <script src="{$conf['static_url']}admin/js/backend_header_nav_data.js"></script>
+    <script src="{$conf['static_url']}admin/js/flatpoint_core.js"></script>
+</head>
+<body>
+<header class="dark_grey">
+    <!-- Header start -->
+    <div class="top">
+        <div class="logo">
+            <img src="{$conf['static_url']}admin/images/logo.png"/>
+        </div>
+        <div class="navs J-navs">
+            <ul></ul>
+        </div>
+        <div class="right-nav">
+            <ul>
+                <li>{print_r($this->username, 1)}</li>
+                <li><a href="{DIR}" target="_blank">网站首页</a></li>
+                <li><a href="{DIR}?c=user-password" target="_blank">修改密码</a></li>
+                <li><a  href="?c=user-logout&FORM_HASH={misc::form_hash()}" target="_blank">退出</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+<div id="main_navigation" class="dark_navigation">
+    <div class="inner_navigation">
+        <ul class="main"></ul>
+    </div>
+</div>
+
+<div id="content" class="no-sidebar">
+    <!-- Content start -->
+    <iframe class="inner_navigation1" name="right" src="/{ADMIN_DIR}/index/welcome/" frameborder="0" width="100%" scrolling="auto"
+            height="100%"></iframe>
+    <!-- Content END -->
+</div>
+
+</body>
+</html>
